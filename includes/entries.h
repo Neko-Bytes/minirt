@@ -60,6 +60,7 @@ typedef struct
     Color color;
 } Cylinder;
 
+
 // Hardcoded scene objects
 static const Ambient ambient = {0.2f, {255, 255, 255}};
 static const Camera camera = {

@@ -4,46 +4,35 @@
 #include <stdbool.h>
 #include "../includes/entries.h"
 
-Vec3 vec_normalize(Vec3 v)
-{
-    float len = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
-    if (len == 0.0f)
-        return (Vec3){0, 0, 0}; // Avoid division by zero
-    return (Vec3){v.x / len, v.y / len, v.z / len};
+static inline Vec3 vec_add(Vec3 a, Vec3 b) {
+    return (Vec3){a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
-Vec3 vec_substract(Vec3 vec_a, Vec3 vec_b)
-{
-    return (Vec3){
-        vec_a.x - vec_b.x,
-        vec_a.y - vec_b.y,
-        vec_a.z - vec_b.z};
+static inline Vec3 vec_substract(Vec3 a, Vec3 b) {
+    return (Vec3){a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
-Vec3 vec_add(Vec3 vec_a, Vec3 vec_b)
-{
-    return (Vec3){
-        vec_a.x + vec_b.x,
-        vec_a.y + vec_b.y,
-        vec_a.z + vec_b.z};
+static inline Vec3 vec_scale(Vec3 v, float s) {
+    return (Vec3){v.x * s, v.y * s, v.z * s};
 }
 
-Vec3 vec_scale(Vec3 v, float t)
-{
-    return (Vec3){v.x * t, v.y * t, v.z * t};
+static inline float dot_product(Vec3 a, Vec3 b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-float dot_product(Vec3 vec_a, Vec3 vec_b)
-{
-    return vec_a.x * vec_b.x + vec_a.y * vec_b.y + vec_a.z * vec_b.z;
+static inline Vec3 vec_normalize(Vec3 v) {
+    float len = sqrtf(dot_product(v, v));
+    return (len == 0.0f) ? (Vec3){0, 0, 0} : vec_scale(v, 1.0f / len);
 }
+
+
 
 bool solveQuadratic(float a, float b, float c, float *t1, float *t2)
 {
     float discriminant = b * b - 4.0f * a * c;
     if (discriminant < 0.0f)
     {
-        return false; // No real roots, no intersection
+        return false;
     }
     if (discriminant == 0.0f)
     {
@@ -67,39 +56,25 @@ bool solveQuadratic(float a, float b, float c, float *t1, float *t2)
 
 bool intersect(Vec3 direction, float *refl)
 {
-    float a = dot_product(direction, direction);
-    float b = 2.0f * dot_product(vec_substract(camera.position, sphere.position), direction);
-    float c = dot_product(vec_substract(camera.position, sphere.position), vec_substract(camera.position, sphere.position)) - sphere.radius * sphere.radius;
+    Vec3 oc = vec_substract(camera.position, sphere.position);
+    float half_b = dot_product(oc, direction);
+    float c = dot_product(oc, oc) - sphere.radius * sphere.radius;
+    float discriminant = half_b * half_b - c;
 
-    float t1, t2;
-    if (solveQuadratic(a, b, c, &t1, &t2))
-    {
-        float t = -1.0f;
+    if (discriminant < 0.0f) return false;
 
-        if (t1 > 0.0f && t2 > 0.0f)
-            t = fminf(t1, t2);
-        else if (t1 > 0.0f)
-            t = t1;
-        else if (t2 > 0.0f)
-            t = t2;
+    float sqrt_disc = sqrtf(discriminant);
+    float t = -half_b - sqrt_disc;
+    if (t < 0.0f) t = -half_b + sqrt_disc;
+    if (t < 0.0f) return false;
 
-        if (t < 0.0f)
-            return false;
+    Vec3 Phit = vec_add(camera.position, vec_scale(direction, t));
+    Vec3 normal = vec_normalize(vec_substract(Phit, sphere.position));
+    *refl = -dot_product(direction, normal);
 
-        Vec3 Phit = vec_add(camera.position, vec_scale(direction, t));
-        Vec3 surfaceNormal = vec_normalize(vec_substract(Phit, sphere.position));
-
-        *refl = -dot_product(direction, surfaceNormal);
-
-        if (t1 < 0.0f && t2 < 0.0f)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    return false;
+    return true;
 }
+
 
 Color rayTracing(Vec3 direction)
 {

@@ -47,11 +47,11 @@ bool solveQuadratic(float a, float b, float c, float *t1, float *t2)
     }
     if (discriminant == 0.0f)
     {
-        *t2 = (-b) / (2.0f * a); // One real root
-        *t1 = *t2;               // Assign the same value to t1
+        *t2 = (-b) / (2.0f * a);
+        *t1 = *t2;
         if (*t2 < 0.0f)
         {
-            return false; // Intersection is behind the camera
+            return false;
         }
         return true; // One intersection point
     }
@@ -60,12 +60,12 @@ bool solveQuadratic(float a, float b, float c, float *t1, float *t2)
     *t2 = (-b - sqrtf(discriminant)) / (2.0f * a);
     if (*t1 < 0.0f && *t2 < 0.0f)
     {
-        return false; // Both intersections are behind the camera
+        return false;
     }
-    return true; // Two intersection points or one in front of the camera
+    return true;
 }
 
-bool intersect(Vec3 direction, float refl)
+bool intersect(Vec3 direction, float *refl)
 {
     float a = dot_product(direction, direction);
     float b = 2.0f * dot_product(vec_substract(camera.position, sphere.position), direction);
@@ -74,6 +74,23 @@ bool intersect(Vec3 direction, float refl)
     float t1, t2;
     if (solveQuadratic(a, b, c, &t1, &t2))
     {
+        float t = -1.0f;
+
+        if (t1 > 0.0f && t2 > 0.0f)
+            t = fminf(t1, t2);
+        else if (t1 > 0.0f)
+            t = t1;
+        else if (t2 > 0.0f)
+            t = t2;
+
+        if (t < 0.0f)
+            return false;
+
+        Vec3 Phit = vec_add(camera.position, vec_scale(direction, t));
+        Vec3 surfaceNormal = vec_normalize(vec_substract(Phit, sphere.position));
+
+        *refl = -dot_product(direction, surfaceNormal);
+
         if (t1 < 0.0f && t2 < 0.0f)
         {
             return false;
@@ -86,11 +103,10 @@ bool intersect(Vec3 direction, float refl)
 
 Color rayTracing(Vec3 direction)
 {
-
     float refl = 1;
-    if (intersect(direction, refl)) // Check if the ray intersects with the sphere
+    if (intersect(direction, &refl)) // Pass address of refl
     {
-        return  (Color){
+        return (Color){
             sphere.color.r * light.intensity * refl,
             sphere.color.g * light.intensity * refl,
             sphere.color.b * light.intensity * refl};
@@ -137,7 +153,8 @@ void mainImage(Vec2 coord, int width, int height, Color *output)
     Vec2 uv = {
         (coord.x / (float)width) * 2.0f - 1.0f,
         (coord.y / (float)height) * 2.0f - 1.0f};
-    uv.x *= (float)width / (float)height; // Adjust aspect ratio
+    uv.x *= (float)width / (float)height;
+    uv.y = -uv.y;
 
     Vec3 direction = (Vec3){uv.x, uv.y, camera.zoom};
     direction = vec_substract(direction, ray_origin);

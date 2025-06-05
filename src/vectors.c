@@ -4,25 +4,26 @@
 #include <stdbool.h>
 #include "../includes/entries.h"
 
-static inline Vec3 vec_add(Vec3 a, Vec3 b) {
-    return (Vec3){a.x + b.x, a.y + b.y, a.z + b.z};
+// Use new type names from entries.h
+static inline t_vec3_struct vec_add(t_vec3_struct a, t_vec3_struct b) {
+    return (t_vec3_struct){a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
-static inline Vec3 vec_substract(Vec3 a, Vec3 b) {
-    return (Vec3){a.x - b.x, a.y - b.y, a.z - b.z};
+static inline t_vec3_struct vec_substract(t_vec3_struct a, t_vec3_struct b) {
+    return (t_vec3_struct){a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
-static inline Vec3 vec_scale(Vec3 v, float s) {
-    return (Vec3){v.x * s, v.y * s, v.z * s};
+static inline t_vec3_struct vec_scale(t_vec3_struct v, float s) {
+    return (t_vec3_struct){v.x * s, v.y * s, v.z * s};
 }
 
-static inline float dot_product(Vec3 a, Vec3 b) {
+static inline float dot_product(t_vec3_struct a, t_vec3_struct b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-static inline Vec3 vec_normalize(Vec3 v) {
+static inline t_vec3_struct vec_normalize(t_vec3_struct v) {
     float len = sqrtf(dot_product(v, v));
-    return (len == 0.0f) ? (Vec3){0, 0, 0} : vec_scale(v, 1.0f / len);
+    return (len == 0.0f) ? (t_vec3_struct){0, 0, 0} : vec_scale(v, 1.0f / len);
 }
 
 
@@ -54,9 +55,9 @@ bool solveQuadratic(float a, float b, float c, float *t1, float *t2)
     return true;
 }
 
-bool intersect(Vec3 direction, float *refl)
+bool intersect(t_vec3_struct direction, float *refl)
 {
-    Vec3 oc = vec_substract(camera.position, sphere.position);
+    t_vec3_struct oc = vec_substract(camera.position, sphere.position);
     float half_b = dot_product(oc, direction);
     float c = dot_product(oc, oc) - sphere.radius * sphere.radius;
     float discriminant = half_b * half_b - c;
@@ -68,26 +69,25 @@ bool intersect(Vec3 direction, float *refl)
     if (t < 0.0f) t = -half_b + sqrt_disc;
     if (t < 0.0f) return false;
 
-    Vec3 Phit = vec_add(camera.position, vec_scale(direction, t));
-    Vec3 normal = vec_normalize(vec_substract(Phit, sphere.position));
+    t_vec3_struct Phit = vec_add(camera.position, vec_scale(direction, t));
+    t_vec3_struct normal = vec_normalize(vec_substract(Phit, sphere.position));
     *refl = -dot_product(direction, normal);
 
     return true;
 }
 
-
-Color rayTracing(Vec3 direction)
+t_color_struct rayTracing(t_vec3_struct direction)
 {
     float refl = 1;
     if (intersect(direction, &refl)) // Pass address of refl
     {
-        return (Color){
+        return (t_color_struct){
             sphere.color.r * light.intensity * refl,
             sphere.color.g * light.intensity * refl,
             sphere.color.b * light.intensity * refl};
     }
 
-    return (Color){0, 0, 0}; // Return black if no intersection
+    return (t_color_struct){0, 0, 0}; // Return black if no intersection
 }
 
 void initImage()
@@ -105,8 +105,8 @@ void initImage()
     {
         for (int x = 0; x < width; x++)
         {
-            Color color;
-            mainImage((Vec2){x, y}, width, height, &color); // Pass color by pointer
+            t_color_struct color;
+            mainImage((t_vec2_struct){x, y}, width, height, &color); // Pass color by pointer
 
             int ir = (int)fminf(fmaxf(color.r, 0.0f), 255.0f);
             int ig = (int)fminf(fmaxf(color.g, 0.0f), 255.0f);
@@ -122,16 +122,16 @@ void initImage()
     printf("Image initialized.\n");
 }
 
-void mainImage(Vec2 coord, int width, int height, Color *output)
+void mainImage(t_vec2_struct coord, int width, int height, t_color_struct *output)
 {
-    Vec3 ray_origin = camera.position;
-    Vec2 uv = {
+    t_vec3_struct ray_origin = camera.position;
+    t_vec2_struct uv = {
         (coord.x / (float)width) * 2.0f - 1.0f,
         (coord.y / (float)height) * 2.0f - 1.0f};
     uv.x *= (float)width / (float)height;
     uv.y = -uv.y;
 
-    Vec3 direction = (Vec3){uv.x, uv.y, camera.zoom};
+    t_vec3_struct direction = (t_vec3_struct){uv.x, uv.y, camera.zoom};
     direction = vec_substract(direction, ray_origin);
     direction = vec_normalize(direction);
     *output = rayTracing(direction);

@@ -1,77 +1,78 @@
 #ifndef ENTRIES_H
 #define ENTRIES_H
 
-typedef struct
+typedef struct s_color_struct
 {
     float r, g, b;
-} Color;
+} t_color_struct;
 
-typedef struct
+typedef struct s_vec3_struct
 {
     float x, y, z;
-} Vec3;
+} t_vec3_struct;
 
-typedef struct
+typedef struct s_vec2_struct
 {
     float x, y;
-} Vec2;
+} t_vec2_struct;
 
-typedef struct
+typedef struct s_ambient_struct
 {
     float intensity;
-    Color color;
-} Ambient;
+    t_color_struct color;
+} t_ambient_struct;
 
-typedef struct
+typedef struct s_camera_struct
 {
-    Vec3 position;
-    Vec3 direction;
+    t_vec3_struct position;
+    t_vec3_struct direction;
     float fov;
     float zoom;
-} Camera;
+} t_camera_struct;
 
-typedef struct
+typedef struct s_light_struct
 {
-    Vec3 position;
+    t_vec3_struct position;
     float intensity;
-    Color color;
-} Light;
+    t_color_struct color;
+} t_light_struct;
 
-typedef struct
+typedef struct s_plane_struct
 {
-    Vec3 position;
-    Vec3 normal;
-    Color color;
-} Plane;
+    t_vec3_struct position;
+    t_vec3_struct normal;
+    t_color_struct color;
+} t_plane_struct;
 
-typedef struct
+typedef struct s_sphere_struct
 {
-    Vec3 position;
+    t_vec3_struct position;
     float radius;
-    Color color;
-} Sphere;
+    t_color_struct color;
+} t_sphere_struct;
 
-typedef struct
+typedef struct s_cylinder_struct
 {
-    Vec3 position;
-    Vec3 orientation;
+    t_vec3_struct position;
+    t_vec3_struct orientation;
     float diameter;
     float height;
-    Color color;
-} Cylinder;
-
+    t_color_struct color;
+} t_cylinder_struct;
 
 // Hardcoded scene objects
-static const Ambient ambient = {0.2f, {255, 255, 255}};
-static const Camera camera = {
-    .position = {0.0f, 0.0f, -5.0f}, // behind the scene
-    .direction = {0.0f, 0.0f, 1.0f}, // looking forward
+static const t_ambient_struct ambient = {0.2f, {255, 255, 255}};
+static const t_camera_struct camera = {
+    .position = {0.0f, 0.0f, -5.0f},
+    .direction = {0.0f, 0.0f, 1.0f},
     .fov = 70.0f,
     .zoom = 1.0f};
-static const Light light = {{-40, 0, 30}, 0.7f, {255, 255, 255}};
-static const Plane plane = {{0, 0, 0}, {0, 1, 0}, {255, 0, 225}};
-static const Sphere sphere = {{0, 0, 100}, 5.0f, {255, 0, 0}};
-static const Cylinder cylinder = {{50.0f, 0.0f, 20.6f}, {0, 0, 1}, 14.2f, 21.42f, {10, 0, 255}};
-void mainImage(Vec2 coord, int width, int height, Color *output);
+static const t_light_struct light = {{-40, 0, 30}, 0.7f, {255, 255, 255}};
+static const t_plane_struct plane = {{0, 0, 0}, {0, 1, 0}, {255, 0, 225}};
+static const t_sphere_struct sphere = {{0, 0, 100}, 5.0f, {255, 0, 0}};
+static const t_cylinder_struct cylinder = {{50.0f, 0.0f, 20.6f}, {0, 0, 1}, 14.2f, 21.42f, {10, 0, 255}};
+
+void mainImage(t_vec2_struct coord, int width, int height, t_color_struct *output);
 void initImage();
-#endif // SCENE_H
+
+#endif // ENTRIES_H

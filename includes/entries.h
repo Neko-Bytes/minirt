@@ -1,6 +1,14 @@
 #ifndef ENTRIES_H
 #define ENTRIES_H
 
+#include <stdbool.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+
 typedef struct s_color_struct
 {
     float r, g, b;

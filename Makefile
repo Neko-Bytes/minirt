@@ -14,7 +14,9 @@ LIBRARIES = $(LIBFT_DIR)/libft.a -L$(MLX_DIR) -lmlx -framework OpenGL -framework
 NAME = miniRT
 SRC_DIR = src
 SRC = $(SRC_DIR)/main.c \
-      $(SRC_DIR)/vectors.c
+	  $(SRC_DIR)/ray_tracing.c \
+	  $(SRC_DIR)/window.c \
+	  $(SRC_DIR)/vector_ops.c 
 OBJ = $(SRC:.c=.o)
 
 

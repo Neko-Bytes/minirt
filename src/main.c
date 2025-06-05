@@ -1,12 +1,7 @@
-#include "libft.h"
-#include "mlx.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include "../includes/entries.h"
-
-//this is a test for the successful linking of the minilibx library
-// minilibx window creation 
-//test commit will be made to a branch
+#include "../includes/window.h"
+#include "../includes/vector_ops.h"
+#include "../includes/ray_tracing.h"
 
 int	main(void)
 {

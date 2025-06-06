@@ -64,16 +64,16 @@ t_color_struct rayTracing(t_vec3_struct direction)
     return (t_color_struct){0, 0, 0};
 }
 
-void mainImage(t_vec2_struct coord, int width, int height, t_color_struct *output)
+void mainImage(t_vec2_struct coord, int width, int height, t_color_struct *output, t_camera_struct *camera)
 {
-    t_vec3_struct ray_origin = camera.position;
+    t_vec3_struct ray_origin = camera->position;
     t_vec2_struct uv = {
         (coord.x / (float)width) * 2.0f - 1.0f,
         (coord.y / (float)height) * 2.0f - 1.0f};
     uv.x *= (float)width / (float)height;
     uv.y = -uv.y;
 
-    t_vec3_struct direction = (t_vec3_struct){uv.x, uv.y, camera.zoom};
+    t_vec3_struct direction = (t_vec3_struct){uv.x, uv.y, camera->zoom};
     direction = vec_substract(direction, ray_origin);
     direction = vec_normalize(direction);
     *output = rayTracing(direction);

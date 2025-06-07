@@ -29,7 +29,7 @@ bool solveQuadratic(float a, float b, float c, float *t1, float *t2)
     return true;
 }
 
-bool intersect(t_vec3_struct direction, float *refl)
+bool intersectSphere(t_vec3_struct direction, float *refl, float *t_out)
 {
     t_vec3_struct oc = vec_substract(camera.position, sphere.position);
     float half_b = dot_product(oc, direction);
@@ -46,22 +46,54 @@ bool intersect(t_vec3_struct direction, float *refl)
     t_vec3_struct Phit = vec_add(camera.position, vec_scale(direction, t));
     t_vec3_struct normal = vec_normalize(vec_substract(Phit, sphere.position));
     *refl = -dot_product(direction, normal);
+    *t_out = t;
 
+    return true;
+}
+
+
+bool intersectPlane(t_plane_struct plane, t_vec3_struct direction, t_vec3_struct *intersection_point, float *t_out)
+{
+    t_vec3_struct ray_to_plane = vec_substract(plane.position, camera.position);
+    float denom = dot_product(plane.normal, direction);
+    if (fabsf(denom) < 1e-6f)
+        return false; // Ray is parallel to the plane
+
+    float t = dot_product(ray_to_plane, plane.normal) / denom;
+    if (t < 0.0f)
+        return false; // Intersection is behind the camera
+
+    *intersection_point = vec_add(camera.position, vec_scale(direction, t));
+    *t_out = t;
     return true;
 }
 
 t_color_struct rayTracing(t_vec3_struct direction)
 {
-    float refl = 1;
-    if (intersect(direction, &refl))
+    float refl = 1.0f;
+    float t_out = 0.0f;
+    t_vec3_struct intersection_point;
+
+    bool hit_sphere = intersectSphere(direction, &refl, &t_out);
+    bool hit_plane = intersectPlane(plane, direction, &intersection_point, &t_out);
+
+    t_color_struct final_color = {0, 0, 0};
+
+    if (hit_plane)
     {
-        return (t_color_struct){
-            sphere.color.r * light.intensity * refl,
-            sphere.color.g * light.intensity * refl,
-            sphere.color.b * light.intensity * refl};
+        final_color.r += plane.color.r * light.intensity;
+        final_color.g += plane.color.g * light.intensity;
+        final_color.b += plane.color.b * light.intensity;
     }
 
-    return (t_color_struct){0, 0, 0};
+    if (hit_sphere)
+    {
+        final_color.r = sphere.color.r * light.intensity * refl;
+        final_color.g = sphere.color.g * light.intensity * refl;
+        final_color.b = sphere.color.b * light.intensity * refl;
+    }
+
+    return final_color;
 }
 
 void mainImage(t_vec2_struct coord, int width, int height, t_color_struct *output, t_camera_struct *camera)

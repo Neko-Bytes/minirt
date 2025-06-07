@@ -13,7 +13,10 @@ LIBRARIES = $(LIBFT_DIR)/libft.a -L$(MLX_DIR) -lmlx -framework OpenGL -framework
 
 NAME = miniRT
 SRC_DIR = src
-SRC = $(SRC_DIR)/main.c
+SRC = $(SRC_DIR)/main.c \
+	  $(SRC_DIR)/ray_tracing.c \
+	  $(SRC_DIR)/window.c \
+	  $(SRC_DIR)/vector_ops.c 
 OBJ = $(SRC:.c=.o)
 
 
@@ -23,14 +26,12 @@ OBJ = $(SRC:.c=.o)
 $(NAME): $(OBJ)
 	@make -C $(MLX_DIR)
 	@make -C $(LIBFT_DIR)
-	cp $(MLX_DIR)/libmlx.dylib .
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBRARIES)
 
 all: $(NAME)
 
 clean:
 	rm -f $(OBJ)
-	rm -f libmlx.dylib
 	@make -C $(MLX_DIR) clean
 	@make -C $(LIBFT_DIR) clean
 

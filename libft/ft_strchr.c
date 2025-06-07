@@ -14,13 +14,11 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int				i;
 	unsigned char	to_find;
 	char			*st;
 
 	to_find = (unsigned char)c;
 	st = (char *)s;
-	i = 0;
 	while (*st != '\0')
 	{
 		if (to_find == *st)

@@ -16,14 +16,12 @@
 char	*ft_strdup(const char *s1)
 {
 	size_t	size;
-	size_t	dfifj;
 	char	*ptr;
 
 	size = ft_strlen(s1);
 	ptr = malloc(size + 1);
 	if (!ptr)
 		return (NULL);
-	dfifj = ft_strlcpy(ptr, s1, size + 1);
 	if (!ptr)
 	{
 		return (NULL);

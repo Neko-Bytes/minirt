@@ -1,26 +1,35 @@
-#include "libft.h"
-#include "mlx.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "../includes/entries.h"
+#include "../includes/window.h"
+#include "../includes/vector_ops.h"
+#include "../includes/ray_tracing.h"
 
-//this is a test for the successful linking of the minilibx library
-// minilibx window creation 
-
-int	main(void)
+void init_window_and_image(t_data *data)
 {
-	void	*mlx;
-	void	*win;
+    data->mlx = mlx_init();
+    data->win = mlx_new_window(data->mlx, data->width, data->height, "miniRT");
+    data->img = mlx_new_image(data->mlx, data->width, data->height);
+    data->img_data = mlx_get_data_addr(data->img, &data->bpp, &data->size_line, &data->endian);
+}
 
-	mlx = mlx_init();
-	if (!mlx)
-		return (1);
+int main(void)
+{
+    static t_camera_struct camera = {
+        .position = {0, 0, -10},
+        .orientation = {0, 0, 1},
+        .fov = 70
+    };
 
-	win = mlx_new_window(mlx, 800, 600, "miniRT");
-	if (!win)
-		return (1);
+    t_data data;
+    data.width = 800;
+    data.height = 600;
+    data.camera = &camera;
 
-    //test of libft functions
-    printf("%s\n", ft_itoa(65));
-	mlx_loop(mlx);
-	return (0);
+    init_window_and_image(&data);
+
+    render(&data);
+
+    mlx_key_hook(data.win, key_hook, &data);
+    mlx_loop(data.mlx);
+
+    return 0;
 }

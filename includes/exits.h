@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   exits.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 18:38:31 by kruseva           #+#    #+#             */
-/*   Updated: 2024/10/17 18:35:25 by kruseva          ###   ########.fr       */
+/*   Created: 2025/06/07 19:17:45 by kmummadi          #+#    #+#             */
+/*   Updated: 2025/06/07 19:18:57 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef EXITS_H
+#define EXITS_H
 
-int	ft_strlen(const char *str)
-{
-	int	i;
+#include "minirt.h"
 
-	i = 0;
-	while (str[i])
-	{
-		i++;
-	}
-	return (i);
-}
+void fatal_error(t_error error, t_data *data);
+void error_exit(t_data *data);
+
+#endif

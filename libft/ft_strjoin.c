@@ -21,7 +21,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	total = ft_strlen(s1) + ft_strlen(s2);
-	str = malloc(total + 1);
+	str = gc_malloc(total + 1);
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s1, ft_strlen(s1) + 1);

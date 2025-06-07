@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   parse_ambient.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 18:38:31 by kruseva           #+#    #+#             */
-/*   Updated: 2024/10/17 18:35:25 by kruseva          ###   ########.fr       */
+/*   Created: 2025/06/07 17:12:08 by kmummadi          #+#    #+#             */
+/*   Updated: 2025/06/07 18:36:28 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../includes/minirt.h"
 
-int	ft_strlen(const char *str)
+void parse_ambient(t_scene *scene, char **tokens)
 {
-	int	i;
 
-	i = 0;
-	while (str[i])
-	{
-		i++;
-	}
-	return (i);
 }

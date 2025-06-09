@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stdlib.h>
+#include "../includes/gc.h"
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

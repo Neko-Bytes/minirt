@@ -3,11 +3,13 @@
 #include "../includes/entries.h"
 #include "../includes/ray_tracing.h"
 #include "../includes/window.h"
+#include "../includes/object_array.h"
+#include "test/test.h"
 
 void handle_camera_movement(int keycode, t_data *data, float move_speed)
 {
-    t_vec3_struct forward = data->camera->orientation;
-    t_vec3_struct right = (t_vec3_struct){forward.z, 0, -forward.x};
+    t_vec3 forward = data->camera->orientation;
+    t_vec3 right = (t_vec3){forward.z, 0, -forward.x};
 
     if (keycode == KEY_UP)
     {
@@ -32,8 +34,8 @@ void handle_camera_rotation(int keycode, t_data *data, float angle)
 {
     if (keycode == KEY_A || keycode == KEY_D)
     {
-        t_vec3_struct center = vec_add(data->camera->position, vec_scale(data->camera->orientation, 0.2f));
-        t_vec3_struct dir = vec_substract(data->camera->position, center);
+        t_vec3 center = vec_add(data->camera->position, vec_scale(data->camera->orientation, 0.2f));
+        t_vec3 dir = vec_substract(data->camera->position, center);
 
         if (keycode == KEY_A)
             dir = rotate_y(dir, -angle);
@@ -66,12 +68,14 @@ int key_hook(int keycode, void *param)
 
 void render(t_data *data)
 {
+    t_scene scene;
+    init_scene(&scene);
     for (int y = 0; y < data->height; y++)
     {
         for (int x = 0; x < data->width; x++)
         {
-            t_color_struct color;
-            mainImage((t_vec2_struct){x, y}, data->width, data->height, &color, data->camera);
+            t_color color;
+            mainImage((t_vec2){x, y}, data->width, data->height, &color, data->camera, &scene);
 
             int ir = (int)fminf(fmaxf(color.r, 0.0f), 255.0f);
             int ig = (int)fminf(fmaxf(color.g, 0.0f), 255.0f);
@@ -82,26 +86,28 @@ void render(t_data *data)
         }
     }
 
+    free_object_vector(&scene.objects);
+
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
 
-t_vec3_struct rotate_y(t_vec3_struct v, float angle)
+t_vec3 rotate_y(t_vec3 v, float angle)
 {
     float cos_a = cosf(angle);
     float sin_a = sinf(angle);
 
-    return (t_vec3_struct){
+    return (t_vec3){
         v.x * cos_a + v.z * sin_a,
         v.y,
         -v.x * sin_a + v.z * cos_a};
 }
 
-t_vec3_struct rotate_x(t_vec3_struct v, float angle)
+t_vec3 rotate_x(t_vec3 v, float angle)
 {
     float cos_a = cosf(angle);
     float sin_a = sinf(angle);
 
-    return (t_vec3_struct){
+    return (t_vec3){
         v.x,
         v.y * cos_a - v.z * sin_a,
         v.y * sin_a + v.z * cos_a};

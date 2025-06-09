@@ -10,6 +10,8 @@
 #include <unistd.h>
 
 #define KEY_ESC 53
+#define KEY_A 0
+#define KEY_D 2
 #define KEY_PLUS 43
 #define KEY_MINUS 45
 #define KEY_R 15
@@ -18,9 +20,11 @@
 #define KEY_LEFT 123
 #define KEY_RIGHT 124
 
+
 typedef struct s_color {
   float r, g, b;
-  float a;
+  // wasn't sure how to implement it
+  // float a;
 } t_color;
 
 typedef struct s_vec3 {
@@ -67,6 +71,7 @@ typedef struct s_plane {
   t_vec3 position;
   t_vec3 normal;
   t_color color;
+  float closest_t;
 } t_plane;
 
 typedef struct s_sphere {
@@ -83,29 +88,26 @@ typedef struct s_cylinder {
   t_color color;
 } t_cylinder;
 
+typedef struct s_object_vector {
+    t_plane  *planes;
+    int       plane_count;
+    int       plane_capacity;
+
+    t_sphere *spheres;
+    int       sphere_count;
+    int       sphere_capacity;
+    // I haven't added cylinders yet
+} t_object_vector;
+
 typedef struct s_scene {
   t_ambient *ambient;
   t_camera *camera;
   t_light *lights;
-  t_sphere *spheres;
-  t_plane *planes;
-  t_cylinder *cylinders;
+  t_object_vector objects; //now the scene holds all the objects packed in a vector
   t_data *data;
 } t_scene;
 
-// Hardcoded scene objects
-static const t_ambient_struct ambient = {0.2f, {255, 255, 255}};
-static const t_camera_struct camera = {.position = {0.0f, 0.0f, -5.0f},
-                                       .direction = {0.0f, 0.0f, 1.0f},
-                                       .fov = 70.0f,
-                                       .zoom = 1.0f};
-static const t_light_struct light = {{-40, 0, 30}, 0.7f, {255, 255, 255}};
-static const t_plane_struct plane = {{0, 0, 0}, {0, 1, 0}, {255, 0, 225}};
-static const t_sphere_struct sphere = {{0, 0, 100}, 5.0f, {255, 0, 0}};
-static const t_cylinder_struct cylinder = {
-    {50.0f, 0.0f, 20.6f}, {0, 0, 1}, 14.2f, 21.42f, {10, 0, 255}};
 
-void mainImage(t_vec2_struct coord, int width, int height,
-               t_color_struct *output, t_camera_struct *camera);
+void mainImage(t_vec2 coord, int width, int height, t_color *output, t_camera *camera, t_scene *scene);
 
 #endif // ENTRIES_H

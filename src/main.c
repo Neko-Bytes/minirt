@@ -2,6 +2,7 @@
 #include "../includes/window.h"
 #include "../includes/vector_ops.h"
 #include "../includes/ray_tracing.h"
+#include "../includes/gc.h"
 
 void init_window_and_image(t_data *data)
 {
@@ -13,7 +14,7 @@ void init_window_and_image(t_data *data)
 
 int main(void)
 {
-    static t_camera_struct camera = {
+    static t_camera camera = {
         .position = {0, 0, -10},
         .orientation = {0, 0, 1},
         .fov = 70
@@ -30,6 +31,6 @@ int main(void)
 
     mlx_key_hook(data.win, key_hook, &data);
     mlx_loop(data.mlx);
-
+    printf("Exiting program and cleaning up resources.\n");
     return 0;
 }

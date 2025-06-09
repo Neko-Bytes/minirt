@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/gc.h"
+#include "../includes/gc.h"
 
 typedef struct s_gc_node {
   void *ptr;

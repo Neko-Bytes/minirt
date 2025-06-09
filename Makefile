@@ -16,7 +16,9 @@ SRC_DIR = src
 SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/ray_tracing.c \
 	  $(SRC_DIR)/window.c \
-	  $(SRC_DIR)/vector_ops.c 
+	  $(SRC_DIR)/vector_ops.c \
+	  $(SRC_DIR)/object_array/array.c \
+	  $(SRC_DIR)/test/objects.c 
 OBJ = $(SRC:.c=.o)
 
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   array.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 14:20:23 by kruseva           #+#    #+#             */
+/*   Updated: 2025/06/10 17:58:51 by kruseva          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/object_array.h"
 
 /*  
@@ -15,6 +27,10 @@ void init_object_vector(t_object_vector *vec, int initial_capacity) {
     vec->spheres = malloc(sizeof(t_sphere) * initial_capacity);
     vec->sphere_count = 0;
     vec->sphere_capacity = initial_capacity;
+
+    vec->cylinders = malloc(sizeof(t_cylinder) * initial_capacity);
+    vec->cylinder_count = 0;
+    vec->cylinder_capacity = initial_capacity;
 }
 
 void add_plane(t_object_vector *vec, t_plane plane) {
@@ -43,15 +59,30 @@ void add_sphere(t_object_vector *vec, t_sphere sphere) {
     vec->spheres[vec->sphere_count++] = sphere;
 }
 
+void add_cylinder(t_object_vector *vec, t_cylinder cylinder) {
+    if (vec->cylinder_count >= vec->cylinder_capacity) {
+        vec->cylinder_capacity *= 2;
+        void *tmp = realloc(vec->cylinders, sizeof(t_cylinder) * vec->cylinder_capacity);
+        if (!tmp) {
+            fprintf(stderr, "Error\nrealloc failed for cylinders\n");
+            exit(EXIT_FAILURE);
+        }
+        vec->cylinders = tmp;
+    }
+    vec->cylinders[vec->cylinder_count++] = cylinder;
+}
+
 void free_object_vector(t_object_vector *vec) {
     free(vec->planes);
     free(vec->spheres);
+    free(vec->cylinders);
     vec->plane_count = 0;
     vec->plane_capacity = 0;
     vec->sphere_count = 0;
     vec->sphere_capacity = 0;
+    vec->cylinder_count = 0;
+    vec->cylinder_capacity = 0;
 }
-
 
 // Print the contents of the object vector for debugging
 void print_object_vector(const t_object_vector *vec) {

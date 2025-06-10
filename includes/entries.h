@@ -9,17 +9,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#define KEY_ESC 53
-#define KEY_A 0
-#define KEY_D 2
-#define KEY_PLUS 43
-#define KEY_MINUS 45
-#define KEY_R 15
-#define KEY_UP 126
-#define KEY_DOWN 125
-#define KEY_LEFT 123
-#define KEY_RIGHT 124
-
 
 typedef struct s_color {
   float r, g, b;
@@ -81,11 +70,11 @@ typedef struct s_sphere {
 } t_sphere;
 
 typedef struct s_cylinder {
-  t_vec3 position;
-  t_vec3 orientation;
-  float diameter;
-  float height;
-  t_color color;
+    t_vec3 position;
+    t_vec3 orientation;
+    float diameter;
+    float height;
+    t_color color;
 } t_cylinder;
 
 typedef struct s_object_vector {
@@ -96,7 +85,10 @@ typedef struct s_object_vector {
     t_sphere *spheres;
     int       sphere_count;
     int       sphere_capacity;
-    // I haven't added cylinders yet
+
+    t_cylinder *cylinders;
+    int         cylinder_count;
+    int         cylinder_capacity;
 } t_object_vector;
 
 typedef struct s_scene {

@@ -5,7 +5,7 @@
 #include "../includes/vector_ops.h"
 #include "../includes/object_array.h"
 #include "../includes/gc.h"
-#include "../includes/ray_tracing.h"
+#include "../includes/intersect.h"
 #include "../includes/window.h"
 
 t_object_vector init_scene_objects(void);

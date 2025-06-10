@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_tracing.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 14:19:59 by kruseva           #+#    #+#             */
+/*   Updated: 2025/06/10 17:57:18 by kruseva          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <math.h>
 #include "../includes/entries.h"
 #include "../includes/vector_ops.h"
@@ -15,15 +27,18 @@ t_color rayTracing(t_vec3 direction, t_scene *scene) {
 
     t_vec3 ray_origin = scene->camera->position;
 
-    float plane_t = INFINITY;
-    if (scene->objects.plane_count > 0) {
-        intersectPlane(&scene->objects.planes[0], ray_origin, direction, &plane_t);
+    for (int i = 0; i < scene->objects.plane_count; ++i) {
+        float t = 0.0f, local_refl = 1.0f;
+        if (intersectPlane(&scene->objects.planes[i], ray_origin, direction, &t)) {
+            if (t < closest_t) {
+                closest_t = t;
+                refl = local_refl;
+                hit_type = 2;
+                hit_index = i;
+            }
+        }
     }
-    if (plane_t > 0) {
-        closest_t = plane_t;
-        hit_type = 2;
-        hit_index = 0;
-    }
+
 
     for (int i = 0; i < scene->objects.sphere_count; ++i) {
         float t = 0.0f, local_refl = 1.0f;
@@ -37,6 +52,20 @@ t_color rayTracing(t_vec3 direction, t_scene *scene) {
         }
     }
 
+    for (int i = 0; i < scene->objects.cylinder_count; ++i) {
+        float t = 0.0f, local_refl = 1.0f;
+        if (intersectCylinder(&scene->objects.cylinders[i], ray_origin, direction, &local_refl, &t)) {
+            if (t < closest_t) {
+                closest_t = t;
+                refl = local_refl;
+                hit_type = 3;
+                hit_index = i;
+            }
+        }
+
+    }
+
+    
     if (hit_type == 1) {
         t_sphere *sphere = &scene->objects.spheres[hit_index];
         final_color.r = sphere->color.r * scene->lights[0].intensity * refl;
@@ -48,6 +77,12 @@ t_color rayTracing(t_vec3 direction, t_scene *scene) {
         final_color.r += plane->color.r * scene->lights[0].intensity;
         final_color.g += plane->color.g * scene->lights[0].intensity;
         final_color.b += plane->color.b * scene->lights[0].intensity;
+    }
+    else if (hit_type == 3) {
+        t_cylinder *cylinder = &scene->objects.cylinders[hit_index];
+        final_color.r += cylinder->color.r * scene->lights[0].intensity * refl;
+        final_color.g += cylinder->color.g * scene->lights[0].intensity * refl;
+        final_color.b += cylinder->color.b * scene->lights[0].intensity * refl;
     }
 
     return final_color;

@@ -70,11 +70,11 @@ typedef struct s_sphere {
 } t_sphere;
 
 typedef struct s_cylinder {
-  t_vec3 position;
-  t_vec3 orientation;
-  float diameter;
-  float height;
-  t_color color;
+    t_vec3 position;
+    t_vec3 orientation;
+    float diameter;
+    float height;
+    t_color color;
 } t_cylinder;
 
 typedef struct s_object_vector {
@@ -85,7 +85,10 @@ typedef struct s_object_vector {
     t_sphere *spheres;
     int       sphere_count;
     int       sphere_capacity;
-    // I haven't added cylinders yet
+
+    t_cylinder *cylinders;
+    int         cylinder_count;
+    int         cylinder_capacity;
 } t_object_vector;
 
 typedef struct s_scene {

@@ -6,49 +6,6 @@
 #include "test/test.h"
 
 
-bool solveQuadratic(float a, float b, float c, float *t1, float *t2) {
-    float discriminant = b * b - 4.0f * a * c;
-    if (discriminant < 0.0f) return false;
-
-    float sqrt_disc = sqrtf(discriminant);
-    *t1 = (-b - sqrt_disc) / (2.0f * a);
-    *t2 = (-b + sqrt_disc) / (2.0f * a);
-    return true;
-}
-
-bool intersectSphere(const t_sphere *sphere, t_vec3 ray_origin, t_vec3 direction, float *refl, float *t_out) {
-    t_vec3 oc = vec_substract(ray_origin, sphere->position);
-    float half_b = dot_product(oc, direction);
-    float c = dot_product(oc, oc) - sphere->radius * sphere->radius;
-    float discriminant = half_b * half_b - c;
-
-    if (discriminant < 0.0f) return false;
-
-    float t = -half_b - sqrtf(discriminant);
-    if (t < 0.0f) t = -half_b + sqrtf(discriminant);
-    if (t < 0.0f) return false;
-
-    t_vec3 Phit = vec_add(ray_origin, vec_scale(direction, t));
-    t_vec3 normal = vec_normalize(vec_substract(Phit, sphere->position));
-    *refl = -dot_product(direction, normal);
-    *t_out = t;
-
-    return true;
-}
-
-
-bool intersectPlane(const t_plane *plane, t_vec3 ray_origin, t_vec3 direction, float *t_out) {
-    float denom = dot_product(plane->normal, direction);
-    if (fabsf(denom) < 1e-6f) return false;
-    t_vec3 ray_to_plane = vec_substract(plane->position, ray_origin);
-    float t = dot_product(ray_to_plane, plane->normal) / denom;
-    if (t < 0.0f) return false;
-    *t_out = t;
-    return true;
-}
-
-
-
 t_color rayTracing(t_vec3 direction, t_scene *scene) {
     t_color final_color = {0, 0, 0};
     float refl = 1.0f;

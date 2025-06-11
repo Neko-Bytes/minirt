@@ -6,11 +6,11 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:58:01 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/05 20:59:37 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:43:47 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/gc.h"
+#include "../../includes/gc.h"
 
 typedef struct s_gc_node {
   void *ptr;
@@ -38,6 +38,7 @@ static t_gc_node *new_node(void *p) {
   node = (t_gc_node *)malloc(sizeof(t_gc_node));
   if (!node) {
     perror("malloc");
+    gc_free_all();
     exit(EXIT_FAILURE);
   }
   node->ptr = p;
@@ -52,7 +53,8 @@ void *gc_malloc(size_t size) {
 
   mem = malloc(size);
   if (!mem) {
-    fprintf(stderr, "Error\nmalloc failed\n");
+    perror("Malloc allocation failed");
+    gc_free_all();
     exit(EXIT_FAILURE);
   }
   node = new_node(mem);

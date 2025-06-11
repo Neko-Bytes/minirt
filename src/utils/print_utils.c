@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exits.h                                            :+:      :+:    :+:   */
+/*   print_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/07 19:17:45 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/10 19:14:44 by kmummadi         ###   ########.fr       */
+/*   Created: 2025/06/10 19:46:00 by kmummadi          #+#    #+#             */
+/*   Updated: 2025/06/10 19:56:25 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXITS_H
-#define EXITS_H
+#include "../../includes/minirt.h"
 
-#include "minirt.h"
+void colorprint(t_log log, char *msg)
+{
+    const char *color;
 
-void fatal_error(t_error error, t_data *data);
-void error_exit(t_data *data);
-void print_error(char *msg, t_data *data);
-
-#endif
+    if(log == MSG)
+        color = YELLOW;
+    else if(log == FAILURE || log == WARNING)
+        color = RED;
+    else if(log == SUCCESS)
+        color = GREEN;
+    ft_putstr_fd(color, 1);
+    ft_putstr_fd(msg, 1);
+    ft_putstr_fd(RESET, 1);
+}

@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 16:59:35 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/07 17:00:24 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:57:02 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 #define BCYAN "\033[96m"
 #define BWHITE "\033[97m"
 
+typedef enum s_log { MSG, WARNING, SUCCESS, FAILURE } t_log;
+
 int tokens_couter(char **tokens);
+void colorprint(t_log log, char *msg);
 
 #endif

@@ -1,22 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exits.h                                            :+:      :+:    :+:   */
+/*   parse_sphere.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/07 19:17:45 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/10 19:14:44 by kmummadi         ###   ########.fr       */
+/*   Created: 2025/06/11 11:13:49 by kmummadi          #+#    #+#             */
+/*   Updated: 2025/06/11 11:13:50 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXITS_H
-#define EXITS_H
-
-#include "minirt.h"
-
-void fatal_error(t_error error, t_data *data);
-void error_exit(t_data *data);
-void print_error(char *msg, t_data *data);
-
-#endif

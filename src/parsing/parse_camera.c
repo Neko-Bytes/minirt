@@ -12,12 +12,12 @@
 
 #include "../../includes/minirt.h"
 
-void assign_params(t_scene *scene, char **tokens);
-void check_params(t_scene *scene, t_camera *cam);
+static void assign_params(t_scene *scene, char **tokens);
+static void check_params(t_scene *scene, t_camera *cam);
 
 bool parse_camera(t_scene *scene, char **tokens)
 {
-	if(tokens_couter(tokens) != 4)
+	if(tokens_counter(tokens) != 4)
 		print_error("Invalid number of inputs for camera\n", scene->data);
 	if(!scene->camera)
 		scene->camera = gc_malloc(sizeof(t_camera));
@@ -25,7 +25,7 @@ bool parse_camera(t_scene *scene, char **tokens)
 		colorprint(MSG, "Camera struct already exists, replacing...\n");
 }
 
-void assign_params(t_scene *scene, char **tokens)
+static void assign_params(t_scene *scene, char **tokens)
 {
 	char **xyz;
 	char **vec_xyz;
@@ -34,7 +34,7 @@ void assign_params(t_scene *scene, char **tokens)
 	cam = scene->camera;
 	xyz = ft_split(tokens[1], ',');
 	vec_xyz = ft_split(tokens[2], ',');
-	if(tokens_couter(xyz) != 3 || tokens_couter(vec_xyz) != 3)
+	if(tokens_counter(xyz) != 3 || tokens_counter(vec_xyz) != 3)
 		print_error("Invalid input for camera coordinates\n", scene->data);
 	cam->position.x = ft_atof(xyz[0]);
 	cam->position.y = ft_atof(xyz[1]);
@@ -46,7 +46,7 @@ void assign_params(t_scene *scene, char **tokens)
 	check_params(scene, cam);
 }
 
-void check_params(t_scene *scene, t_camera *cam)
+static void check_params(t_scene *scene, t_camera *cam)
 {
 	if(cam->fov < 0 || cam->fov > 100)
 		print_error("Invalid input for fov.", scene->data);

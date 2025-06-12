@@ -42,7 +42,7 @@
 
 typedef enum s_log { MSG, WARNING, SUCCESS, FAILURE } t_log;
 
-int tokens_couter(char **tokens);
+int tokens_counter(char **tokens);
 void colorprint(t_log log, char *msg);
 
 #endif

@@ -14,13 +14,28 @@
 #include "../includes/entries.h"
 #include "../includes/vector_ops.h"
 #include "../includes/object_array.h"
+#include "../includes/light.h"
 // test included
 #include "test/test.h"
+
+t_vec3 sphere_normal(t_sphere s, t_vec3 p) {
+    return vec_normalize(vec_substract(p, s.position));
+}
+
+t_vec3 cylinder_normal(t_cylinder c, t_vec3 p) {
+    t_vec3 ca = c.orientation; // axis (normalized)
+    t_vec3 cp = vec_substract(p, c.position); // vector from cylinder base to hit point
+    float projection = dot_product(cp, ca);
+    t_vec3 projected = vec_scale(ca, projection);
+    t_vec3 normal = vec_substract(cp, projected); // remove the axis-aligned part
+    return vec_normalize(normal);
+}
 
 
 t_color rayTracing(t_vec3 direction, t_scene *scene) {
     t_color final_color = {0, 0, 0};
     float refl = 1.0f;
+    (void)refl; // Unused variable, but kept for potential future use
     int hit_type = 0; 
     int hit_index = -1;
     float closest_t = INFINITY;
@@ -65,25 +80,33 @@ t_color rayTracing(t_vec3 direction, t_scene *scene) {
 
     }
 
-    
-    if (hit_type == 1) {
-        t_sphere *sphere = &scene->objects.spheres[hit_index];
-        final_color.r = sphere->color.r * scene->lights[0].intensity * refl;
-        final_color.g = sphere->color.g * scene->lights[0].intensity * refl;
-        final_color.b = sphere->color.b * scene->lights[0].intensity * refl;
-    }
-    else if (hit_type == 2) {
-        t_plane *plane = &scene->objects.planes[hit_index];
-        final_color.r += plane->color.r * scene->lights[0].intensity;
-        final_color.g += plane->color.g * scene->lights[0].intensity;
-        final_color.b += plane->color.b * scene->lights[0].intensity;
-    }
-    else if (hit_type == 3) {
-        t_cylinder *cylinder = &scene->objects.cylinders[hit_index];
-        final_color.r += cylinder->color.r * scene->lights[0].intensity * refl;
-        final_color.g += cylinder->color.g * scene->lights[0].intensity * refl;
-        final_color.b += cylinder->color.b * scene->lights[0].intensity * refl;
-    }
+    // t_vec3 point = vec_add(ray_origin, vec_scale(direction, closest_t));
+
+    t_vec3 hit_point = vec_add(ray_origin, vec_scale(direction, closest_t));
+
+    t_vec3 normal;
+if (hit_type == 1)
+    normal = sphere_normal(scene->objects.spheres[hit_index], hit_point);
+else if (hit_type == 2)
+    normal = scene->objects.planes[hit_index].normal;
+else if (hit_type == 3)
+    normal = cylinder_normal(scene->objects.cylinders[hit_index], hit_point);
+
+
+    t_color base_color;
+if (hit_type == 1)
+    base_color = scene->objects.spheres[hit_index].color;
+else if (hit_type == 2)
+    base_color = scene->objects.planes[hit_index].color;
+else if (hit_type == 3)
+    base_color = scene->objects.cylinders[hit_index].color;
+
+
+if (hit_type != 0) {
+    final_color = compute_diffuse(hit_point, normal, scene->lights[0], base_color);
+}
+
+
 
     return final_color;
 }

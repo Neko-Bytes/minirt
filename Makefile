@@ -15,6 +15,7 @@ NAME = miniRT
 SRC_DIR = src
 SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/ray_tracing/ray_tracing.c \
+	  $(SRC_DIR)/light/point_light.c \
 	  $(SRC_DIR)/render/window.c \
 	  $(SRC_DIR)/render/keys.c \
 	  $(SRC_DIR)/math/vector_ops.c \

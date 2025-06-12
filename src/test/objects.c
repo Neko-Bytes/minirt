@@ -1,71 +1,60 @@
 #include "test.h"
 
 /*  
-This is just a simple test file to demonstrate
-how to set up a scene with hardcoded objects
-and how to initialize the scene.
+Fun Scene: "Target Practice"
+- Red + white concentric spheres
+- Green laser cylinder
+- Gray reflective floor
+- Colorful back wall
 */
 
-// Hardcoded scene objects
-static const t_ambient ambient = {0.2f, {255, 255, 255}};
-static const t_camera camera = {.position = {0.0f, 0.0f, -5.0f},
-                                       .direction = {0.0f, 0.0f, 1.0f},
-                                       .fov = 70.0f,
-                                       .zoom = 1.0f};
-static const t_light light = {{-40, 0, 30}, 0.7f, {255, 255, 255}};
+// Ambient and camera setup
+static const t_ambient ambient = {0.15f, {255, 255, 255}};
+static const t_camera camera = {
+    .position = {0.0f, 0.0f, -25.0f},
+    .direction = {0.0f, 0.0f, 1.0f},
+    .fov = 70.0f,
+    .zoom = 1.0f
+};
+static const t_light light = {{30, 30, -10}, 0.9f, {255, 255, 255}};
+
+// Ground plane (gray floor)
 static const t_plane floor_plane = {
-    .position = {0, -10.0f, 0},
-    .normal   = {0, 1, 0},
-    .color    = {200, 200, 200}
-};
-static const t_cylinder cylinder = {
-    .position = {0, 0, 50},
-    .orientation = {0, 1, 0},
-    .diameter = 5.0f,
-    .height = 10.0f,
-    .color = {255, 100, 100}
-};
-static const t_plane plane1 = {
-    .position = {0, -30.0f, 0},
-    .normal   = {0, 1, 0},
-    .color    = {100, 100, 100}
+    .position = {0, -8.0f, 0},
+    .normal = {0, 1, 0},
+    .color = {180, 180, 180}
 };
 
-static const t_plane plane2 = {
-    .position = {0, 30.0f, 0},
-    .normal   = {0, -1, 0},
-    .color    = {150, 150, 150}
+// Back wall (adds depth)
+static const t_plane back_wall = {
+    .position = {0, 0, 100},
+    .normal = {0, 0, -1},
+    .color = {100, 150, 255}
 };
 
-static const t_plane plane3 = {
-    .position = {-50.0f, 0, 0},
-    .normal   = {1, 0, 0},
-    .color    = {50, 200, 50}
-};
+// Spheres - target pattern
+static const t_sphere center_sphere = {{0, 0, 50}, 2.0f, {255, 0, 0}};
+static const t_sphere ring1 = {{0, 0, 50}, 4.0f, {255, 255, 255}};
+static const t_sphere ring2 = {{0, 0, 50}, 6.0f, {255, 0, 0}};
+static const t_sphere ring3 = {{0, 0, 50}, 8.0f, {255, 255, 255}};
 
-
-// static const t_sphere sphere = {{0, 0, 100}, 5.0f, {255, 0, 0}};
-// static const t_sphere sphere2 = {{-10, 0, 50}, 3.0f, {0, 255, 0}};
-static const t_sphere sphere3 = {{10, 0, 50}, 3.0f, {0, 0, 255}};
 
 t_object_vector objects_vector;
 
 t_object_vector init_scene_objects(void)
 {
     init_object_vector(&objects_vector, 10);
+    
+    // Planes
     add_plane(&objects_vector, floor_plane);
-    add_plane(&objects_vector, plane1);
-    add_plane(&objects_vector, plane2);
-    add_plane(&objects_vector, plane3);
-    // add_sphere(&objects_vector, sphere);
-    // add_sphere(&objects_vector, sphere2);
-    add_sphere(&objects_vector, sphere3);
-    add_cylinder(&objects_vector, cylinder);
-    // Debugging: Ensure cylinder count is correct
-    if (objects_vector.cylinder_count != 1) {
-        fprintf(stderr, "Error\nCylinder count mismatch\n");
-        exit(EXIT_FAILURE);
-    }
+    add_plane(&objects_vector, back_wall);
+    
+    // Spheres (target)
+    add_sphere(&objects_vector, ring3);
+    add_sphere(&objects_vector, ring2);
+    add_sphere(&objects_vector, ring1);
+    add_sphere(&objects_vector, center_sphere);
+    
 
     return objects_vector;
 }

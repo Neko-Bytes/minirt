@@ -12,19 +12,19 @@
 
 #include "get_next_line.h"
 
-int	ft_strlen(const char *string)
-{
-	int	length;
-
-	if (!string)
-		return (0);
-	length = 0;
-	while (string[length])
-	{
-		length++;
-	}
-	return (length);
-}
+// int	ft_strlen(const char *string)
+// {
+// 	int	length;
+//
+// 	if (!string)
+// 		return (0);
+// 	length = 0;
+// 	while (string[length])
+// 	{
+// 		length++;
+// 	}
+// 	return (length);
+// }
 
 char	*ft_strdup(const char *src)
 {

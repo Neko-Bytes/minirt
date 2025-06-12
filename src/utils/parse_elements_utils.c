@@ -12,7 +12,7 @@
 
 #include "../../includes/minirt.h"
 
-int tokens_couter(char **tokens)
+int tokens_counter(char **tokens)
 {
     int i;
 

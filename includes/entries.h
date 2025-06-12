@@ -9,7 +9,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 typedef struct s_color {
   float r, g, b;
   // wasn't sure how to implement it
@@ -54,6 +53,7 @@ typedef struct s_light {
   t_vec3 position;
   float intensity;
   t_color color;
+  struct s_light *next;
 } t_light;
 
 typedef struct s_plane {
@@ -61,45 +61,49 @@ typedef struct s_plane {
   t_vec3 normal;
   t_color color;
   float closest_t;
+  struct s_plane *next;
 } t_plane;
 
 typedef struct s_sphere {
   t_vec3 position;
   float radius;
   t_color color;
+  struct s_sphere *next;
 } t_sphere;
 
 typedef struct s_cylinder {
-    t_vec3 position;
-    t_vec3 orientation;
-    float diameter;
-    float height;
-    t_color color;
+  t_vec3 position;
+  t_vec3 orientation;
+  float diameter;
+  float height;
+  t_color color;
+  struct s_cylinder *next;
 } t_cylinder;
 
 typedef struct s_object_vector {
-    t_plane  *planes;
-    int       plane_count;
-    int       plane_capacity;
+  t_plane *planes;
+  int plane_count;
+  int plane_capacity;
 
-    t_sphere *spheres;
-    int       sphere_count;
-    int       sphere_capacity;
+  t_sphere *spheres;
+  int sphere_count;
+  int sphere_capacity;
 
-    t_cylinder *cylinders;
-    int         cylinder_count;
-    int         cylinder_capacity;
+  t_cylinder *cylinders;
+  int cylinder_count;
+  int cylinder_capacity;
 } t_object_vector;
 
 typedef struct s_scene {
   t_ambient *ambient;
   t_camera *camera;
   t_light *lights;
-  t_object_vector objects; //now the scene holds all the objects packed in a vector
+  t_object_vector
+      objects; // now the scene holds all the objects packed in a vector
   t_data *data;
 } t_scene;
 
-
-void mainImage(t_vec2 coord, int width, int height, t_color *output, t_camera *camera, t_scene *scene);
+void mainImage(t_vec2 coord, int width, int height, t_color *output,
+               t_camera *camera, t_scene *scene);
 
 #endif // ENTRIES_H

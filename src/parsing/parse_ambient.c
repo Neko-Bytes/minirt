@@ -18,7 +18,7 @@ bool parse_ambience(t_scene *scene, char **tokens)
 {
 	char **rgb;
 
-	if(tokens_couter(tokens) != 3)
+	if(tokens_counter(tokens) != 3)
 		print_error("Invalid number of arguments for ambience.", scene->data);
 	if(!scene->ambient)
 		scene->ambient = gc_malloc(sizeof(t_ambient));
@@ -26,7 +26,7 @@ bool parse_ambience(t_scene *scene, char **tokens)
 		colorprint(MSG, "Ambient struct already exists, replacing ...\n");
 	scene->ambient->intensity = ft_atof(tokens[1]);
 	rgb = ft_split(tokens[2], ',');
-	if(!rgb || !*rgb || tokens_couter(rgb) != 3)
+	if(!rgb || !*rgb || tokens_counter(rgb) != 3)
 		print_error("Invalid arguments fo RGB.", scene->data);
 	scene->ambient->color.r = ft_atoi(rgb[0]);
 	scene->ambient->color.g = ft_atoi(rgb[1]);

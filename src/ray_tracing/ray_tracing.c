@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:19:59 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/10 17:57:18 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/13 13:00:08 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,22 @@ else if (hit_type == 2)
 else if (hit_type == 3)
     base_color = scene->objects.cylinders[hit_index].color;
 
+        // Shadow check — ONLY NOW
+        bool in_shadow = isShadow(scene, hit_point, closest_t);
+
 
 if (hit_type != 0) {
     final_color = compute_diffuse(hit_point, normal, scene->lights[0], base_color);
+} 
+
+if (in_shadow) {
+    final_color = 
+    (t_color){
+        final_color.r * 0.5f,
+        final_color.g * 0.5f,
+        final_color.b * 0.5f
+    };
 }
-
-
 
     return final_color;
 }

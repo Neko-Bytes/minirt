@@ -1,48 +1,60 @@
 #include "test.h"
 
 /*  
-Enhanced test scene with an ice cream cone inside a box made of planes.
+Fun Scene: "Target Practice"
+- Red + white concentric spheres
+- Green laser cylinder
+- Gray reflective floor
+- Colorful back wall
 */
 
-static const t_ambient ambient = {0.2f, {255, 255, 255}};
+// Ambient and camera setup
+static const t_ambient ambient = {0.15f, {255, 255, 255}};
 static const t_camera camera = {
-    .position = {0.0f, 0.0f, -15.0f},
+    .position = {0.0f, 0.0f, -25.0f},
     .direction = {0.0f, 0.0f, 1.0f},
     .fov = 70.0f,
     .zoom = 1.0f
 };
-static const t_light light = {{-40, 60, 40}, 0.9f, {255, 255, 255}};
+static const t_light light = {{30, 30, -10}, 0.9f, {255, 255, 255}};
 
-// Box planes
-static const t_plane box_bottom = {{0, -10.0f, 0}, {0, 1, 0}, {180, 180, 180}};
-static const t_plane box_top = {{0, 30.0f, 0}, {0, -1, 0}, {150, 150, 150}};
-static const t_plane box_left = {{-20.0f, 0, 0}, {1, 0, 0}, {50, 200, 50}};
-static const t_plane box_right = {{20.0f, 0, 0}, {-1, 0, 0}, {50, 200, 50}};
-static const t_plane box_back = {{0, 0, 70}, {0, 0, -1}, {100, 100, 100}};
+// Ground plane (gray floor)
+static const t_plane floor_plane = {
+    .position = {0, -8.0f, 0},
+    .normal = {0, 1, 0},
+    .color = {180, 180, 180}
+};
 
-// Ice cream cone (cylinders and spheres)
-static const t_cylinder cone_base = {{0, -10, 50}, {0, 1, 0}, 5.0f, 15.0f, {200, 150, 100}};
-static const t_sphere scoop1 = {{0, 5, 50}, 4.0f, {255, 100, 100}};
-static const t_sphere scoop2 = {{0, 10, 50}, 3.5f, {100, 255, 200}};
-static const t_sphere scoop3 = {{0, 14, 50}, 3.0f, {150, 100, 255}};
+// Back wall (adds depth)
+static const t_plane back_wall = {
+    .position = {0, 0, 100},
+    .normal = {0, 0, -1},
+    .color = {100, 150, 255}
+};
+
+// Spheres - target pattern
+static const t_sphere center_sphere = {{0, 0, 50}, 2.0f, {255, 0, 0}};
+static const t_sphere ring1 = {{0, 0, 50}, 4.0f, {255, 255, 255}};
+static const t_sphere ring2 = {{0, 0, 50}, 6.0f, {255, 0, 0}};
+static const t_sphere ring3 = {{0, 0, 50}, 8.0f, {255, 255, 255}};
+
 
 t_object_vector objects_vector;
 
 t_object_vector init_scene_objects(void)
 {
-    init_object_vector(&objects_vector, 20);
-    // Box planes
-    add_plane(&objects_vector, box_bottom);
-    add_plane(&objects_vector, box_top);
-    add_plane(&objects_vector, box_left);
-    add_plane(&objects_vector, box_right);
-    add_plane(&objects_vector, box_back);
-
-    // Ice cream cone
-    add_cylinder(&objects_vector, cone_base);
-    add_sphere(&objects_vector, scoop1);
-    add_sphere(&objects_vector, scoop2);
-    add_sphere(&objects_vector, scoop3);
+    init_object_vector(&objects_vector, 10);
+    
+    // Planes
+    add_plane(&objects_vector, floor_plane);
+    add_plane(&objects_vector, back_wall);
+    
+    // Spheres (target)
+    add_sphere(&objects_vector, ring3);
+    add_sphere(&objects_vector, ring2);
+    add_sphere(&objects_vector, ring1);
+    add_sphere(&objects_vector, center_sphere);
+    
 
     return objects_vector;
 }

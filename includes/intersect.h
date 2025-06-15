@@ -5,7 +5,15 @@
 # include "../includes/entries.h"
 # include "vector_ops.h"
 
-bool solveQuadratic(float a, float b, float c, float *t1, float *t2);
+typedef struct s_abc
+{
+	float	a;
+	float	b;
+	float	c;
+	float	dir_dot_axis;
+	float	oc_dot_axis;
+} t_abc;
+
 bool intersectSphere(const t_sphere *sphere, t_vec3 ray_origin, t_vec3 direction, float *refl, float *t_out);
 bool intersectPlane(const t_plane *plane, t_vec3 ray_origin, t_vec3 direction, float *t_out);
 t_color rayTracing(t_vec3 direction, t_scene *scene);

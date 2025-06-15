@@ -14,7 +14,7 @@
 
 static int	is_non_ascii(unsigned char c1, unsigned char c2)
 {
-	if ((c1 > 127 || c1 < 0) && (c2 > 127 || c2 < 0))
+	if ((c1 > 127) && (c2 > 127))
 		return (1);
 	return (0);
 }

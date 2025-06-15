@@ -15,15 +15,19 @@
 #include "../includes/intersect.h"
 #include "../includes/vector_ops.h"
 #include "../includes/window.h"
+#include "../includes/keys.h"
 
 void	init_window_and_image(t_data *data)
 {
-	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, data->width, data->height, "miniRT");
+	data->mlx = mlx_init(data->width, data->height, "miniRT", true);
+	if (!data->mlx)
+		exit(1);
 	data->img = mlx_new_image(data->mlx, data->width, data->height);
-	data->img_data = mlx_get_data_addr(data->img, &data->bpp, &data->size_line,
-			&data->endian);
+	if (!data->img)
+		exit(1);
+	mlx_image_to_window(data->mlx, data->img, 0, 0);
 }
+
 
 int	main(void)
 {
@@ -36,8 +40,9 @@ int	main(void)
 	data.camera = &camera;
 	init_window_and_image(&data);
 	render(&data);
-	mlx_key_hook(data.win, key_hook, &data);
+	mlx_key_hook(data.mlx, key_hook, &data);
 	mlx_loop(data.mlx);
+	mlx_terminate(data.mlx);
 	printf("Exiting program and cleaning up resources.\n");
 	return (0);
 }

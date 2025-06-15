@@ -7,20 +7,20 @@
 #include "../includes/window.h"
 #include "../src/test/test.h"
 
-
-#define KEY_ESC 53
-#define KEY_A 0
-#define KEY_D 2
-#define KEY_PLUS 43
-#define KEY_MINUS 45
-#define KEY_R 15
-#define KEY_UP 126
-#define KEY_DOWN 125
-#define KEY_LEFT 123
-#define KEY_RIGHT 124
+// MLX42 key codes
+#define KEY_ESC MLX_KEY_ESCAPE
+#define KEY_A MLX_KEY_A
+#define KEY_D MLX_KEY_D
+#define KEY_PLUS MLX_KEY_EQUAL
+#define KEY_MINUS MLX_KEY_MINUS
+#define KEY_R MLX_KEY_R
+#define KEY_UP MLX_KEY_UP
+#define KEY_DOWN MLX_KEY_DOWN
+#define KEY_LEFT MLX_KEY_LEFT
+#define KEY_RIGHT MLX_KEY_RIGHT
 
 void	handle_camera_movement(int keycode, t_data *data, float move_speed);
 void	handle_camera_rotation(int keycode, t_data *data, float angle);
-int	key_hook(int keycode, void *param);
+void	key_hook(mlx_key_data_t keydata, void *param);
 
 #endif

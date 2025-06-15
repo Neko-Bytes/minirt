@@ -1,7 +1,7 @@
 #ifndef ENTRIES_H
 #define ENTRIES_H
 
-#include "mlx.h"
+#include "MLX42/MLX42.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -38,12 +38,7 @@ typedef struct s_camera {
 
 typedef struct s_data {
   void *mlx;
-  void *win;
-  void *img;
-  char *img_data;
-  int bpp;
-  int size_line;
-  int endian;
+  mlx_image_t *img;
   int width;
   int height;
   t_camera *camera;
@@ -98,8 +93,7 @@ typedef struct s_scene {
   t_ambient *ambient;
   t_camera *camera;
   t_light *lights;
-  t_object_vector
-      objects; // now the scene holds all the objects packed in a vector
+  t_object_vector objects; // now the scene holds all the objects packed in a vector
   t_data *data;
 } t_scene;
 

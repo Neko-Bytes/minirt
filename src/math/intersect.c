@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:14 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/10 17:53:47 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/13 17:02:58 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,13 @@ bool	intersectSphere(const t_sphere *sphere, t_vec3 ray_origin,
 	return (true);
 }
 
-bool checkHeightIntersection(const t_cylinder *cylinder, t_vec3 Phit, t_vec3 axis_direction)
+bool	checkHeightIntersection(const t_cylinder *cylinder, t_vec3 Phit,
+		t_vec3 axis_direction)
 {
-	float height_at_intersection = dot_product(vec_substract(Phit, cylinder->position), axis_direction);
+	float	height_at_intersection;
+
+	height_at_intersection = dot_product(vec_substract(Phit,
+				cylinder->position), axis_direction);
 	if (height_at_intersection < -cylinder->height / 2.0f
 		|| height_at_intersection > cylinder->height / 2.0f)
 	{
@@ -76,48 +80,62 @@ bool	intersectCylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
 {
 	t_vec3	oc;
 	t_vec3	axis_direction;
-	float	cylinder_radius;
-	float	half_b;
+	float	radius;
+	float	dir_dot_axis;
+	float	oc_dot_axis;
 	float	a;
 	float	b;
 	float	c;
 	float	discriminant;
+	float	sqrt_disc;
+	float	t1;
+	float	t2;
+	bool	hit_found;
 	float	t;
 	t_vec3	Phit;
-	bool	height_at_intersection;
-	t_vec3	axis_projection;
+	t_vec3	cp;
+	t_vec3	axis_proj;
 	t_vec3	normal;
 
 	oc = vec_substract(ray_origin, cylinder->position);
-	half_b = dot_product(oc, direction);
 	axis_direction = vec_normalize(cylinder->orientation);
-	cylinder_radius = cylinder->diameter / 2.0f;
-	a = dot_product(direction, direction) - powf(dot_product(direction,
-				axis_direction), 2);
-	b = 2 * (dot_product(direction, oc) - dot_product(direction, axis_direction)
-			* dot_product(oc, axis_direction));
-	c = dot_product(oc, oc) - powf(dot_product(oc, axis_direction), 2)
-		- cylinder_radius * cylinder_radius;
+	radius = cylinder->diameter / 2.0f;
+	dir_dot_axis = dot_product(direction, axis_direction);
+	oc_dot_axis = dot_product(oc, axis_direction);
+	a = dot_product(direction, direction) - dir_dot_axis * dir_dot_axis;
+	b = 2.0f * (dot_product(direction, oc) - dir_dot_axis * oc_dot_axis);
+	c = dot_product(oc, oc) - oc_dot_axis * oc_dot_axis - radius * radius;
 	discriminant = b * b - 4.0f * a * c;
 	if (discriminant < 0.0f)
-	{
 		return (false);
-	}
-	t = -half_b - sqrtf(discriminant) / (2.0f * a);
-	if (t < 0.0f)
+	sqrt_disc = sqrtf(discriminant);
+	t1 = (-b - sqrt_disc) / (2.0f * a);
+	t2 = (-b + sqrt_disc) / (2.0f * a);
+	hit_found = false;
+	t = -1.0f;
+	if (t1 > 0.0f)
 	{
-		t = -half_b + sqrtf(discriminant) / (2.0f * a);
+		Phit = vec_add(ray_origin, vec_scale(direction, t1));
+		if (checkHeightIntersection(cylinder, Phit, axis_direction))
+		{
+			t = t1;
+			hit_found = true;
+		}
 	}
-	Phit = vec_add(ray_origin, vec_scale(direction, t));
-	height_at_intersection = checkHeightIntersection(cylinder, Phit, axis_direction);
-	if (!height_at_intersection)
+	if (!hit_found && t2 > 0.0f)
 	{
+		Phit = vec_add(ray_origin, vec_scale(direction, t2));
+		if (checkHeightIntersection(cylinder, Phit, axis_direction))
+		{
+			t = t2;
+			hit_found = true;
+		}
+	}
+	if (!hit_found)
 		return (false);
-	}
-	axis_projection = vec_scale(axis_direction, dot_product(vec_substract(Phit,
-					cylinder->position), axis_direction));
-	normal = vec_normalize(vec_substract(vec_substract(Phit,
-					cylinder->position), axis_projection));
+	cp = vec_substract(Phit, cylinder->position);
+	axis_proj = vec_scale(axis_direction, dot_product(cp, axis_direction));
+	normal = vec_normalize(vec_substract(cp, axis_proj));
 	*refl = -dot_product(direction, normal);
 	*t_out = t;
 	return (true);

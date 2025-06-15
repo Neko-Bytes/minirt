@@ -20,12 +20,12 @@
 void	render(t_data *data)
 {
 	t_scene	scene;
-			t_color color;
+	t_color color;
 	int		ir;
 	int		ig;
 	int		ib;
 	int		pixel;
-	int		offset;
+	mlx_image_t *img = (mlx_image_t *)data->img;
 
 	init_scene(&scene);
 	for (int y = 0; y < data->height; y++)
@@ -37,15 +37,12 @@ void	render(t_data *data)
 			ir = (int)fminf(fmaxf(color.r, 0.0f), 255.0f);
 			ig = (int)fminf(fmaxf(color.g, 0.0f), 255.0f);
 			ib = (int)fminf(fmaxf(color.b, 0.0f), 255.0f);
-			pixel = (ir << 16) | (ig << 8) | ib;
-			offset = y * data->size_line + x * (data->bpp / 8);
-			*(int *)(data->img_data + offset) = pixel;
+			pixel = (ir << 24) | (ig << 16) | (ib << 8) | 255; // RGBA
+			mlx_put_pixel(img, x, y, pixel);
 		}
 	}
 	free_object_vector(&scene.objects);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
-
 t_vec3	rotate_y(t_vec3 v, float angle)
 {
 	float	cos_a;

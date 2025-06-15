@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/keys.h"
+#include "../../includes/keys.h"
 
 void	handle_camera_movement(int keycode, t_data *data, float move_speed)
 {
@@ -63,21 +63,22 @@ void	handle_camera_rotation(int keycode, t_data *data, float angle)
 	}
 }
 
-int	key_hook(int keycode, void *param)
+void	key_hook(mlx_key_data_t keydata, void *param)
 {
 	t_data	*data;
-	float	move_speed;
+	float	move_speed = 1.0f;
+	static float angle = 0.2f; // Rotation angle in radians
 
-	static float angle = 0.2; // Rotation angle in radians
+	if (!param)
+		return;
 	data = (t_data *)param;
-	move_speed = 1.0;
-	if (keycode == KEY_ESC)
-		exit(0);
-	else
+
+	if (keydata.key == KEY_ESC && keydata.action == MLX_PRESS)
+		mlx_close_window(data->mlx);
+	else if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 	{
-		handle_camera_movement(keycode, data, move_speed);
-		handle_camera_rotation(keycode, data, angle);
+		handle_camera_movement(keydata.key, data, move_speed);
+		handle_camera_rotation(keydata.key, data, angle);
+		render(data);
 	}
-	render(data);
-	return (0);
 }

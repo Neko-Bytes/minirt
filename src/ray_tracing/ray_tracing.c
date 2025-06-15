@@ -85,38 +85,38 @@ t_color rayTracing(t_vec3 direction, t_scene *scene) {
     t_vec3 hit_point = vec_add(ray_origin, vec_scale(direction, closest_t));
 
     t_vec3 normal;
-if (hit_type == 1)
-    normal = sphere_normal(scene->objects.spheres[hit_index], hit_point);
-else if (hit_type == 2)
-    normal = scene->objects.planes[hit_index].normal;
-else if (hit_type == 3)
-    normal = cylinder_normal(scene->objects.cylinders[hit_index], hit_point);
-
+    if (hit_type == 1) {
+        normal = sphere_normal(scene->objects.spheres[hit_index], hit_point);
+    } else if (hit_type == 2) {
+        normal = scene->objects.planes[hit_index].normal;
+    } else if (hit_type == 3) {
+        normal = cylinder_normal(scene->objects.cylinders[hit_index], hit_point);
+    }
 
     t_color base_color;
-if (hit_type == 1)
-    base_color = scene->objects.spheres[hit_index].color;
-else if (hit_type == 2)
-    base_color = scene->objects.planes[hit_index].color;
-else if (hit_type == 3)
-    base_color = scene->objects.cylinders[hit_index].color;
+    if (hit_type == 1) {
+        base_color = scene->objects.spheres[hit_index].color;
+    } else if (hit_type == 2) {
+        base_color = scene->objects.planes[hit_index].color;
+    } else if (hit_type == 3) {
+        base_color = scene->objects.cylinders[hit_index].color;
+    }
 
-        // Shadow check — ONLY NOW
-        bool in_shadow = isShadow(scene, hit_point, closest_t);
+    // Shadow check — ONLY NOW
+    bool in_shadow = isShadow(scene, hit_point, closest_t);
 
+    if (hit_type != 0) {
+        final_color = compute_diffuse(hit_point, normal, scene->lights[0], base_color);
+    } 
 
-if (hit_type != 0) {
-    final_color = compute_diffuse(hit_point, normal, scene->lights[0], base_color);
-} 
-
-if (in_shadow) {
-    final_color = 
-    (t_color){
-        final_color.r * 0.5f,
-        final_color.g * 0.5f,
-        final_color.b * 0.5f
-    };
-}
+    if (in_shadow) {
+        final_color = 
+        (t_color){
+            final_color.r * 0.5f,
+            final_color.g * 0.5f,
+            final_color.b * 0.5f
+        };
+    }
 
     return final_color;
 }

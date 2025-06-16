@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:58:01 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 01:42:00 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 02:36:03 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,10 @@ void	gc_free(void *ptr)
 				prev->next = cur->next;
 			else
 				*head = cur->next;
-			free(cur->ptr);
-			free(cur);
+			if(cur->ptr)
+				free(cur->ptr);
+			if(cur)
+				free(cur);
 			return ;
 		}
 		prev = cur;
@@ -119,8 +121,10 @@ void	gc_free_all(void)
 	{
 		tmp = *head;
 		*head = (*head)->next;
-		free(tmp->ptr);
-		free(tmp);
+		if(tmp->ptr)
+			free(tmp->ptr);
+		if(tmp)
+			free(tmp);
 	}
 }
 

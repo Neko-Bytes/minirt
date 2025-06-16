@@ -1,6 +1,7 @@
 #ifndef ENTRIES_H
 #define ENTRIES_H
 
+#include "../libft/libft.h"
 #include "../minilibx/include/MLX42/MLX42.h"
 #include "minirt.h"
 #include <math.h>

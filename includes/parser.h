@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 14:00:22 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/07 17:26:55 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 02:19:20 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "entries.h"
 #include <stdbool.h>
 #include <stdio.h>
+
+typedef struct s_scene t_scene;
 
 bool parse_args(int argc, char **argv, t_scene *scene);
 bool parse_file(int fd, t_scene *scene);

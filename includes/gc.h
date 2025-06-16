@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:39:45 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 02:00:59 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 02:22:38 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define GC_H
 
 #include "../includes/exits.h"
-#include "libft.h"
+#include "../libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
 

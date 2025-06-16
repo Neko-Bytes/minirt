@@ -6,11 +6,12 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 01:12:55 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 01:29:46 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 02:15:09 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/exits.h"
+#include "libft.h"
 #include <unistd.h>
 
 // static const char  *errors[] = {
@@ -40,6 +41,7 @@
 void error_exit(t_data *data)
 {
    // MLX windows to be closed
+   (void) data;
    gc_free_all();
    ft_putstr_fd(RED "\n Exited :(\n" RESET, STDOUT_FILENO);
    exit(EXIT_FAILURE);

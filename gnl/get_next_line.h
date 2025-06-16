@@ -6,7 +6,7 @@
 /*   By: mknsteja <mknsteja@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 19:30:17 by mknsteja          #+#    #+#             */
-/*   Updated: 2025/06/16 02:00:33 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 02:20:27 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #define BUFFER_SIZE 42
 #endif
 
-#include "libft.h"
+#include "../libft/libft.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>

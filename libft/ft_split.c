@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:57:41 by kruseva           #+#    #+#             */
-/*   Updated: 2024/10/18 00:23:13 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/16 08:31:10 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ static int	process_substring(char **result, int *j, const char *s, char c)
 static char	**free_result(char **result, int j)
 {
 	while (j > 0)
-		free(result[--j]);
-	free(result);
+		gc_free(result[--j]);
+	gc_free(result);
 	return (NULL);
 }
 

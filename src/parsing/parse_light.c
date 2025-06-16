@@ -41,8 +41,8 @@ static void	ensure_space(t_scene *scene)
 {
 	if (!scene->lights)
 	{
-		scene->lights->count = 0;
 		scene->lights = gc_malloc(sizeof(t_light));
+		scene->lights->count = 0;
 		if (!scene->lights)
 			print_error("Light: alloc failed\n", scene->data);
 	}

@@ -6,14 +6,11 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:00 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/16 02:37:11 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:34:34 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-
-
-// static bool  run_parser_test(int argc, char **argv);
 
 void	init_window_and_image(t_data *data)
 {
@@ -26,8 +23,28 @@ void	init_window_and_image(t_data *data)
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
+        /* ─── Do you want to use the parser? Uncomment this :) ───────────────────────────────────────────────────────────── */
+        // (void)argc;
+        // (void)argv;
+        // int fd;
+        // t_scene *scene;
+        // t_data *data;
+        //
+        // scene->data = gc_malloc(sizeof(*scene->data));
+        // if (!scene->data)
+        //     print_error("Memory error initializing data\n", NULL);
+        // parse_args(argc, argv, scene);
+        // fd = scene->fd;
+        // parse_file(fd, scene);
+        // data = scene->data;
+
+
+
+        /* ─── Your code ───────────────────────────────────────────────────────────── */
+        (void)argc;
+        (void)argv;
 	static t_camera	camera = {.position = {0, 0, -10}, .orientation = {0, 0, 1},
 			.fov = 70};
 	t_data			data;
@@ -35,6 +52,7 @@ int	main(void)
 	data.width = 800;
 	data.height = 600;
 	data.camera = &camera;
+
 	init_window_and_image(&data);
 	render(&data);
 	mlx_key_hook(data.mlx, key_hook, &data);
@@ -45,35 +63,22 @@ int	main(void)
 	return (0);
 }
 
+
+
+
+
+/*
+ *  If you want to debug parser, use the run_parser_test function in main as shown below
+ */
+
+// #include "../includes/parse_debug.h"
+//
+// /* ─── Entry Point ───────────────────────────────────────────────────────────── */
 // int main(int argc, char **argv)
 // {
-// 	run_parser_test(argc, argv);
-// 	gc_free_all();
+//     if (!run_parser_test(argc, argv))
+//         return (1);
+//     gc_free_all();
+//     return (0);
 // }
 //
-// static bool  run_parser_test(int argc, char **argv)
-// {
-//     t_scene  *scene;
-//     int      fd;
-//
-//     if (argc != 2)
-//     {
-//         fprintf(stderr, "Usage: %s <scene.rt>\n", argv[0]);
-//         return (false);
-//     }
-//     scene = gc_malloc(sizeof(t_scene));
-//     scene->data = gc_malloc(sizeof(*scene->data));
-//     if (!scene->data)
-//         print_error("Test: memory error for scene.data\n", NULL);
-//     if (!parse_args(argc, argv, scene))
-//         return (false);
-//     fd = scene->fd;
-//     if (!parse_file(fd, scene))
-//         return (false);
-//     printf("Parsing succeeded:\n");
-//     printf("  Lights:    %d\n", scene->lights->count);
-//     printf("  Spheres:   %d\n", scene->objects.sp_count);
-//     printf("  Planes:    %d\n", scene->objects.pl_count);
-//     printf("  Cylinders: %d\n", scene->objects.cy_count);
-//     return (true);
-// }

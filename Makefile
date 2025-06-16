@@ -102,7 +102,7 @@ re: fclean all
 # #######################
 # CC      = cc
 # CFLAGS  = -Wall -Wextra -Werror \
-#           -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(SRC_DIR)
+#           -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(SRC_DIR) -fsanitize=address -g
 #
 # #######################
 # # Sources & Objects   #
@@ -119,8 +119,10 @@ re: fclean all
 #     $(SRC_DIR)/parsing/parse_camera.c \
 #     $(SRC_DIR)/errors/errors.c \
 #     $(GNL_DIR)/get_next_line.c \
+#     $(GNL_DIR)/get_next_line_utils.c \
 #     $(GC_DIR)/gc.c \
 #     src/utils/parse_elements_utils.c \
+#     src/utils/parse_debug.c \
 #     src/utils/print_utils.c
 #
 # PARSER_OBJS = $(PARSER_SRCS:.c=.o)
@@ -139,10 +141,10 @@ re: fclean all
 #
 # # Compile each .c into .o
 # %.o: %.c
-# 	$(CC) $(CFLAGS) -c $< -o $@
+# 	@$(CC) $(CFLAGS) -c $< -o $@
 #
 # clean:
-# 	rm -f $(PARSER_OBJS)
+# 	@rm -f $(PARSER_OBJS)
 # 	@$(MAKE) -C $(LIBFT_DIR) clean
 #
 # fclean: clean

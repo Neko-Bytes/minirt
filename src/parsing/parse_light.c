@@ -12,80 +12,72 @@
 
 #include "../../includes/minirt.h"
 
-static void assign_params(t_scene *scene, char **xyz, char **rgb, char **tokens);
-static void check_params(t_scene *scene);
-static void add_light(t_light **lights);
+static void	ensure_space(t_scene *scene);
+static void	fill_light(t_light *L, char **xyz,
+				char **rgb, char **tokens);
+static void	validate_light(t_scene *scene, t_light *L);
 
-bool parse_light(t_scene *scene, char **tokens)
+bool	parse_light(t_scene *scene, char **tokens)
 {
-	char *xyz;
-	char *rgb;
+	char	**xyz;
+	char	**rgb;
+	t_light	*L;
 
-	if(tokens_counter(tokens) != 4)
-		print_error("Invalid number of parameters for light\n", scene->data);
+	if (tokens_counter(tokens) != 4)
+		print_error("Light: wrong number of parameters\n", scene->data);
 	xyz = ft_split(tokens[1], ',');
 	rgb = ft_split(tokens[3], ',');
-	if(tokens_counter(xyz) != 3 || tokens_counter(rgb) != 3)
-		print_error("Invalid input for light\n", scene->data);
-	if(!scene->lights)
+	if (tokens_counter(xyz) != 3 || tokens_counter(rgb) != 3)
+		print_error("Light: bad vector or color format\n", scene->data);
+	ensure_space(scene);
+	L = &scene->lights[scene->lights->count];
+	fill_light(L, xyz, rgb, tokens);
+	validate_light(scene, L);
+	scene->lights->count++;
+	return (true);
+}
+
+static void	ensure_space(t_scene *scene)
+{
+	if (!scene->lights)
 	{
+		scene->lights->count = 0;
 		scene->lights = gc_malloc(sizeof(t_light));
-		scene->lights->next = NULL;
+		if (!scene->lights)
+			print_error("Light: alloc failed\n", scene->data);
 	}
 	else
 	{
-		colorprint(MSG, "Appending extra light...\n");
-		add_light(&scene->lights);
+		if (scene->lights->count + 1 > MAX_LIGHTS)
+			print_error("Light: max lights exceeded\n", scene->data);
+		scene->lights = gc_realloc(scene->lights,
+				sizeof(t_light) * scene->lights->count,
+				sizeof(t_light) * (scene->lights->count + 1));
+		if (!scene->lights)
+			print_error("Light: realloc failed\n", scene->data);
 	}
-	assign_params(scene, xyz, rgb, tokens);
-	return(true);
 }
 
-static void add_light(t_light **lights)
+static void	fill_light(t_light *L, char **xyz,
+				char **rgb, char **tokens)
 {
-	t_light *curr;
-	t_light *next;
-	t_light *new;
-
-	curr = *lights;
-	next = curr->next;
-	while(curr->next)
-		curr = curr->next;
-	new = gc_malloc(sizeof(t_light));
-	new->next = NULL;
-	curr->next = new;
+	L->position.x = ft_atof(xyz[0]);
+	L->position.y = ft_atof(xyz[1]);
+	L->position.z = ft_atof(xyz[2]);
+	L->color.r    = ft_atoi(rgb[0]);
+	L->color.g    = ft_atoi(rgb[1]);
+	L->color.b    = ft_atoi(rgb[2]);
+	L->intensity  = ft_atof(tokens[2]);
 }
 
-static void assign_params(t_scene *scene, char **xyz, char **rgb, char **tokens)
+static void	validate_light(t_scene *scene, t_light *L)
 {
-	t_light *light;
-
-	light = scene->lights;
-	while(light->next)
-		light = light->next;
-	light->position.x = ft_atof(xyz[0]);
-	light->position.y = ft_atof(xyz[1]);
-	light->position.z = ft_atof(xyz[2]);
-	light->color.r = ft_atoi(rgb[0]);
-	light->color.g = ft_atoi(rgb[1]);
-	light->color.b = ft_atoi(rgb[2]);
-	light->intensity = ft_atof(tokens[2]);
-	check_params(scene);
-}
-
-static void check_params(t_scene *scene)
-{
-	t_light *light;
-	
-	light = scene->lights;
-	while(light->next)
-		light = light->next;
-	if(light->intensity < 0 || light->intensity > 1)
-		print_error("Wrong input for light intensity\n", scene->data);
-	if(light->color.r < 0 || light->color.r > 255)
-		print_error("Invalid input for light->color->red.\n", scene->data);
-	if(light->color.g < 0 || light->color.g > 255)
-		print_error("Invalid input for light->color->green.\n", scene->data);
-	if(light->color.b < 0 || light->color.b > 255)
-		print_error("Invalid input for light->color->blue.\n", scene->data);
+	if (L->intensity < 0.0f || L->intensity > 1.0f)
+		print_error("Light: intensity out of range\n", scene->data);
+	if (L->color.r < 0 || L->color.r > 255)
+		print_error("Light: red out of range\n", scene->data);
+	if (L->color.g < 0 || L->color.g > 255)
+		print_error("Light: green out of range\n", scene->data);
+	if (L->color.b < 0 || L->color.b > 255)
+		print_error("Light: blue out of range\n", scene->data);
 }

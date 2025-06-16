@@ -21,7 +21,11 @@ bool parse_ambience(t_scene *scene, char **tokens)
 	if(tokens_counter(tokens) != 3)
 		print_error("Invalid number of arguments for ambience.", scene->data);
 	if(!scene->ambient)
+	{
 		scene->ambient = gc_malloc(sizeof(t_ambient));
+		if(!scene->ambient)
+			print_error("Malloc issues with ambience\n", scene->data);
+	}
 	else
 		colorprint(MSG, "Ambient struct already exists, replacing ...\n");
 	scene->ambient->intensity = ft_atof(tokens[1]);

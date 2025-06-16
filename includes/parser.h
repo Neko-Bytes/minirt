@@ -17,7 +17,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-bool parse_args(int argc, char **argv);
+bool parse_args(int argc, char **argv, t_scene *scene);
+bool parse_file(int fd, t_scene *scene);
 bool parse_elements(char *trim, t_scene *scene);
 bool parse_ambience(t_scene *scene, char **tokens);
 bool parse_camera(t_scene *scene, char **tokens);

@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:37:14 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/10 22:46:16 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 01:49:58 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,15 @@ bool parse_camera(t_scene *scene, char **tokens)
 	if(tokens_counter(tokens) != 4)
 		print_error("Invalid number of inputs for camera\n", scene->data);
 	if(!scene->camera)
+	{
 		scene->camera = gc_malloc(sizeof(t_camera));
+		if(!scene->camera)
+			print_error("Malloc issue with camera\n", scene->data);
+	}
 	else
 		colorprint(MSG, "Camera struct already exists, replacing...\n");
+	assign_params(scene, tokens);
+	return (true);
 }
 
 static void assign_params(t_scene *scene, char **tokens)

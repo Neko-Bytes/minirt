@@ -16,6 +16,8 @@ int tokens_counter(char **tokens)
 {
     int i;
 
+    if(!tokens || !*tokens)
+        return (-1);
     i = 0;
     while(tokens[i])
         i++;

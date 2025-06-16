@@ -6,12 +6,12 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 01:12:55 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 02:15:09 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 08:38:20 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/exits.h"
-#include "libft.h"
+#include "../../libft/libft.h"
 #include <unistd.h>
 
 // static const char  *errors[] = {
@@ -43,7 +43,7 @@ void error_exit(t_data *data)
    // MLX windows to be closed
    (void) data;
    gc_free_all();
-   ft_putstr_fd(RED "\n Exited :(\n" RESET, STDOUT_FILENO);
+   ft_putstr_fd(RED "Exited :(\n" RESET, STDOUT_FILENO);
    exit(EXIT_FAILURE);
 }
 
@@ -52,6 +52,6 @@ void print_error(char *msg, t_data *data)
    ft_putstr_fd(RED "[ERROR]: " RESET, STDERR_FILENO);
    ft_putstr_fd(msg, STDERR_FILENO);
    ft_putstr_fd("\n", STDERR_FILENO);
-   ft_putstr_fd(RED "\n Closing miniRT ...\n" RESET, STDOUT_FILENO);
+   ft_putstr_fd(RED "\nClosing miniRT ...\n" RESET, STDOUT_FILENO);
    error_exit(data);
 }

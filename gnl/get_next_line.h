@@ -17,17 +17,17 @@
 #define BUFFER_SIZE 42
 #endif
 
-#include "../libft/libft.h"
+#include "../includes/gc.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 char *get_next_line(int fd);
-// int		ft_strlen(const char *string);
-char *ft_strdup(const char *src);
-char *ft_strchr(const char *string, int character);
-char *ft_substr(const char *s, unsigned int start, size_t len);
-char *ft_strjoin(char const *s1, char const *s2);
+size_t gnl_strlen(const char *string);
+char *gnl_strdup(const char *src);
+char *gnl_strchr(const char *string, int character);
+char *gnl_substr(const char *s, unsigned int start, size_t len);
+char *gnl_strjoin(char const *s1, char const *s2);
 
 #endif

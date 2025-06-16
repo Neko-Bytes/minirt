@@ -56,6 +56,6 @@ static void check_params(t_scene *scene, t_camera *cam)
 {
 	if(cam->fov < 0 || cam->fov > 100)
 		print_error("Invalid input for fov.", scene->data);
-	if(!cam->orientation.x || !cam->orientation.y || !cam->orientation.z)
-		print_error("Invalid input for orientation vector", scene->data);
+	// if(!cam->orientation.x || !cam->orientation.y || !cam->orientation.z)
+	// 	print_error("Invalid input for orientation vector", scene->data);
 }

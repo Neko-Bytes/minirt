@@ -64,7 +64,6 @@ typedef struct s_sphere {
   float radius;
   t_color color;
 } t_sphere;
-
 typedef struct s_cylinder {
   t_vec3 position;
   t_vec3 orientation;

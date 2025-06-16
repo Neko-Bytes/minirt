@@ -140,8 +140,7 @@ bool	intersectCylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
 			hit_found = true;
 		}
 	}
-	if (!hit_found)
-		return (false);
+
 	cp = vec_substract(Phit, cylinder->position);
 	axis_proj = vec_scale(axis_direction, dot_product(cp, axis_direction));
 	normal = vec_normalize(vec_substract(cp, axis_proj));
@@ -156,6 +155,8 @@ bool	intersectPlane(const t_plane *plane, t_vec3 ray_origin,
 	float	denom;
 	t_vec3	ray_to_plane;
 	float	t;
+	t_vec3	plane_normal;
+	plane_normal = vec_normalize(plane->normal);
 
 	denom = dot_product(plane->normal, direction);
 	if (fabsf(denom) < 1e-6f)

@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:58 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/16 19:15:48 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/16 21:55:18 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,8 @@
 void	render(t_scene *scene)
 {
 	t_color color;
-	int		ir;
-	int		ig;
-	int		ib;
-	int		pixel;
-	// printf("scene->data->width: %d\n", scene->data->width);
-	// exit(0);
+	int		ir, ig, ib;
+	uint32_t pixel;
 	mlx_image_t *img = (mlx_image_t *)scene->data->img;
 
 	for (int y = 0; y < scene->data->height; y++)
@@ -37,13 +33,13 @@ void	render(t_scene *scene)
 			ir = (int)fminf(fmaxf(color.r, 0.0f), 255.0f);
 			ig = (int)fminf(fmaxf(color.g, 0.0f), 255.0f);
 			ib = (int)fminf(fmaxf(color.b, 0.0f), 255.0f);
-			pixel = (ir << 24) | (ig << 16) | (ib << 8) | 255; // RGBA
-
-				mlx_put_pixel(img, x, y, pixel);
+			pixel = (ir << 24) | (ig << 16) | (ib << 8) | 255; 
+			mlx_put_pixel(img, x, y, pixel);
 		}
 	}
-	free_object_vector(&scene->objects);
 }
+
+
 t_vec3	rotate_y(t_vec3 v, float angle)
 {
 	float	cos_a;

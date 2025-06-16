@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:00 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/16 19:15:12 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/16 21:23:27 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ void	init_window_and_image(t_data *data)
 	if (!data->img)
 		exit(1);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
+	if (!data->mlx || !data->img)
+	{
+		fprintf(stderr, "Error: Failed to initialize MLX or image.\n");
+		exit(1);
+	}
 }
 
 int	main(int argc, char **argv)
@@ -43,13 +48,16 @@ int	main(int argc, char **argv)
 	scene->data->width = 800; // Example width
 	scene->data->height = 600; // Example height
 	scene->data->camera = scene->camera;
+	scene->camera->orientation = vec_normalize(scene->camera->direction);
 	init_window_and_image(scene->data);
 
-	render(scene);
-	// mlx_key_hook(scene->data->mlx, key_hook, scene);
+	render(&(*scene));
+	mlx_key_hook(scene->data->mlx, key_hook, scene);
 
 	mlx_loop(scene->data->mlx);
 	mlx_terminate(scene->data->mlx);
+
+
 	colorprint(MSG, "Exiting program and cleaning up resources ...\n");
 	gc_free_all();
 	return (0);

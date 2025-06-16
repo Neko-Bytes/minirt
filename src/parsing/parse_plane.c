@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_plane.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:13:44 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/12 09:21:56 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:36:38 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@ static void	ensure_space(t_scene *scene);
 static void	set_plane(t_scene *scene, t_plane *pl, char **tokens);
 static void	validate_plane(t_scene *scene, t_plane *pl);
 
-bool	parse_plane(t_scene *scene, char **tokens)
+bool	parse_plane(t_scene **scene, char **tokens)
 {
 	t_plane	*pl;
 
 	if (tokens_counter(tokens) != 4)
 		print_error("Plane: wrong number of params\n",
-			scene->data);
-	ensure_space(scene);
-	pl = &scene->objects.planes[scene->objects.pl_count];
-	set_plane(scene, pl, tokens);
-	validate_plane(scene, pl);
-	scene->objects.pl_count++;
+			(*scene)->data);
+	ensure_space(*scene);
+	pl = &(*scene)->objects.planes[(*scene)->objects.pl_count];
+	set_plane(*scene, pl, tokens);
+	validate_plane(*scene, pl);
+	(*scene)->objects.pl_count++;
 	return (true);
 }
 

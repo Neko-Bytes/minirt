@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 14:00:22 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 02:19:20 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:34:27 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ typedef struct s_scene t_scene;
 
 bool parse_args(int argc, char **argv, t_scene *scene);
 bool parse_file(int fd, t_scene *scene);
-bool parse_elements(char *trim, t_scene *scene);
-bool parse_ambience(t_scene *scene, char **tokens);
-bool parse_camera(t_scene *scene, char **tokens);
-bool parse_light(t_scene *scene, char **tokens);
-bool parse_sphere(t_scene *scene, char **tokens);
-bool parse_cylinder(t_scene *scene, char **tokens);
-bool parse_plane(t_scene *scene, char **tokens);
+bool parse_elements(char *trim, t_scene **scene);
+bool parse_ambience(t_scene **scene, char **tokens);
+bool parse_camera(t_scene **scene, char **tokens);
+bool parse_light(t_scene **scene, char **tokens);
+bool parse_sphere(t_scene **scene, char **tokens);
+bool parse_cylinder(t_scene **scene, char **tokens);
+bool parse_plane(t_scene **scene, char **tokens);
 
 #endif

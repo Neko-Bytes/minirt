@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 14:07:45 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/10 14:12:37 by kruseva          ###   ########.fr       */
+/*   Created: 2025/06/10 14:07:45 by kruseva           #+#                #+#             */
+/*   Updated: 2025/06/16 15:35:50 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,23 @@ void	handle_camera_rotation(int keycode, t_data *data, float angle)
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
-	t_data	*data;
+	t_scene	*scene;
 	float	move_speed = 1.0f;
-	static float angle = 0.2f; // Rotation angle in radians
+	static float angle = 0.2f;
 
 	if (!param)
 		return;
-	data = (t_data *)param;
+	scene = (t_scene *)param;
 
 	if (keydata.key == KEY_ESC && keydata.action == MLX_PRESS)
-		mlx_close_window(data->mlx);
+	{
+		printf("Exiting program...\n");
+		mlx_close_window(scene->data->mlx);
+	}
 	else if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 	{
-		handle_camera_movement(keydata.key, data, move_speed);
-		handle_camera_rotation(keydata.key, data, angle);
-		render(data);
+		handle_camera_movement(keydata.key, scene->data, move_speed);
+		handle_camera_rotation(keydata.key, scene->data, angle);
+		render(scene);
 	}
 }

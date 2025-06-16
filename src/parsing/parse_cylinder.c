@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cylinder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:19:41 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/12 09:00:28 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:32:59 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ static void ensure_space(t_scene *scene);
 static void set_cylinder(t_scene *scene, char **tokens);
 static void validate_cylinder(t_scene *scene, t_cylinder *cy);
 
-bool parse_cylinder(t_scene *scene, char **tokens)
+bool parse_cylinder(t_scene **scene, char **tokens)
 {
     t_cylinder *cy;
 
     if (tokens_counter(tokens) != 6)
-        print_error("Cylinder: wrong number of params\n", scene->data);
-    ensure_space(scene);
-    cy = &scene->objects.cylinders[scene->objects.cy_count];
-    set_cylinder(scene, tokens);
-    validate_cylinder(scene, cy);
-    scene->objects.cy_count++;
+        print_error("Cylinder: wrong number of params\n", (*scene)->data);
+    ensure_space((*scene));
+    cy = &(*scene)->objects.cylinders[(*scene)->objects.cy_count];
+    set_cylinder((*scene), tokens);
+    validate_cylinder((*scene), cy);
+    (*scene)->objects.cy_count++;
     return (true);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_light.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 08:56:08 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/11 08:56:25 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:35:50 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,23 @@ static void	fill_light(t_light *L, char **xyz,
 				char **rgb, char **tokens);
 static void	validate_light(t_scene *scene, t_light *L);
 
-bool	parse_light(t_scene *scene, char **tokens)
+bool	parse_light(t_scene **scene, char **tokens)
 {
 	char	**xyz;
 	char	**rgb;
 	t_light	*L;
 
 	if (tokens_counter(tokens) != 4)
-		print_error("Light: wrong number of parameters\n", scene->data);
+		print_error("Light: wrong number of parameters\n", (*scene)->data);
 	xyz = ft_split(tokens[1], ',');
 	rgb = ft_split(tokens[3], ',');
 	if (tokens_counter(xyz) != 3 || tokens_counter(rgb) != 3)
-		print_error("Light: bad vector or color format\n", scene->data);
-	ensure_space(scene);
-	L = &scene->lights[scene->lights->count];
+		print_error("Light: bad vector or color format\n", (*scene)->data);
+	ensure_space(*scene);
+	L = &(*scene)->lights[(*scene)->lights->count];
 	fill_light(L, xyz, rgb, tokens);
-	validate_light(scene, L);
-	scene->lights->count++;
+	validate_light((*scene), L);
+	(*scene)->lights->count++;
 	return (true);
 }
 

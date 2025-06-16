@@ -3,45 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 01:12:55 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 08:38:20 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:39:55 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/exits.h"
+#include "../../includes/entries.h"
+// #include "../../includes/exits.h"
+#include "../../includes/utils.h"
 #include "../../libft/libft.h"
 #include <unistd.h>
 
-// static const char  *errors[] = {
-//        "Memory allocation error.\n",
-//        "Invalid arguments. Usage: ./miniRT [.rt file/path]\n",
-//        "Could not open or read file.\n",
-//        "Failed to create MLX window.\n",
-//        "Failed to create MLX image.\n",
-//        "Scene data error.\n",
-//        "Scene must include an ambient light.\n",
-//        "Scene must include a camera.\n",
-//        "Scene may only contain one light object.\n",
-//        "Inputs for cylinder is invalid\n"
-//        "Inputs for plane is invalid\n"
-//        "Inputs for sphere is invalid\n"
-// };
-
-// void fatal_error(t_error error, t_data *data)
-// {
-//    ft_putstr_fd(RED "[ERROR]: " RESET, STDERR_FILENO);
-//    ft_putstr_fd(errors[error], STDERR_FILENO);
-//    ft_putstr_fd("\n", STDERR_FILENO);
-//    ft_putstr_fd(RED "\n Closing miniRT ...\n" RESET, STDOUT_FILENO);
-//    error_exit(data);
-// }
 
 void error_exit(t_data *data)
 {
-   // MLX windows to be closed
-   (void) data;
+   if (data && data->mlx) {
+       mlx_terminate(data->mlx);
+   }
    gc_free_all();
    ft_putstr_fd(RED "Exited :(\n" RESET, STDOUT_FILENO);
    exit(EXIT_FAILURE);
@@ -49,9 +29,12 @@ void error_exit(t_data *data)
 
 void print_error(char *msg, t_data *data)
 {
-   ft_putstr_fd(RED "[ERROR]: " RESET, STDERR_FILENO);
-   ft_putstr_fd(msg, STDERR_FILENO);
-   ft_putstr_fd("\n", STDERR_FILENO);
+   if (!msg) {
+       ft_putstr_fd(RED "[ERROR]: Unknown error\n" RESET, STDERR_FILENO);
+   } else {
+       ft_putstr_fd(RED "[ERROR]: " RESET, STDERR_FILENO);
+       ft_putstr_fd(msg, STDERR_FILENO);
+   }
    ft_putstr_fd(RED "\nClosing miniRT ...\n" RESET, STDOUT_FILENO);
    error_exit(data);
 }

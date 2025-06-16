@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_sphere.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:13:49 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/12 08:38:24 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:37:06 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ static void	ensure_space(t_scene *scene);
 static void	set_sphere(t_scene *scene, t_sphere *sp, char **tokens);
 static void	validate_sphere(t_scene *scene, t_sphere *sp);
 
-bool	parse_sphere(t_scene *scene, char **tokens)
+bool	parse_sphere(t_scene **scene, char **tokens)
 {
 	t_sphere	*sp;
 
 	if (tokens_counter(tokens) != 4)
-		print_error("Sphere: wrong number of params\n", scene->data);
-	ensure_space(scene);
-	sp = &scene->objects.spheres[scene->objects.sp_count];
-	set_sphere(scene, sp, tokens);
-	validate_sphere(scene, sp);
-	scene->objects.sp_count++;
+		print_error("Sphere: wrong number of params\n", (*scene)->data);
+	ensure_space((*scene));
+	sp = &(*scene)->objects.spheres[(*scene)->objects.sp_count];
+	set_sphere(*scene, sp, tokens);
+	validate_sphere(*scene, sp);
+	(*scene)->objects.sp_count++;
 	return (true);
 }
 

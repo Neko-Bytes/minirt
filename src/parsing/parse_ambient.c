@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_ambient.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:12:08 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/10 20:03:56 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:31:20 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 void ambience_checker(t_scene *scene);
 
-bool parse_ambience(t_scene *scene, char **tokens)
+bool parse_ambience(t_scene **scene, char **tokens)
 {
 	char **rgb;
 
 	if(tokens_counter(tokens) != 3)
-		print_error("Ambience: Invalid number of arguments.", scene->data);
-	if(!scene->ambient)
+		print_error("Ambience: Invalid number of arguments.", (*scene)->data);
+	if(!(*scene)->ambient)
 	{
-		scene->ambient = gc_malloc(sizeof(t_ambient));
-		if(!scene->ambient)
-			print_error("Ambience: Malloc issues\n", scene->data);
+		(*scene)->ambient = gc_malloc(sizeof(t_ambient));
+		if(!(*scene)->ambient)
+			print_error("Ambience: Malloc issues\n", (*scene)->data);
 	}
 	else
 		colorprint(MSG, "Ambient struct already exists, replacing ...\n");
-	scene->ambient->intensity = ft_atof(tokens[1]);
+		(*scene)->ambient->intensity = ft_atof(tokens[1]);
 	rgb = ft_split(tokens[2], ',');
 	if(!rgb || !*rgb || tokens_counter(rgb) != 3)
-		print_error("Ambience: Invalid arguments fo RGB.", scene->data);
-	scene->ambient->color.r = ft_atoi(rgb[0]);
-	scene->ambient->color.g = ft_atoi(rgb[1]);
-	scene->ambient->color.b = ft_atoi(rgb[2]);
-	ambience_checker(scene);
+		print_error("Ambience: Invalid arguments fo RGB.", (*scene)->data);
+		(*scene)->ambient->color.r = ft_atoi(rgb[0]);
+		(*scene)->ambient->color.g = ft_atoi(rgb[1]);
+		(*scene)->ambient->color.b = ft_atoi(rgb[2]);
+	ambience_checker((*scene));
 	return (true);
 }
 

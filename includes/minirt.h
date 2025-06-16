@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 00:30:05 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 13:19:06 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:59:54 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "../libft/libft.h"
 #include "../minilibx/include/MLX42/MLX42.h"
 #include "entries.h"
-#include "exits.h"
+// #include "exits.h"
 #include "gc.h"
 #include "intersect.h"
 #include "keys.h"
@@ -35,6 +35,10 @@
 #define MAX_CYLINDERS 5
 #define MAX_PLANES 5
 #define MAX_SPHERES 5
+
+void error_exit(t_data *data);
+void print_error(char *msg, t_data *data);
+// void render(t_data *data, t_scene *scene);
 
 // typedef enum s_error {
 //   MEM,

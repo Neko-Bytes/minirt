@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:11:26 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 09:01:18 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:35:22 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool parse_file(int fd, t_scene *scene)
       line = safe_gnl(fd, scene);
       continue;
     }
-    if(!parse_elements(trim, scene))
+    if(!parse_elements(trim, &scene))
       print_error("Issue with parsing tokens\n", scene->data);
     gc_free(trim);
     line = safe_gnl(fd, scene);
@@ -57,14 +57,14 @@ static char *safe_gnl(int fd, t_scene *scene)
   return (line);
 }
 
-bool parse_elements(char *trim, t_scene *scene)
+bool parse_elements(char *trim, t_scene **scene)
 {
   char **tokens;
 
   // printf("trim: %s\n", trim);
   tokens = ft_split(trim, ' ');
   if(!tokens || !tokens[0])
-      print_error("Issue with tokens\n", scene->data);
+      print_error("Issue with tokens\n", (*scene)->data);
   tokens_counter(tokens);
   if(!ft_strncmp(tokens[0], "A", 1) && parse_ambience(scene, tokens))
     return (true);
@@ -79,7 +79,7 @@ bool parse_elements(char *trim, t_scene *scene)
   else if(!ft_strncmp(tokens[0], "pl", 2) && parse_plane(scene, tokens))
       return (true);
   else
-      print_error("Unkown type of element found!\n", scene->data);
+      print_error("Unkown type of element found!\n", (*scene)->data);
   free_tokens(tokens);
   return (false);
 }

@@ -3,7 +3,7 @@
 
 #include "../libft/libft.h"
 #include "../minilibx/include/MLX42/MLX42.h"
-#include "minirt.h"
+// #include "minirt.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -43,7 +43,7 @@ typedef struct s_data {
   mlx_image_t *img;
   int width;
   int height;
-  t_camera *camera;
+  t_camera *camera; // Ensure this is initialized before use
 } t_data;
 
 typedef struct s_light {
@@ -51,22 +51,18 @@ typedef struct s_light {
   float intensity;
   t_color color;
   int count;
-  // struct s_light *next;
 } t_light;
 
 typedef struct s_plane {
   t_vec3 position;
   t_vec3 normal;
   t_color color;
-  // float closest_t;
-  // struct s_plane *next;
 } t_plane;
 
 typedef struct s_sphere {
   t_vec3 position;
   float radius;
   t_color color;
-  // struct s_sphere *next;
 } t_sphere;
 
 typedef struct s_cylinder {
@@ -81,28 +77,26 @@ typedef struct s_cylinder {
 typedef struct s_object_vector {
   t_plane *planes;
   int pl_count;
-  // int pl_capacity;
+  int pl_capacity;
 
   t_sphere *spheres;
   int sp_count;
-  // int sp_capacity;
+  int sp_capacity;
 
   t_cylinder *cylinders;
   int cy_count;
-  // int cy_capacity;
+  int cy_capacity;
 } t_object_vector;
 
 typedef struct s_scene {
-  int fd;
   t_ambient *ambient;
-  t_camera *camera;
-  t_light *lights;
-  t_object_vector
-      objects; // now the scene holds all the objects packed in a vector
-  t_data *data;
+  t_camera *camera; // Ensure this is initialized before use
+  t_light *lights;  // Ensure this is initialized before use
+  int fd;
+  t_object_vector objects; // Ensure this is initialized before use
+  t_data *data; // Ensure this is initialized before use
 } t_scene;
 
-void mainImage(t_vec2 coord, int width, int height, t_color *output,
-               t_camera *camera, t_scene *scene);
+void mainImage(t_vec2 coord, int width, int height, t_color *output, t_scene *scene);
 
 #endif // ENTRIES_H

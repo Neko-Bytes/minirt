@@ -6,15 +6,29 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:39:45 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/05 20:40:32 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/16 02:22:38 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GC_H
 #define GC_H
 
+#include "../includes/exits.h"
+#include "../libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+typedef struct s_gc_node {
+  void *ptr;
+  struct s_gc_node *next;
+} t_gc_node;
+
+/*
+ * gc_head_ptr():
+ *   Returns the address of a function‐static pointer that holds the head
+ *   of our linked list.
+ */
+t_gc_node **gc_head_ptr(void);
 
 /*
  * gc_malloc:
@@ -23,6 +37,7 @@
  *   and exits.
  */
 void *gc_malloc(size_t size);
+void *gc_realloc(void *ptr, size_t old_size, size_t new_size);
 
 /*
  * gc_free:

@@ -25,7 +25,7 @@ char	*get_next_line(int fd)
 	int			bytes_read;
 
 	finder = NULL;
-	buffer_str = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer_str = gc_malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer_str || fd < 0 || BUFFER_SIZE <= 0)
 		return (free_all(&buffer_str, &rem));
 	if (rem)

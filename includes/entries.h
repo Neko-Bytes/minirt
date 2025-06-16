@@ -1,7 +1,9 @@
 #ifndef ENTRIES_H
 #define ENTRIES_H
 
-#include "MLX42/MLX42.h"
+#include "../libft/libft.h"
+#include "../minilibx/include/MLX42/MLX42.h"
+#include "minirt.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -48,6 +50,7 @@ typedef struct s_light {
   t_vec3 position;
   float intensity;
   t_color color;
+  int count;
   // struct s_light *next;
 } t_light;
 
@@ -77,23 +80,25 @@ typedef struct s_cylinder {
 
 typedef struct s_object_vector {
   t_plane *planes;
-  int plane_count;
-  int plane_capacity;
+  int pl_count;
+  // int pl_capacity;
 
   t_sphere *spheres;
-  int sphere_count;
-  int sphere_capacity;
+  int sp_count;
+  // int sp_capacity;
 
   t_cylinder *cylinders;
-  int cylinder_count;
-  int cylinder_capacity;
+  int cy_count;
+  // int cy_capacity;
 } t_object_vector;
 
 typedef struct s_scene {
+  int fd;
   t_ambient *ambient;
   t_camera *camera;
   t_light *lights;
-  t_object_vector objects; // now the scene holds all the objects packed in a vector
+  t_object_vector
+      objects; // now the scene holds all the objects packed in a vector
   t_data *data;
 } t_scene;
 

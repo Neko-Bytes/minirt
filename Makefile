@@ -4,17 +4,19 @@ MLX_DIR = minilibx
 BUILD_DIR = $(MLX_DIR)/build
 GNL_DIR     = gnl
 SRC_DIR = src
+INCLUDE_DIR = includes
 
 # Compiler & Flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address \
 		 -I$(MLX_DIR)/include \
 		 -I$(LIBFT_DIR) \
-		 -I$(SRC_DIR)
+		 -I$(SRC_DIR) \
+		 -I$(INCLUDE_DIR)
 
 # macOS specific flags
 MAC_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit \
-			-L$(HOME)/.brew/opt/glfw/lib -lglfw
+			-L/opt/homebrew/Cellar/glfw/3.4/lib -lglfw
 
 # Linux specific flags
 LINUX_FLAGS = -L$(BUILD_DIR) -lmlx42 -L/usr/X11/lib -lX11 -lXext -lglfw -lm
@@ -29,7 +31,6 @@ SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/render/keys.c \
 	  $(SRC_DIR)/math/vector_ops.c \
 	  $(SRC_DIR)/object_array/array.c \
-	  $(SRC_DIR)/test/objects.c \
 	  $(SRC_DIR)/gc/gc.c \
 	  $(SRC_DIR)/utils/print_utils.c \
 	  $(SRC_DIR)/parsing/parse_args.c \
@@ -65,7 +66,7 @@ mac: CFLAGS += -D MACOS
 mac: mlx42 $(OBJ)
 	@make -C $(LIBFT_DIR)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT_DIR)/libft.a \
-		-L$(MLX_DIR)/build -lmlx42 $(MAC_FLAGS)
+		-L$(BUILD_DIR) -lmlx42 $(MAC_FLAGS)
 
 # Linux build
 linux: CFLAGS += -D LINUX
@@ -74,7 +75,7 @@ linux: mlx42 $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT_DIR)/libft.a $(LINUX_FLAGS)
 
 # Default target
-all: linux
+all: mac
 
 # Cleanup
 clean:

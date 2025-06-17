@@ -16,15 +16,16 @@ void	handle_camera_movement(int keycode, t_data *data, float move_speed)
 {
 	t_vec3	forward;
 	t_vec3	right;
+	t_vec3	old_pos;
 
 	forward = data->camera->orientation;
 	right = (t_vec3){forward.z, 0, -forward.x};
+	old_pos = data->camera->position;
+
 	if (keycode == KEY_UP)
 	{
 		data->camera->position = vec_add(data->camera->position,
 				vec_scale(forward, move_speed));
-		printf("Camera position: (%f, %f, %f)\n", data->camera->position.x,
-			data->camera->position.y, data->camera->position.z);
 	}
 	else if (keycode == KEY_DOWN)
 	{
@@ -40,6 +41,15 @@ void	handle_camera_movement(int keycode, t_data *data, float move_speed)
 	{
 		data->camera->position = vec_add(data->camera->position,
 				vec_scale(right, move_speed));
+	}
+
+	// Only print if position actually changed
+	if (old_pos.x != data->camera->position.x ||
+		old_pos.y != data->camera->position.y ||
+		old_pos.z != data->camera->position.z)
+	{
+		printf("Camera position: (%f, %f, %f)\n", data->camera->position.x,
+			data->camera->position.y, data->camera->position.z);
 	}
 }
 
@@ -82,6 +92,6 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	{
 		handle_camera_movement(keydata.key, scene->data, move_speed);
 		handle_camera_rotation(keydata.key, scene->data, angle);
-		render(scene);
+		render(scene->data);
 	}
 }

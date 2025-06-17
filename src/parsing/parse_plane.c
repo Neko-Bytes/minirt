@@ -5,92 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/11 11:13:44 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 18:36:38 by kruseva          ###   ########.fr       */
+/*   Created: 2025/06/11 11:13:49 by kmummadi          #+#    #+#             */
+/*   Updated: 2025/06/16 18:37:06 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-static void	ensure_space(t_scene *scene);
-static void	set_plane(t_scene *scene, t_plane *pl, char **tokens);
 static void	validate_plane(t_scene *scene, t_plane *pl);
 
 bool	parse_plane(t_scene **scene, char **tokens)
 {
-	t_plane	*pl;
+	t_plane		plane;
+	char		**coords;
+	char		**normal;
+	char		**rgb;
 
 	if (tokens_counter(tokens) != 4)
-		print_error("Plane: wrong number of params\n",
-			(*scene)->data);
-	ensure_space(*scene);
-	pl = &(*scene)->objects.planes[(*scene)->objects.pl_count];
-	set_plane(*scene, pl, tokens);
-	validate_plane(*scene, pl);
-	(*scene)->objects.pl_count++;
+		print_error("Plane: wrong number of params\n", (*scene)->data);
+	
+	// Parse position
+	coords = ft_split(tokens[1], ',');
+	if (!coords || tokens_counter(coords) != 3)
+		print_error("Plane: invalid position format\n", (*scene)->data);
+	plane.position.x = ft_atof(coords[0]);
+	plane.position.y = ft_atof(coords[1]);
+	plane.position.z = ft_atof(coords[2]);
+	
+	// Parse normal vector
+	normal = ft_split(tokens[2], ',');
+	if (!normal || tokens_counter(normal) != 3)
+		print_error("Plane: invalid normal vector format\n", (*scene)->data);
+	plane.normal.x = ft_atof(normal[0]);
+	plane.normal.y = ft_atof(normal[1]);
+	plane.normal.z = ft_atof(normal[2]);
+
+	// Parse color
+	rgb = ft_split(tokens[3], ',');
+	if (!rgb || tokens_counter(rgb) != 3)
+		print_error("Plane: invalid color format\n", (*scene)->data);
+	plane.color.r = ft_atoi(rgb[0]);
+	plane.color.g = ft_atoi(rgb[1]);
+	plane.color.b = ft_atoi(rgb[2]);
+
+	validate_plane(*scene, &plane);
+	add_plane(&(*scene)->objects, plane);
 	return (true);
-}
-
-static void	ensure_space(t_scene *scene)
-{
-	size_t	new_size;
-
-	if (!scene->objects.planes)
-	{
-		scene->objects.pl_count = 0;
-		scene->objects.planes = gc_malloc(sizeof(t_plane));
-		if (!scene->objects.planes)
-			print_error("Plane: alloc failed\n", scene->data);
-	}
-	else
-	{
-		if (scene->objects.pl_count + 1 > MAX_PLANES)
-			print_error("Plane: max count exceeded\n",
-				scene->data);
-		new_size = scene->objects.pl_count + 1;
-		scene->objects.planes = gc_realloc(
-			scene->objects.planes,
-			sizeof(t_plane) * scene->objects.pl_count,
-			sizeof(t_plane) * new_size);
-		if (!scene->objects.planes)
-			print_error("Plane: realloc failed\n",
-				scene->data);
-	}
-}
-
-static void	set_plane(t_scene *scene, t_plane *pl, char **tokens)
-{
-	char	**xyz;
-	char	**norm;
-	char	**rgb;
-
-	xyz  = ft_split(tokens[1], ',');
-	norm = ft_split(tokens[2], ',');
-	rgb  = ft_split(tokens[3], ',');
-	if (tokens_counter(xyz) != 3 || tokens_counter(norm) != 3 ||
-	    tokens_counter(rgb) != 3)
-		print_error("Plane: bad vec or color\n", scene->data);
-	pl->position.x = ft_atof(xyz[0]);
-	pl->position.y = ft_atof(xyz[1]);
-	pl->position.z = ft_atof(xyz[2]);
-	pl->normal.x   = ft_atof(norm[0]);
-	pl->normal.y   = ft_atof(norm[1]);
-	pl->normal.z   = ft_atof(norm[2]);
-	pl->color.r    = ft_atoi(rgb[0]);
-	pl->color.g    = ft_atoi(rgb[1]);
-	pl->color.b    = ft_atoi(rgb[2]);
 }
 
 static void	validate_plane(t_scene *scene, t_plane *pl)
 {
-	if (pl->normal.x < -1.0f || pl->normal.x > 1.0f ||
-	    pl->normal.y < -1.0f || pl->normal.y > 1.0f ||
-	    pl->normal.z < -1.0f || pl->normal.z > 1.0f)
-		print_error("Plane: normal out of range\n", scene->data);
+	float	normal_length;
+
+	normal_length = sqrt(pl->normal.x * pl->normal.x + 
+						pl->normal.y * pl->normal.y + 
+						pl->normal.z * pl->normal.z);
+	if (normal_length < 0.0001f)
+		print_error("Plane: normal vector cannot be zero\n", scene->data);
+	
+	// Normalize the normal vector
+	pl->normal.x /= normal_length;
+	pl->normal.y /= normal_length;
+	pl->normal.z /= normal_length;
+
 	if (pl->color.r < 0 || pl->color.r > 255)
-		print_error("Plane: red out of range\n", scene->data);
+		print_error("Plane: red component must be between 0 and 255\n", scene->data);
 	if (pl->color.g < 0 || pl->color.g > 255)
-		print_error("Plane: green out of range\n", scene->data);
+		print_error("Plane: green component must be between 0 and 255\n", scene->data);
 	if (pl->color.b < 0 || pl->color.b > 255)
-		print_error("Plane: blue out of range\n", scene->data);
+		print_error("Plane: blue component must be between 0 and 255\n", scene->data);
 }

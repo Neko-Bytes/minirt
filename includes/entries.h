@@ -3,6 +3,7 @@
 
 #include "../libft/libft.h"
 #include "../minilibx/include/MLX42/MLX42.h"
+#include "vector.h"
 // #include "minirt.h"
 #include <math.h>
 #include <stdbool.h>
@@ -10,6 +11,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+// Forward declarations
+typedef struct s_scene t_scene;
 
 typedef struct s_color {
   float r, g, b;
@@ -44,6 +48,7 @@ typedef struct s_data {
   int width;
   int height;
   t_camera *camera; // Ensure this is initialized before use
+  t_scene *scene;   // Add scene pointer
 } t_data;
 
 typedef struct s_light {
@@ -74,24 +79,17 @@ typedef struct s_cylinder {
 } t_cylinder;
 
 typedef struct s_object_vector {
-  t_plane *planes;
-  int pl_count;
-  int pl_capacity;
-
-  t_sphere *spheres;
-  int sp_count;
-  int sp_capacity;
-
-  t_cylinder *cylinders;
-  int cy_count;
-  int cy_capacity;
+    t_vector planes_vec;
+    t_vector spheres_vec;
+    t_vector cylinders_vec;
 } t_object_vector;
 
 typedef struct s_scene {
   t_ambient *ambient;
   t_camera *camera; // Ensure this is initialized before use
   t_light *lights;  // Ensure this is initialized before use
-  int fd;
+  // int fd;
+  t_vector lights_vec;
   t_object_vector objects; // Ensure this is initialized before use
   t_data *data; // Ensure this is initialized before use
 } t_scene;

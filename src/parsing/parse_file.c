@@ -21,24 +21,23 @@ bool parse_file(int fd, t_scene *scene)
   char *line;
   char *trim;
 
-  line = safe_gnl(fd, scene);
-  while(line)
+  // Initialize the object vector with a reasonable initial capacity
+  init_object_vector(&scene->objects, 10);
+  // Initialize the lights vector
+  vector_init(&scene->lights_vec, sizeof(t_light), 5);
+
+  while (1)
   {
-    // printf("line: %s\n", line);
-    trim = ft_strtrim(line, " \t\n");
-    gc_free(line);
-    if(!trim)
-      print_error("Issue with trimming\n", scene->data);
-    if(!trim[0] || ft_strncmp(line, "\n", 1) == 0)
-    {
-      gc_free(trim);
-      line = safe_gnl(fd, scene);
-      continue;
-    }
-    if(!parse_elements(trim, &scene))
-      print_error("Issue with parsing tokens\n", scene->data);
-    gc_free(trim);
     line = safe_gnl(fd, scene);
+    if (!line)
+      break;
+    trim = ft_strtrim(line, " \t\n");
+    if (!trim)
+      print_error("Memory allocation failed\n", scene->data);
+    if (trim[0] != '\0')
+      parse_elements(trim, &scene);
+    gc_free(trim);
+    gc_free(line);
   }
 
   return (true);
@@ -47,11 +46,11 @@ bool parse_file(int fd, t_scene *scene)
 static char *safe_gnl(int fd, t_scene *scene)
 {
   char *line;
-  static int count = 0;
+  // static int count = 0;
 
   errno = 0;
   line = get_next_line(fd);
-  count++;
+  // count++;
   if(!line && errno != 0)
     print_error("Issue with reading line\n", scene->data);
   return (line);

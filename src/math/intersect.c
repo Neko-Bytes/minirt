@@ -14,8 +14,7 @@
 #include "../includes/intersect.h"
 #include "../includes/object_array.h"
 #include "../includes/vector_ops.h"
-// test included
-#include "test/test.h"
+
 
 
 bool	intersectSphere(const t_sphere *sphere, t_vec3 ray_origin,
@@ -155,8 +154,6 @@ bool	intersectPlane(const t_plane *plane, t_vec3 ray_origin,
 	float	denom;
 	t_vec3	ray_to_plane;
 	float	t;
-	t_vec3	plane_normal;
-	plane_normal = vec_normalize(plane->normal);
 
 	denom = dot_product(plane->normal, direction);
 	if (fabsf(denom) < 1e-6f)

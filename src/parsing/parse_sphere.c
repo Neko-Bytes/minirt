@@ -12,67 +12,41 @@
 
 #include "../../includes/minirt.h"
 
-static void	ensure_space(t_scene *scene);
-static void	set_sphere(t_scene *scene, t_sphere *sp, char **tokens);
 static void	validate_sphere(t_scene *scene, t_sphere *sp);
 
 bool	parse_sphere(t_scene **scene, char **tokens)
 {
-	t_sphere	*sp;
+	t_sphere	sphere;
+	char		**coords;
+	char		**rgb;
 
 	if (tokens_counter(tokens) != 4)
 		print_error("Sphere: wrong number of params\n", (*scene)->data);
-	ensure_space((*scene));
-	sp = &(*scene)->objects.spheres[(*scene)->objects.sp_count];
-	set_sphere(*scene, sp, tokens);
-	validate_sphere(*scene, sp);
-	(*scene)->objects.sp_count++;
-	return (true);
-}
+	
+	// Parse position
+	coords = ft_split(tokens[1], ',');
+	if (!coords || tokens_counter(coords) != 3)
+		print_error("Sphere: invalid position format\n", (*scene)->data);
+	sphere.position.x = ft_atof(coords[0]);
+	sphere.position.y = ft_atof(coords[1]);
+	sphere.position.z = ft_atof(coords[2]);
 
-static void	ensure_space(t_scene *scene)
-{
-	size_t	new_size;
+	// Parse radius
+	sphere.radius = ft_atof(tokens[2]);
+	if (sphere.radius <= 0.0f)
+		print_error("Sphere: invalid radius\n", (*scene)->data);
 
-	if (!scene->objects.spheres)
-	{
-		scene->objects.sp_count = 0;
-		scene->objects.spheres = gc_malloc(sizeof(t_sphere) * 1);
-		if (!scene->objects.spheres)
-			print_error("Sphere: alloc failed\n", scene->data);
-	}
-	else
-	{
-		if (scene->objects.sp_count + 1 > MAX_SPHERES)
-			print_error("Sphere: max count exceeded\n",
-				scene->data);
-		new_size = scene->objects.sp_count + 1;
-		scene->objects.spheres = gc_realloc(
-			scene->objects.spheres,
-			sizeof(t_sphere) * scene->objects.sp_count,
-			sizeof(t_sphere) * new_size);
-		if (!scene->objects.spheres)
-			print_error("Sphere: realloc failed\n",
-				scene->data);
-	}
-}
-
-static void	set_sphere(t_scene *scene, t_sphere *sp, char **tokens)
-{
-	char	**xyz;
-	char	**rgb;
-
-	xyz = ft_split(tokens[1], ',');
+	// Parse color
 	rgb = ft_split(tokens[3], ',');
-	if (tokens_counter(xyz) != 3 || tokens_counter(rgb) != 3)
-		print_error("Sphere: bad vec or color\n", scene->data);
-	sp->position.x = ft_atof(xyz[0]);
-	sp->position.y = ft_atof(xyz[1]);
-	sp->position.z = ft_atof(xyz[2]);
-	sp->radius     = ft_atof(tokens[2]) * 0.5f;
-	sp->color.r    = ft_atoi(rgb[0]);
-	sp->color.g    = ft_atoi(rgb[1]);
-	sp->color.b    = ft_atoi(rgb[2]);
+	if (!rgb || tokens_counter(rgb) != 3)
+		print_error("Sphere: invalid color format\n", (*scene)->data);
+	sphere.color.r = ft_atoi(rgb[0]);
+	sphere.color.g = ft_atoi(rgb[1]);
+	sphere.color.b = ft_atoi(rgb[2]);
+
+	validate_sphere(*scene, &sphere);
+	add_sphere(&(*scene)->objects, sphere);
+	return (true);
 }
 
 static void	validate_sphere(t_scene *scene, t_sphere *sp)
@@ -80,9 +54,9 @@ static void	validate_sphere(t_scene *scene, t_sphere *sp)
 	if (sp->radius <= 0.0f)
 		print_error("Sphere: invalid radius\n", scene->data);
 	if (sp->color.r < 0 || sp->color.r > 255)
-		print_error("Sphere: red out of range\n", scene->data);
+		print_error("Sphere: red component must be between 0 and 255\n", scene->data);
 	if (sp->color.g < 0 || sp->color.g > 255)
-		print_error("Sphere: green out of range\n", scene->data);
+		print_error("Sphere: green component must be between 0 and 255\n", scene->data);
 	if (sp->color.b < 0 || sp->color.b > 255)
-		print_error("Sphere: blue out of range\n", scene->data);
+		print_error("Sphere: blue component must be between 0 and 255\n", scene->data);
 }

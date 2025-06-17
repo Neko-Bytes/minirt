@@ -6,39 +6,51 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:58 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/16 21:55:18 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/10 14:12:33 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/entries.h"
-#include "../includes/intersect.h"
-#include "../includes/object_array.h"
-#include "../includes/window.h"
-#include "test/test.h"
+#include "../../includes/minirt.h"
+#include "../../includes/object_array.h"
+#include "../../includes/vector_ops.h"
 
+void	init_scene(t_scene *scene)
+{
+	scene->ambient = NULL;
+	scene->camera = NULL;
+	vector_init(&scene->lights_vec, sizeof(t_light), 10);  // Start with capacity of 10
+	init_object_vector(&scene->objects, 10);  // Start with capacity of 10
+	scene->data = NULL;
+}
 
-void	render(t_scene *scene)
+void	render(t_data *data)
 {
 	t_color color;
-	int		ir, ig, ib;
-	uint32_t pixel;
-	mlx_image_t *img = (mlx_image_t *)scene->data->img;
+	int		ir;
+	int		ig;
+	int		ib;
+	int		pixel;
+	mlx_image_t *img = (mlx_image_t *)data->img;
 
-	for (int y = 0; y < scene->data->height; y++)
+	if (!data || !data->img || !data->camera || !data->scene)
+		return;
+
+	for (int y = 0; y < data->height; y++)
 	{
-		for (int x = 0; x < scene->data->width; x++)
+		for (int x = 0; x < data->width; x++)
 		{
-			mainImage((t_vec2){x, y}, scene->data->width, scene->data->height, &color,
-				scene);
-			ir = (int)fminf(fmaxf(color.r, 0.0f), 255.0f);
-			ig = (int)fminf(fmaxf(color.g, 0.0f), 255.0f);
-			ib = (int)fminf(fmaxf(color.b, 0.0f), 255.0f);
-			pixel = (ir << 24) | (ig << 16) | (ib << 8) | 255; 
+			mainImage((t_vec2){x, y}, data->width, data->height, &color, data->scene);
+			ir = (int)(fminf(fmaxf(color.r, 0.0f), 255.0f));
+			ig = (int)(fminf(fmaxf(color.g, 0.0f), 255.0f));
+			ib = (int)(fminf(fmaxf(color.b, 0.0f), 255.0f));
+			pixel = (ir << 16) | (ig << 8) | ib;
 			mlx_put_pixel(img, x, y, pixel);
 		}
 	}
-}
 
+	// Ensure the image is properly updated
+	mlx_image_to_window(data->mlx, img, 0, 0);
+}
 
 t_vec3	rotate_y(t_vec3 v, float angle)
 {

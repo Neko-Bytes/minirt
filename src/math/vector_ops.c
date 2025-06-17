@@ -19,4 +19,12 @@ float dot_product(t_vec3 a, t_vec3 b) {
 t_vec3 vec_normalize(t_vec3 v) {
     float len = sqrtf(dot_product(v, v));
     return (len == 0.0f) ? (t_vec3){0, 0, 0} : vec_scale(v, 1.0f / len);
+}
+
+t_vec3 vec_cross(t_vec3 a, t_vec3 b) {
+    return (t_vec3){
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+    };
 } 

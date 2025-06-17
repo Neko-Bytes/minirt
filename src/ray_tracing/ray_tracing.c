@@ -137,7 +137,15 @@ t_color rayTracing(t_vec3 direction, t_scene *scene) {
         }
     }
  
-    for (size_t i = 0; i < vector_size(&scene->lights_vec); i++) {
+
+    // Ambient light
+    if (scene->ambient) {
+        final_color.r += base_color.r * scene->ambient->intensity * (scene->ambient->color.r / 255.0f);
+        final_color.g += base_color.g * scene->ambient->intensity * (scene->ambient->color.g / 255.0f);
+        final_color.b += base_color.b * scene->ambient->intensity * (scene->ambient->color.b / 255.0f);
+    }
+
+for (size_t i = 0; i < vector_size(&scene->lights_vec); i++) {
     t_light *light = (t_light *)vector_at(&scene->lights_vec, i);
     if (!isShadow(scene, hit_point, light, closest_t)) {
         t_color diffuse = compute_diffuse(hit_point, normal, *light, base_color);
@@ -147,43 +155,13 @@ t_color rayTracing(t_vec3 direction, t_scene *scene) {
     }
 }
 
-    if (in_shadow)
-    {
-        final_color =
-        (t_color){
-            final_color.r * 0.5f,
-            final_color.g * 0.5f,
-            final_color.b * 0.5f
-        };
+
+    // Apply shadow reduction
+    if (in_shadow) {
+        final_color.r *= 0.5f;
+        final_color.g *= 0.5f;
+        final_color.b *= 0.5f;
     }
-
-    // // Ambient light
-    // if (scene->ambient) {
-    //     final_color.r += base_color.r * scene->ambient->intensity * (scene->ambient->color.r / 255.0f);
-    //     final_color.g += base_color.g * scene->ambient->intensity * (scene->ambient->color.g / 255.0f);
-    //     final_color.b += base_color.b * scene->ambient->intensity * (scene->ambient->color.b / 255.0f);
-    // }
-
-// for (size_t i = 0; i < vector_size(&scene->lights_vec); i++) {
-//     t_light *light = (t_light *)vector_at(&scene->lights_vec, i);
-//     if (!isShadow(scene, hit_point, light, closest_t)) {
-//         t_color diffuse = compute_diffuse(hit_point, normal, *light, base_color);
-//         final_color.r += diffuse.r;
-//         final_color.g += diffuse.g;
-//         final_color.b += diffuse.b;
-//         if (DEBUG_RAYS && ray_count <= 5) {
-//             printf("  Adding light %zu contribution\n", i);
-//         }
-//     }
-// }
-
-
-    // // Apply shadow reduction
-    // if (in_shadow) {
-    //     final_color.r *= 0.5f;
-    //     final_color.g *= 0.5f;
-    //     final_color.b *= 0.5f;
-    // }
 
 
     // if (DEBUG_RAYS && ray_count <= 5) {

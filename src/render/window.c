@@ -43,7 +43,7 @@ void	render(t_data *data)
 			ir = (int)(fminf(fmaxf(color.r, 0.0f), 255.0f));
 			ig = (int)(fminf(fmaxf(color.g, 0.0f), 255.0f));
 			ib = (int)(fminf(fmaxf(color.b, 0.0f), 255.0f));
-			pixel = (ir << 16) | (ig << 8) | ib;
+			pixel = (ir << 24) | (ig << 16) | (ib << 8) | 0xFF;  // RGBA format with full alpha
 			mlx_put_pixel(img, x, y, pixel);
 		}
 	}

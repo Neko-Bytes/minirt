@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 14:07:45 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/10 14:12:37 by kruseva          ###   ########.fr       */
+/*   Created: 2025/06/10 14:07:45 by kruseva           #+#                #+#             */
+/*   Updated: 2025/06/16 15:35:50 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@ void	handle_camera_movement(int keycode, t_data *data, float move_speed)
 {
 	t_vec3	forward;
 	t_vec3	right;
+	t_vec3	old_pos;
 
 	forward = data->camera->orientation;
 	right = (t_vec3){forward.z, 0, -forward.x};
+	old_pos = data->camera->position;
+
 	if (keycode == KEY_UP)
 	{
 		data->camera->position = vec_add(data->camera->position,
 				vec_scale(forward, move_speed));
-		printf("Camera position: (%f, %f, %f)\n", data->camera->position.x,
-			data->camera->position.y, data->camera->position.z);
 	}
 	else if (keycode == KEY_DOWN)
 	{
@@ -40,6 +41,15 @@ void	handle_camera_movement(int keycode, t_data *data, float move_speed)
 	{
 		data->camera->position = vec_add(data->camera->position,
 				vec_scale(right, move_speed));
+	}
+
+	// Only print if position actually changed
+	if (old_pos.x != data->camera->position.x ||
+		old_pos.y != data->camera->position.y ||
+		old_pos.z != data->camera->position.z)
+	{
+		printf("Camera position: (%f, %f, %f)\n", data->camera->position.x,
+			data->camera->position.y, data->camera->position.z);
 	}
 }
 
@@ -65,20 +75,23 @@ void	handle_camera_rotation(int keycode, t_data *data, float angle)
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
-	t_data	*data;
+	t_scene	*scene;
 	float	move_speed = 1.0f;
-	static float angle = 0.2f; // Rotation angle in radians
+	static float angle = 0.2f;
 
 	if (!param)
 		return;
-	data = (t_data *)param;
+	scene = (t_scene *)param;
 
 	if (keydata.key == KEY_ESC && keydata.action == MLX_PRESS)
-		mlx_close_window(data->mlx);
+	{
+		printf("Exiting program...\n");
+		mlx_close_window(scene->data->mlx);
+	}
 	else if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 	{
-		handle_camera_movement(keydata.key, data, move_speed);
-		handle_camera_rotation(keydata.key, data, angle);
-		render(data);
+		handle_camera_movement(keydata.key, scene->data, move_speed);
+		handle_camera_rotation(keydata.key, scene->data, angle);
+		render(scene->data);
 	}
 }

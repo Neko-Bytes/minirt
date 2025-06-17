@@ -2,7 +2,7 @@
 # define INTERSECT_H
 
 # include <stdbool.h>
-# include "../includes/entries.h"
+# include "entries.h" // Include entries.h for type definitions
 # include "vector_ops.h"
 
 typedef struct s_abc
@@ -20,4 +20,4 @@ t_color rayTracing(t_vec3 direction, t_scene *scene);
 bool intersectCylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
 	t_vec3 direction, float *refl, float *t_out);
 
-#endif 
+#endif

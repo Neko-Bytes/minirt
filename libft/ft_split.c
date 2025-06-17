@@ -14,7 +14,6 @@
 #include <stdlib.h>
 
 static int	count_substrings(const char *s, char c)
-
 {
 	int	count;
 	int	i;
@@ -37,7 +36,7 @@ static char	*allocate_substring(const char *start, int length)
 {
 	char	*substr;
 
-	substr = (char *)gc_malloc((length + 1) * sizeof(char));
+	substr = (char *)malloc((length + 1) * sizeof(char));
 	if (!substr)
 		return (NULL);
 	ft_strlcpy(substr, start, length + 1);
@@ -68,8 +67,8 @@ static int	process_substring(char **result, int *j, const char *s, char c)
 static char	**free_result(char **result, int j)
 {
 	while (j > 0)
-		gc_free(result[--j]);
-	gc_free(result);
+		free(result[--j]);
+	free(result);
 	return (NULL);
 }
 
@@ -84,7 +83,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	substring_count = count_substrings(s, c);
-	result = (char **)gc_malloc((substring_count + 1) * sizeof(char *));
+	result = (char **)malloc((substring_count + 1) * sizeof(char *));
 	if (!result)
 		return (NULL);
 	i = 0;

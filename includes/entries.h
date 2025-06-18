@@ -42,6 +42,15 @@ typedef struct s_camera {
   float zoom;
 } t_camera;
 
+typedef struct s_input {
+  bool key_up;
+  bool key_down;
+  bool key_left;
+  bool key_right;
+  bool key_a;
+  bool key_d;
+} t_input;
+
 typedef struct s_data {
   void *mlx;
   mlx_image_t *img;
@@ -49,6 +58,7 @@ typedef struct s_data {
   int height;
   t_camera *camera; // Ensure this is initialized before use
   t_scene *scene;   // Add scene pointer
+  t_input *input; // Ensure this is initialized before use
 } t_data;
 
 typedef struct s_light {
@@ -86,12 +96,12 @@ typedef struct s_object_vector {
 
 typedef struct s_scene {
   t_ambient *ambient;
-  t_camera *camera; // Ensure this is initialized before use
-  t_light *lights;  // Ensure this is initialized before use
+  t_camera *camera;
+  t_light *lights;
   // int fd;
   t_vector lights_vec;
-  t_object_vector objects; // Ensure this is initialized before use
-  t_data *data; // Ensure this is initialized before use
+  t_object_vector objects;
+  t_data *data;
 } t_scene;
 
 void mainImage(t_vec2 coord, int width, int height, t_color *output, t_scene *scene);

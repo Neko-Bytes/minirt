@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address \
 
 # macOS specific flags
 MAC_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit \
-			-L/opt/homebrew/Cellar/glfw/3.4/lib -lglfw
+			-L$(HOME)/.brew/opt/glfw/lib -lglfw
 
 # Linux specific flags
 LINUX_FLAGS = -L$(BUILD_DIR) -lmlx42 -L/usr/X11/lib -lX11 -lXext -lglfw -lm

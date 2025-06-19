@@ -134,7 +134,7 @@ bool	intersectCylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
 	return true;
 }
 
-bool	intersectPlane(const t_plane *plane, t_vec3 ray_origin,
+bool	intersect_plane(const t_plane *plane, t_vec3 ray_origin,
 		t_vec3 direction, float *t_out)
 {
 	float	denom;

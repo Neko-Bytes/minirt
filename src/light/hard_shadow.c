@@ -36,7 +36,7 @@ bool is_plane_shadow(const t_scene *scene, t_vec3 point, t_light *light, float c
     while (i < get_plane_count(&scene->objects)) {
         float t = 0.0f;
         t_plane *plane = get_plane(&scene->objects, i);
-        if (intersectPlane(plane, point, light_dir, &t)) {
+        if (intersect_plane(plane, point, light_dir, &t)) {
             if (t > BIAS && t < light_dist && t < closest_t) {
                 return true;
             }

@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:09:27 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 16:01:07 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 16:50:33 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ void	main_image(t_params *params, t_color *output, t_scene *scene)
 	scale = tanf(fov / 2.0f);
 	compute_camera_basis(scene->camera->direction, &way);
 	direction = compute_ray_direction(params, aspect_ratio, scale, &way);
-	*output = rayTracing(direction, scene);
+	*output = ray_tracing(direction, scene);
 }

@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:11:45 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 15:21:53 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 16:53:08 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ t_vec3	cylinder_normal(t_cylinder c, t_vec3 p)
 	return (vec_normalize(normal));
 }
 
-void	find_closest_plane(const t_scene *scene, t_ray ray, t_closest_result *result)
+void	find_closest_plane(const t_scene *scene, t_ray ray,
+		t_closest_result *result)
 {
-	size_t	 i;
-	size_t	 count;
-	float	 t;
-	float	 local_refl;
+	size_t	i;
+	size_t	count;
+	float	t;
+	float	local_refl;
 	t_plane	*plane;
 
 	t = 0.0f;
@@ -51,9 +52,10 @@ void	find_closest_plane(const t_scene *scene, t_ray ray, t_closest_result *resul
 	count = get_plane_count(&scene->objects);
 	while (i < count)
 	{
-		t = 0.0f, local_refl = 1.0f;
+		t = 0.0f;
+		local_refl = 1.0f;
 		plane = get_plane(&scene->objects, i);
-		if (intersectPlane(plane, ray.origin, ray.direction, &t))
+		if (intersect_plane(plane, ray.origin, ray.direction, &t))
 		{
 			if (t < result->closest_t)
 			{
@@ -67,20 +69,22 @@ void	find_closest_plane(const t_scene *scene, t_ray ray, t_closest_result *resul
 	}
 }
 
-void	find_closest_sphere(const t_scene *scene, t_ray ray, t_closest_result *result)
+void	find_closest_sphere(const t_scene *scene, t_ray ray,
+		t_closest_result *result)
 {
-	size_t	 i;
-	size_t	 count;
-	float	 t;
-	float	 local_refl;
-	t_sphere *sphere;
+	size_t		i;
+	size_t		count;
+	float		t;
+	float		local_refl;
+	t_sphere	*sphere;
 
 	t = 0.0f;
 	i = 0;
 	count = get_sphere_count(&scene->objects);
 	while (i < count)
 	{
-		t = 0.0f, local_refl = 1.0f;
+		t = 0.0f;
+		local_refl = 1.0f;
 		sphere = get_sphere(&scene->objects, i);
 		if (intersectSphere(sphere, ray.origin, ray.direction, &local_refl, &t))
 		{
@@ -96,15 +100,25 @@ void	find_closest_sphere(const t_scene *scene, t_ray ray, t_closest_result *resu
 	}
 }
 
-void	find_closest_cylinder(const t_scene *scene, t_ray ray, t_closest_result *result)
+void	find_closest_cylinder(const t_scene *scene, t_ray ray,
+		t_closest_result *result)
 {
-	size_t i = 0;
-	size_t count = get_cylinder_count(&scene->objects);
+	size_t		i;
+	size_t		count;
+	float		t;
+	float		local_refl;
+	t_cylinder	*cylinder;
+
+	i = 0;
+	t = 0.0f;
+	count = get_cylinder_count(&scene->objects);
 	while (i < count)
 	{
-		float t = 0.0f, local_refl = 1.0f;
-		t_cylinder *cylinder = get_cylinder(&scene->objects, i);
-		if (intersectCylinder(cylinder, ray.origin, ray.direction, &local_refl, &t))
+		t = 0.0f;
+		local_refl = 1.0f;
+		cylinder = get_cylinder(&scene->objects, i);
+		if (intersectCylinder(cylinder, ray.origin, ray.direction, &local_refl,
+				&t))
 		{
 			if (t < result->closest_t)
 			{

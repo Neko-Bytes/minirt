@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 18:04:11 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 18:20:47 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 19:21:33 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_intersect_result	intersect_cylinder(const t_cylinder *cylinder,
 	if (!find_cylinder_hit_t(&vars.cray, &vars.abc, &vars.hit,
 			vars.discriminant))
 		return (result);
-	vars.cp = vec_substract(vars.hit.Phit, vars.cray.cylinder->position);
+	vars.cp = vec_substract(vars.hit.phit, vars.cray.cylinder->position);
 	vars.axis_proj = vec_scale(vars.cray.axis_direction, dot_product(vars.cp,
 				vars.cray.axis_direction));
 	vars.normal = vec_normalize(vec_substract(vars.cp, vars.axis_proj));
@@ -65,8 +65,8 @@ t_intersect_result	intersect_sphere(const t_sphere *sphere, t_vec3 ray_origin,
 		vars.t = -vars.half_b + sqrtf(vars.discriminant);
 	if (vars.t < T_MIN)
 		return (result);
-	vars.Phit = vec_add(ray_origin, vec_scale(direction, vars.t));
-	vars.normal = vec_normalize(vec_substract(vars.Phit, sphere->position));
+	vars.phit = vec_add(ray_origin, vec_scale(direction, vars.t));
+	vars.normal = vec_normalize(vec_substract(vars.phit, sphere->position));
 	result.refl = -dot_product(direction, vars.normal);
 	result.t = vars.t;
 	result.hit = true;

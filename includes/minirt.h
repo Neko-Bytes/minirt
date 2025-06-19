@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 00:30:05 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 17:32:52 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 19:19:08 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	error_exit(t_data *data);
 void	print_error(char *msg, t_data *data);
 bool	validate_element_counts(char **tokens, t_scene **scene, int *a_count,
 			int *c_count);
-            void	check_params(t_scene *scene, t_camera *cam);
+void	check_params(t_scene *scene, t_camera *cam);
 
 #endif

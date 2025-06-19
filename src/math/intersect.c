@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 19:11:06 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 19:11:10 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 19:21:33 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 #include "../includes/object_array.h"
 #include "../includes/vector_ops.h"
 
-bool	check_height_intersection(const t_cylinder *cylinder, t_vec3 Phit,
+bool	check_height_intersection(const t_cylinder *cylinder, t_vec3 phit,
 		t_vec3 axis_direction)
 {
 	float	height_at_intersection;
 
-	height_at_intersection = dot_product(vec_substract(Phit,
+	height_at_intersection = dot_product(vec_substract(phit,
 				cylinder->position), axis_direction);
 	if (height_at_intersection < -cylinder->height / 2.0f
 		|| height_at_intersection > cylinder->height / 2.0f)
@@ -61,8 +61,8 @@ bool	find_cylinder_hit_t(const t_cylinder_ray *cray, t_abc *abc,
 	t2 = (-abc->b + sqrtf(discriminant)) / (2.0f * abc->a);
 	if (t1 > 0.0f)
 	{
-		hit->Phit = vec_add(cray->ray_origin, vec_scale(cray->direction, t1));
-		if (check_height_intersection(cray->cylinder, hit->Phit,
+		hit->phit = vec_add(cray->ray_origin, vec_scale(cray->direction, t1));
+		if (check_height_intersection(cray->cylinder, hit->phit,
 				cray->axis_direction))
 		{
 			hit->t = t1;
@@ -71,8 +71,8 @@ bool	find_cylinder_hit_t(const t_cylinder_ray *cray, t_abc *abc,
 	}
 	if (t2 > 0.0f)
 	{
-		hit->Phit = vec_add(cray->ray_origin, vec_scale(cray->direction, t2));
-		if (check_height_intersection(cray->cylinder, hit->Phit,
+		hit->phit = vec_add(cray->ray_origin, vec_scale(cray->direction, t2));
+		if (check_height_intersection(cray->cylinder, hit->phit,
 				cray->axis_direction))
 			return (hit->t = t2, true);
 	}

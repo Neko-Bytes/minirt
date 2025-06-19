@@ -1,34 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/19 19:20:29 by kruseva           #+#    #+#             */
+/*   Updated: 2025/06/19 19:20:33 by kruseva          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef VECTOR_H
-#define VECTOR_H
+# define VECTOR_H
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
+# include <stddef.h>
+# include <stdlib.h>
+# include <string.h>
 
-// Generic vector structure
-typedef struct s_vector {
-    void *data;
-    size_t size;
-    size_t capacity;
-    size_t element_size;
-} t_vector;
+typedef struct s_vector
+{
+	void	*data;
+	size_t	size;
+	size_t	capacity;
+	size_t	element_size;
+}			t_vector;
 
-// Initialize a vector with given element size and initial capacity
-void vector_init(t_vector *vec, size_t element_size, size_t initial_capacity);
+void		vector_init(t_vector *vec, size_t element_size,
+				size_t initial_capacity);
 
-// Add an element to the vector
-void vector_push_back(t_vector *vec, const void *element);
+void		vector_push_back(t_vector *vec, const void *element);
 
-// Get element at index
-void *vector_at(const t_vector *vec, size_t index);
+void		*vector_at(const t_vector *vec, size_t index);
 
-// Get current size
-size_t vector_size(const t_vector *vec);
+size_t		vector_size(const t_vector *vec);
 
-// Get current capacity
-size_t vector_capacity(const t_vector *vec);
+size_t		vector_capacity(const t_vector *vec);
 
-// Free vector memory
-void vector_free(t_vector *vec);
+void		vector_free(t_vector *vec);
 
-#endif 
+#endif

@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:36:19 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 17:14:34 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 19:06:47 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	apply_shadow_and_diffuse(const t_scene *scene, t_hit_info *hit,
 	float	light_dist;
 	float	shadow_factor;
 
-	in_shadow = isShadow(scene, hit->hit_point, light, hit->closest_t);
+	in_shadow = is_shadow(scene, hit->hit_point, light, hit->closest_t);
 	diffuse = compute_diffuse(hit->hit_point, hit->normal, *light,
 			hit->base_color);
 	spot = spot_brightness();

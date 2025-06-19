@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gc.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:39:45 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 02:22:38 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:42:55 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_gc_node **gc_head_ptr(void);
  *   and returns that pointer. On failure, prints "Error\nmalloc failed\n"
  *   and exits.
  */
+void	gc_remove_node(t_gc_node **head, t_gc_node *prev, t_gc_node *cur);
 void *gc_malloc(size_t size);
 void *gc_realloc(void *ptr, size_t old_size, size_t new_size);
 

@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   gc.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:58:01 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 08:28:40 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:43:05 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/gc.h"
-
-static t_gc_node  *g_gc_head = NULL;
 
 /*
 ** Return the address of the head pointer so all GC functions
 ** can update the list.  Non-static so it's used and won't trigger
 ** -Wunused-function.
 */
-t_gc_node  **gc_head_ptr(void)
+t_gc_node	**gc_head_ptr(void)
 {
-    return (&g_gc_head);
+	static t_gc_node	*g_gc_head = NULL;
+
+	return (&g_gc_head);
 }
 
 /*
@@ -43,9 +43,9 @@ static t_gc_node	*new_node(void *p)
 
 void	*gc_malloc(size_t size)
 {
-	void			*mem;
-	t_gc_node		*node;
-	t_gc_node		**head;
+	void		*mem;
+	t_gc_node	*node;
+	t_gc_node	**head;
 
 	mem = malloc(size);
 	if (!mem)
@@ -63,24 +63,6 @@ void	*gc_malloc(size_t size)
 	return (mem);
 }
 
-void	*gc_realloc(void *ptr, size_t old_size, size_t new_size)
-{
-	void		*new_mem;
-
-	new_mem = gc_malloc(new_size);
-	if (!new_mem)
-		return (NULL);
-	if (ptr && old_size > 0)
-	{
-		if (old_size < new_size)
-			ft_memcpy(new_mem, ptr, old_size);
-		else
-			ft_memcpy(new_mem, ptr, new_size);
-		gc_free(ptr);
-	}
-	return (new_mem);
-}
-
 void	gc_free(void *ptr)
 {
 	t_gc_node	**head;
@@ -96,14 +78,7 @@ void	gc_free(void *ptr)
 	{
 		if (cur->ptr == ptr)
 		{
-			if (prev)
-				prev->next = cur->next;
-			else
-				*head = cur->next;
-			if(cur && cur->ptr)
-				free(cur->ptr);
-			if(cur)
-				free(cur);
+			gc_remove_node(head, prev, cur);
 			return ;
 		}
 		prev = cur;
@@ -122,10 +97,9 @@ void	gc_free_all(void)
 	{
 		tmp = *head;
 		*head = (*head)->next;
-		if(tmp->ptr)
+		if (tmp->ptr)
 			free(tmp->ptr);
-		if(tmp)
+		if (tmp)
 			free(tmp);
 	}
 }
-

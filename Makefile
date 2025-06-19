@@ -34,8 +34,13 @@ SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/render/keys.c \
 	  $(SRC_DIR)/render/render.c \
 	  $(SRC_DIR)/math/vector_ops.c \
+	  $(SRC_DIR)/math/vec_ops.c \
 	  $(SRC_DIR)/object_array/array.c \
+	  $(SRC_DIR)/object_array/vectors.c \
+	  $(SRC_DIR)/object_array/add_funcs.c \
+	  $(SRC_DIR)/object_array/get_functs.c \
 	  $(SRC_DIR)/gc/gc.c \
+	  $(SRC_DIR)/gc/gc_helper.c \
 	  $(SRC_DIR)/utils/print_utils.c \
 	  $(SRC_DIR)/parsing/parse_args.c \
       $(SRC_DIR)/parsing/parse_file.c \
@@ -47,7 +52,8 @@ SRC = $(SRC_DIR)/main.c \
       $(SRC_DIR)/parsing/parse_camera.c \
 	  $(SRC_DIR)/errors/errors.c \
 	  $(SRC_DIR)/math/intersect.c  \
-	  src/utils/parse_elements_utils.c \
+	  $(SRC_DIR)/math/intersect_shapes.c  \
+	  $(SRC_DIR)/utils/parse_elements_utils.c \
 	  $(GNL_DIR)/get_next_line.c \
       $(GNL_DIR)/get_next_line_utils.c 
 

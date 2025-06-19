@@ -15,6 +15,8 @@
 
 static void	validate_light(t_scene *scene, t_light *L);
 static void	free_tokens(char **tokens);
+static void fill_light_position(t_light *light, char **xyz, t_scene *scene);
+static void fill_light_color(t_light *light, char **rgb, t_scene *scene);
 
 bool	parse_light(t_scene **scene, char **tokens)
 {
@@ -29,26 +31,15 @@ bool	parse_light(t_scene **scene, char **tokens)
 		print_error("Light: wrong number of parameters\n", (*scene)->data);
 	
 	xyz = ft_split(tokens[1], ',');
-	if (!xyz || tokens_counter(xyz) != 3)
-		print_error("Light: invalid position format\n", (*scene)->data);
-	
 	rgb = ft_split(tokens[3], ',');
-	if (!rgb || tokens_counter(rgb) != 3)
-		print_error("Light: invalid color format\n", (*scene)->data);
 
 	light = gc_malloc(sizeof(t_light));
 	if (!light)
 		print_error("Light: allocation failed\n", (*scene)->data);
 
-	light->position.x = ft_atof(xyz[0]);
-	light->position.y = ft_atof(xyz[1]);
-	light->position.z = ft_atof(xyz[2]);
-
+	fill_light_position(light, xyz, *scene);
 	light->intensity = ft_atof(tokens[2]);
-
-	light->color.r = ft_atoi(rgb[0]);
-	light->color.g = ft_atoi(rgb[1]);
-	light->color.b = ft_atoi(rgb[2]);
+	fill_light_color(light, rgb, *scene);
 
 	validate_light(*scene, light);
 
@@ -84,4 +75,22 @@ static void	free_tokens(char **tokens)
 		i++;
 	}
 	free(tokens);
+}
+
+static void fill_light_position(t_light *light, char **xyz, t_scene *scene)
+{
+	if (!xyz || tokens_counter(xyz) != 3)
+		print_error("Light: invalid position format\n", scene->data);
+	light->position.x = ft_atof(xyz[0]);
+	light->position.y = ft_atof(xyz[1]);
+	light->position.z = ft_atof(xyz[2]);
+}
+
+static void fill_light_color(t_light *light, char **rgb, t_scene *scene)
+{
+	if (!rgb || tokens_counter(rgb) != 3)
+		print_error("Light: invalid color format\n", scene->data);
+	light->color.r = ft_atoi(rgb[0]);
+	light->color.g = ft_atoi(rgb[1]);
+	light->color.b = ft_atoi(rgb[2]);
 }

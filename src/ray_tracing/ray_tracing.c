@@ -131,6 +131,10 @@ static void apply_shadow_and_diffuse(const t_scene *scene, t_vec3 hit_point, t_v
 {
     bool in_shadow = isShadow(scene, hit_point, light, closest_t);
     t_color diffuse = compute_diffuse(hit_point, normal, *light, base_color);
+    float spot = spot_brightness();
+    diffuse.r *= spot;
+    diffuse.g *= spot;
+    diffuse.b *= spot;
     float light_dist = vec_length(vec_substract(light->position, hit_point));
     float shadow_factor = 1.0f;
     if (in_shadow)

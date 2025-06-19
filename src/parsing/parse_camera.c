@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_camera.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:37:14 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 18:40:08 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 13:58:01 by Home             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 static void assign_params(t_scene **scene, char **tokens);
 static void check_params(t_scene *scene, t_camera *cam);
 static void free_tokens(char **tokens);
+static void assign_camera_position(t_scene *scene, char **xyz);
+static void assign_camera_orientation(t_scene *scene, char **vec_xyz);
 
 bool parse_camera(t_scene **scene, char **tokens)
 {
@@ -47,31 +49,35 @@ static void assign_params(t_scene **scene, char **tokens)
     xyz = ft_split(tokens[1], ',');
     vec_xyz = ft_split(tokens[2], ',');
 
-    if (!xyz || tokens_counter(xyz) != 3)
-        print_error("Invalid input for camera position\n", (*scene)->data);
-    if (!vec_xyz || tokens_counter(vec_xyz) != 3)
-        print_error("Invalid input for camera orientation\n", (*scene)->data);
-
-    (*scene)->camera->position.x = ft_atof(xyz[0]);
-    (*scene)->camera->position.y = ft_atof(xyz[1]);
-    (*scene)->camera->position.z = ft_atof(xyz[2]);
-
-    (*scene)->camera->orientation.x = ft_atof(vec_xyz[0]);
-    (*scene)->camera->orientation.y = ft_atof(vec_xyz[1]);
-    (*scene)->camera->orientation.z = ft_atof(vec_xyz[2]);
-
-    // Set direction to be the same as orientation initially
-    (*scene)->camera->direction.x = (*scene)->camera->orientation.x;
-    (*scene)->camera->direction.y = (*scene)->camera->orientation.y;
-    (*scene)->camera->direction.z = (*scene)->camera->orientation.z;
-
+    assign_camera_position(*scene, xyz);
+    assign_camera_orientation(*scene, vec_xyz);
     (*scene)->camera->fov = ft_atof(tokens[3]);
 
     check_params(*scene, (*scene)->camera);
 
-    // Free temporary arrays
     free_tokens(xyz);
     free_tokens(vec_xyz);
+}
+
+static void assign_camera_position(t_scene *scene, char **xyz)
+{
+    if (!xyz || tokens_counter(xyz) != 3)
+        print_error("Invalid input for camera position\n", scene->data);
+    scene->camera->position.x = ft_atof(xyz[0]);
+    scene->camera->position.y = ft_atof(xyz[1]);
+    scene->camera->position.z = ft_atof(xyz[2]);
+}
+
+static void assign_camera_orientation(t_scene *scene, char **vec_xyz)
+{
+    if (!vec_xyz || tokens_counter(vec_xyz) != 3)
+        print_error("Invalid input for camera orientation\n", scene->data);
+    scene->camera->orientation.x = ft_atof(vec_xyz[0]);
+    scene->camera->orientation.y = ft_atof(vec_xyz[1]);
+    scene->camera->orientation.z = ft_atof(vec_xyz[2]);
+    scene->camera->direction.x = scene->camera->orientation.x;
+    scene->camera->direction.y = scene->camera->orientation.y;
+    scene->camera->direction.z = scene->camera->orientation.z;
 }
 
 static void check_params(t_scene *scene, t_camera *cam)
@@ -87,7 +93,6 @@ static void check_params(t_scene *scene, t_camera *cam)
     if (orientation_length < 0.0001f)
         print_error("Camera orientation vector cannot be zero\n", scene->data);
 
-    // Normalize both orientation and direction vectors
     cam->orientation.x /= orientation_length;
     cam->orientation.y /= orientation_length;
     cam->orientation.z /= orientation_length;

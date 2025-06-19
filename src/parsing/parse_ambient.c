@@ -13,6 +13,7 @@
 #include "../../includes/minirt.h"
 
 void ambience_checker(t_scene *scene);
+static void fill_ambient_color(t_ambient *ambient, char **rgb, t_scene *scene);
 
 bool parse_ambience(t_scene **scene, char **tokens)
 {
@@ -28,15 +29,20 @@ bool parse_ambience(t_scene **scene, char **tokens)
 	}
 	else
 		colorprint(MSG, "Ambient struct already exists, replacing ...\n");
-		(*scene)->ambient->intensity = ft_atof(tokens[1]);
+	(*scene)->ambient->intensity = ft_atof(tokens[1]);
 	rgb = ft_split(tokens[2], ',');
-	if(!rgb || !*rgb || tokens_counter(rgb) != 3)
-		print_error("Ambience: Invalid arguments fo RGB.", (*scene)->data);
-		(*scene)->ambient->color.r = ft_atoi(rgb[0]);
-		(*scene)->ambient->color.g = ft_atoi(rgb[1]);
-		(*scene)->ambient->color.b = ft_atoi(rgb[2]);
+	fill_ambient_color((*scene)->ambient, rgb, *scene);
 	ambience_checker((*scene));
 	return (true);
+}
+
+static void fill_ambient_color(t_ambient *ambient, char **rgb, t_scene *scene)
+{
+	if(!rgb || !*rgb || tokens_counter(rgb) != 3)
+		print_error("Ambience: Invalid arguments fo RGB.", scene->data);
+	ambient->color.r = ft_atoi(rgb[0]);
+	ambient->color.g = ft_atoi(rgb[1]);
+	ambient->color.b = ft_atoi(rgb[2]);
 }
 
 void ambience_checker(t_scene *scene)

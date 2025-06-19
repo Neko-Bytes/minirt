@@ -15,6 +15,8 @@
 #include "../includes/object_array.h"
 #include "../includes/vector_ops.h"
 
+#define T_MIN 0.001f
+
 bool	intersectSphere(const t_sphere *sphere, t_vec3 ray_origin,
 		t_vec3 direction, float *refl, float *t_out)
 {
@@ -30,12 +32,12 @@ bool	intersectSphere(const t_sphere *sphere, t_vec3 ray_origin,
 	half_b = dot_product(oc, direction);
 	c = dot_product(oc, oc) - sphere->radius * sphere->radius;
 	discriminant = half_b * half_b - c;
-	if (discriminant < 0.0f)
+	if (discriminant < T_MIN)
 		return (false);
 	t = -half_b - sqrtf(discriminant);
-	if (t < 0.0f)
+	if (t < T_MIN)
 		t = -half_b + sqrtf(discriminant);
-	if (t < 0.0f)
+	if (t < T_MIN)
 		return (false);
 	Phit = vec_add(ray_origin, vec_scale(direction, t));
 	normal = vec_normalize(vec_substract(Phit, sphere->position));
@@ -76,14 +78,12 @@ float disc_cylinder(t_vec3 ray_origin, const t_cylinder *cylinder, t_vec3 direct
 	return (abc->b * abc->b - 4.0f * abc->a * abc->c);
 }
 
-static bool find_cylinder_hit_t(const t_cylinder_ray *cray, t_abc *abc, t_cylinder_hit *hit)
+static bool find_cylinder_hit_t(const t_cylinder_ray *cray, t_abc *abc, t_cylinder_hit *hit, float discriminant)
 {
-	float discriminant = disc_cylinder(cray->ray_origin, cray->cylinder, cray->direction, abc);
-	if (discriminant < 0.0f)
-		return false;
-	float sqrt_disc = sqrtf(discriminant);
-	float t1 = (-abc->b - sqrt_disc) / (2.0f * abc->a);
-	float t2 = (-abc->b + sqrt_disc) / (2.0f * abc->a);
+	float t1;
+	float t2;
+	t1 = (-abc->b - sqrtf(discriminant)) / (2.0f * abc->a);
+	t2 = (-abc->b + sqrtf(discriminant)) / (2.0f * abc->a);
 	if (t1 > 0.0f)
 	{
 		hit->Phit = vec_add(cray->ray_origin, vec_scale(cray->direction, t1));
@@ -117,13 +117,17 @@ bool	intersectCylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
 		t_vec3 direction, float *refl, float *t_out)
 {
 	t_cylinder_ray cray;
+	float discriminant;
 	cray.cylinder = cylinder;
 	cray.ray_origin = ray_origin;
 	cray.direction = direction;
 	cray.axis_direction = vec_normalize(cylinder->orientation);
 	t_abc abc;
 	t_cylinder_hit hit;
-	if (!find_cylinder_hit_t(&cray, &abc, &hit))
+	discriminant = disc_cylinder(cray.ray_origin, cray.cylinder, cray.direction, &abc);
+	if (discriminant < T_MIN)
+		return false;
+	if (!find_cylinder_hit_t(&cray, &abc, &hit, discriminant))
 		return false;
 	compute_cylinder_normal_and_refl(&cray, &hit, refl);
 	*t_out = hit.t;
@@ -142,7 +146,7 @@ bool	intersectPlane(const t_plane *plane, t_vec3 ray_origin,
 		return (false);
 	ray_to_plane = vec_substract(plane->position, ray_origin);
 	t = dot_product(ray_to_plane, plane->normal) / denom;
-	if (t < 0.0f)
+	if (t < T_MIN)
 		return (false);
 	*t_out = t;
 	return (true);

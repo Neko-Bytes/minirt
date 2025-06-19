@@ -104,6 +104,4 @@ typedef struct s_scene {
   t_data *data;
 } t_scene;
 
-void mainImage(t_vec2 coord, int width, int height, t_color *output, t_scene *scene);
-
 #endif // ENTRIES_H

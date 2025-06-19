@@ -5,7 +5,5 @@
 #include "object_array.h"
 
 void	render(t_data *data);
-t_vec3 rotate_y(t_vec3 v, float angle);
-t_vec3 rotate_x(t_vec3 v, float angle);
 
 #endif 

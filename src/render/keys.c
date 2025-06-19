@@ -41,25 +41,6 @@ void	handle_camera_movement(int keycode, t_data *data, float move_speed)
 	}
 }
 
-void	handle_camera_rotation(int keycode, t_data *data, float angle)
-{
-	t_vec3	center;
-	t_vec3	dir;
-
-	if (keycode == KEY_A || keycode == KEY_D)
-	{
-		center = vec_add(data->camera->position,
-				vec_scale(data->camera->orientation, 0.2f));
-		dir = vec_substract(data->camera->position, center);
-		if (keycode == KEY_A)
-			dir = rotate_y(dir, -angle);
-		else if (keycode == KEY_D)
-			dir = rotate_y(dir, angle);
-		data->camera->position = vec_add(center, dir);
-		data->camera->orientation = vec_normalize(vec_substract(center,
-					data->camera->position));
-	}
-}
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
@@ -90,9 +71,11 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		input->key_d = pressed;
 }
 
-static bool handle_camera_movement_keys(t_data *data, float move_speed)
+static bool	handle_camera_movement_keys(t_data *data, float move_speed)
 {
-	bool moved = false;
+	bool	moved;
+
+	moved = false;
 	if (data->input->key_up)
 	{
 		handle_camera_movement(KEY_UP, data, move_speed);
@@ -113,12 +96,14 @@ static bool handle_camera_movement_keys(t_data *data, float move_speed)
 		handle_camera_movement(KEY_RIGHT, data, move_speed);
 		moved = true;
 	}
-	return moved;
+	return (moved);
 }
 
-static bool handle_camera_rotation_keys(t_data *data, float angle)
+static bool	handle_camera_rotation_keys(t_data *data, float angle)
 {
-	bool rotated = false;
+	bool	rotated;
+
+	rotated = false;
 	if (data->input->key_a)
 	{
 		handle_camera_rotation(KEY_A, data, angle);
@@ -129,7 +114,7 @@ static bool handle_camera_rotation_keys(t_data *data, float angle)
 		handle_camera_rotation(KEY_D, data, angle);
 		rotated = true;
 	}
-	return rotated;
+	return (rotated);
 }
 
 void	game_loop(void *param)

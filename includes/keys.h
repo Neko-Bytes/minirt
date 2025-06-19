@@ -16,7 +16,6 @@
 #define KEY_RIGHT MLX_KEY_RIGHT // Move camera right
 
 void	handle_camera_movement(int keycode, t_data *data, float move_speed);
-void	handle_camera_rotation(int keycode, t_data *data, float angle);
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	game_loop(void *param);
 #endif

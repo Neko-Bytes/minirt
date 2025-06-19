@@ -6,30 +6,11 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:00 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/18 18:10:38 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 15:07:56 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-
-void	init_window_and_image(t_data *data)
-{
-	data->mlx = mlx_init(data->width, data->height, "miniRT", true);
-	if (!data->mlx)
-		exit(1);
-	data->img = mlx_new_image(data->mlx, data->width, data->height);
-	if (!data->img)
-	{
-		mlx_terminate(data->mlx);
-		exit(1);
-	}
-	if (mlx_image_to_window(data->mlx, data->img, 0, 0) < 0)
-	{
-		mlx_delete_image(data->mlx, data->img);
-		mlx_terminate(data->mlx);
-		exit(1);
-	}
-}
 
 static void	init_scene_structs(t_scene **scene_ptr)
 {
@@ -54,7 +35,9 @@ static void	init_scene_structs(t_scene **scene_ptr)
 
 static void	open_and_parse_file(const char *filename, t_scene *scene)
 {
-	int fd = open(filename, O_RDONLY);
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		print_error("Error: cannot open file\n", scene->data);
 	parse_file(fd, scene);
@@ -79,14 +62,13 @@ static void	run_event_loop_and_render(t_scene *scene)
 
 int	main(int argc, char **argv)
 {
-	(void)argc;
-	t_scene *scene;
+	t_scene	*scene;
 
+	(void)argc;
 	init_scene_structs(&scene);
 	open_and_parse_file(argv[1], scene);
 	setup_camera_and_scene(scene);
 	run_event_loop_and_render(scene);
-
 	mlx_terminate(scene->data->mlx);
 	colorprint(MSG, "Exiting program and cleaning up resources ...\n");
 	gc_free_all();

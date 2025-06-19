@@ -15,8 +15,6 @@
 #include "../includes/object_array.h"
 #include "../includes/vector_ops.h"
 
-
-
 bool	intersectSphere(const t_sphere *sphere, t_vec3 ray_origin,
 		t_vec3 direction, float *refl, float *t_out)
 {
@@ -78,61 +76,58 @@ float disc_cylinder(t_vec3 ray_origin, const t_cylinder *cylinder, t_vec3 direct
 	return (abc->b * abc->b - 4.0f * abc->a * abc->c);
 }
 
+static bool find_cylinder_hit_t(const t_cylinder_ray *cray, t_abc *abc, t_cylinder_hit *hit)
+{
+	float discriminant = disc_cylinder(cray->ray_origin, cray->cylinder, cray->direction, abc);
+	if (discriminant < 0.0f)
+		return false;
+	float sqrt_disc = sqrtf(discriminant);
+	float t1 = (-abc->b - sqrt_disc) / (2.0f * abc->a);
+	float t2 = (-abc->b + sqrt_disc) / (2.0f * abc->a);
+	if (t1 > 0.0f)
+	{
+		hit->Phit = vec_add(cray->ray_origin, vec_scale(cray->direction, t1));
+		if (checkHeightIntersection(cray->cylinder, hit->Phit, cray->axis_direction))
+		{
+			hit->t = t1;
+			return true;
+		}
+	}
+	if (t2 > 0.0f)
+	{
+		hit->Phit = vec_add(cray->ray_origin, vec_scale(cray->direction, t2));
+		if (checkHeightIntersection(cray->cylinder, hit->Phit, cray->axis_direction))
+		{
+			hit->t = t2;
+			return true;
+		}
+	}
+	return false;
+}
+
+static void compute_cylinder_normal_and_refl(const t_cylinder_ray *cray, const t_cylinder_hit *hit, float *refl)
+{
+	t_vec3 cp = vec_substract(hit->Phit, cray->cylinder->position);
+	t_vec3 axis_proj = vec_scale(cray->axis_direction, dot_product(cp, cray->axis_direction));
+	t_vec3 normal = vec_normalize(vec_substract(cp, axis_proj));
+	*refl = -dot_product(cray->direction, normal);
+}
+
 bool	intersectCylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
 		t_vec3 direction, float *refl, float *t_out)
 {
-	t_vec3 axis_direction;
+	t_cylinder_ray cray;
+	cray.cylinder = cylinder;
+	cray.ray_origin = ray_origin;
+	cray.direction = direction;
+	cray.axis_direction = vec_normalize(cylinder->orientation);
 	t_abc abc;
-	float discriminant;
-	float sqrt_disc;
-	float t1;
-	float t2;
-	bool hit_found;
-	float t;
-	t_vec3 Phit;
-	t_vec3 cp;
-	t_vec3 axis_proj;
-	t_vec3 normal;
-
-	axis_direction = vec_normalize(cylinder->orientation);
-	discriminant = disc_cylinder(ray_origin, cylinder, direction, &abc);
-	if (discriminant < 0.0f)
-		return (false);
-	
-	sqrt_disc = sqrtf(discriminant);
-	t1 = (-abc.b - sqrt_disc) / (2.0f * abc.a);
-	t2 = (-abc.b + sqrt_disc) / (2.0f * abc.a);
-	hit_found = false;
-	t = -1.0f;
-
-	if (t1 > 0.0f)
-	{
-		Phit = vec_add(ray_origin, vec_scale(direction, t1));
-		if (checkHeightIntersection(cylinder, Phit, axis_direction))
-		{
-			t = t1;
-			hit_found = true;
-		}
-	}
-	if (!hit_found && t2 > 0.0f)
-	{
-		Phit = vec_add(ray_origin, vec_scale(direction, t2));
-		if (checkHeightIntersection(cylinder, Phit, axis_direction))
-		{
-			t = t2;
-			hit_found = true;
-		}
-	}
-
-	if (!hit_found)
-		return (false);
-
-	cp = vec_substract(Phit, cylinder->position);
-	axis_proj = vec_scale(axis_direction, dot_product(cp, axis_direction));
-	normal = vec_normalize(vec_substract(cp, axis_proj));
-	*refl = -dot_product(direction, normal);
-	*t_out = t;
-	return (true);
+	t_cylinder_hit hit;
+	if (!find_cylinder_hit_t(&cray, &abc, &hit))
+		return false;
+	compute_cylinder_normal_and_refl(&cray, &hit, refl);
+	*t_out = hit.t;
+	return true;
 }
 
 bool	intersectPlane(const t_plane *plane, t_vec3 ray_origin,

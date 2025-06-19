@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_light.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 08:56:08 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 18:35:50 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 12:09:38 by Home             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 #include "../../includes/gc.h"
 
-// static void	ensure_space(t_scene *scene);
-// static void	fill_light(t_light *L, char **xyz,
-				// char **rgb, char **tokens);
 static void	validate_light(t_scene *scene, t_light *L);
 static void	free_tokens(char **tokens);
 
@@ -39,67 +36,28 @@ bool	parse_light(t_scene **scene, char **tokens)
 	if (!rgb || tokens_counter(rgb) != 3)
 		print_error("Light: invalid color format\n", (*scene)->data);
 
-	// Allocate light using gc_malloc
 	light = gc_malloc(sizeof(t_light));
 	if (!light)
 		print_error("Light: allocation failed\n", (*scene)->data);
 
-	// Parse position
 	light->position.x = ft_atof(xyz[0]);
 	light->position.y = ft_atof(xyz[1]);
 	light->position.z = ft_atof(xyz[2]);
 
-	// Parse intensity
 	light->intensity = ft_atof(tokens[2]);
 
-	// Parse color
 	light->color.r = ft_atoi(rgb[0]);
 	light->color.g = ft_atoi(rgb[1]);
 	light->color.b = ft_atoi(rgb[2]);
 
 	validate_light(*scene, light);
 
-	// Free temporary arrays
 	free_tokens(xyz);
 	free_tokens(rgb);
 
-	// Add light to vector
 	vector_push_back(&(*scene)->lights_vec, light);
 	return (true);
 }
-
-// static void	ensure_space(t_scene *scene)
-// {
-// 	if (!scene->lights)
-// 	{
-// 		scene->lights = gc_malloc(sizeof(t_light));
-// 		if (!scene->lights)
-// 			print_error("Light: allocation failed\n", scene->data);
-// 		scene->lights->count = 0;
-// 	}
-// 	else
-// 	{
-// 		if (scene->lights->count + 1 > MAX_LIGHTS)
-// 			print_error("Light: maximum number of lights exceeded\n", scene->data);
-// 		scene->lights = gc_realloc(scene->lights,
-// 				sizeof(t_light) * scene->lights->count,
-// 				sizeof(t_light) * (scene->lights->count + 1));
-// 		if (!scene->lights)
-// 			print_error("Light: reallocation failed\n", scene->data);
-// 	}
-// }
-
-// static void	fill_light(t_light *L, char **xyz,
-// 				char **rgb, char **tokens)
-// {
-// 	L->position.x = ft_atof(xyz[0]);
-// 	L->position.y = ft_atof(xyz[1]);
-// 	L->position.z = ft_atof(xyz[2]);
-// 	L->color.r    = ft_atoi(rgb[0]);
-// 	L->color.g    = ft_atoi(rgb[1]);
-// 	L->color.b    = ft_atoi(rgb[2]);
-// 	L->intensity  = ft_atof(tokens[2]);
-// }
 
 static void	validate_light(t_scene *scene, t_light *L)
 {

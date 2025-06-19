@@ -129,23 +129,3 @@ void	gc_free_all(void)
 	}
 }
 
-// Just for debugging purposes
-// void gc_print_all(void) {
-//   t_gc_node *cur;
-//   size_t idx;
-//   t_gc_node **head;
-//
-//   head = gc_head_ptr();
-//   if (!*head) {
-//     printf("[GC] no allocations tracked\n");
-//     return;
-//   }
-//   cur = *head;
-//   idx = 0;
-//   printf("[GC] currently tracked allocations:\n");
-//   while (cur) {
-//     printf("  [%zu] %p\n", idx, cur->ptr);
-//     idx++;
-//     cur = cur->next;
-//   }
-// }

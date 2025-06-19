@@ -25,7 +25,6 @@ int tokens_counter(char **tokens)
     {
         i++;
     }
-    // tokens_printer(tokens);
     return (i);
 }
 

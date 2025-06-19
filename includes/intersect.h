@@ -5,6 +5,19 @@
 # include "entries.h" // Include entries.h for type definitions
 # include "vector_ops.h"
 
+
+typedef struct s_cylinder_ray {
+	const t_cylinder *cylinder;
+	t_vec3 ray_origin;
+	t_vec3 direction;
+	t_vec3 axis_direction;
+} t_cylinder_ray;
+
+typedef struct s_cylinder_hit {
+	float t;
+	t_vec3 Phit;
+} t_cylinder_hit;
+
 typedef struct s_abc
 {
 	float	a;

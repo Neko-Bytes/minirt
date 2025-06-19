@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:11:26 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/16 18:35:22 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 12:10:35 by Home             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ bool parse_file(int fd, t_scene *scene)
   char *line;
   char *trim;
 
-  // Initialize the object vector with a reasonable initial capacity
   init_object_vector(&scene->objects, 10);
-  // Initialize the lights vector
   vector_init(&scene->lights_vec, sizeof(t_light), 5);
 
   while (1)
@@ -46,11 +44,9 @@ bool parse_file(int fd, t_scene *scene)
 static char *safe_gnl(int fd, t_scene *scene)
 {
   char *line;
-  // static int count = 0;
 
   errno = 0;
   line = get_next_line(fd);
-  // count++;
   if(!line && errno != 0)
     print_error("Issue with reading line\n", scene->data);
   return (line);

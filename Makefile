@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address \
 
 # macOS specific flags
 MAC_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit \
-			-L$(HOME)/.brew/opt/glfw/lib -lglfw
+			-L/opt/homebrew/Cellar/glfw/3.4/lib -lglfw
 
 # Linux specific flags
 LINUX_FLAGS = -L$(BUILD_DIR) -lmlx42 -L/usr/X11/lib -lX11 -lXext -lglfw -lm
@@ -44,7 +44,6 @@ SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/errors/errors.c \
 	  $(SRC_DIR)/math/intersect.c  \
 	  src/utils/parse_elements_utils.c \
-      src/utils/parse_debug.c \
 	  $(GNL_DIR)/get_next_line.c \
       $(GNL_DIR)/get_next_line_utils.c 
 
@@ -88,83 +87,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re mac linux mlx42
-
-
-
-
-
-
-
-
-
-
-# # Makefile.parser
-# #
-# # Builds a standalone parser test binary (parser_test)
-# # using only your parsing .c files, errors, GNL and GC.
-#
-# #######################
-# # Directories & Names #
-# #######################
-# LIBFT_DIR   = libft
-# INCLUDE_DIR = includes
-# SRC_DIR     = src
-# GNL_DIR     = gnl
-# GC_DIR      = src/gc
-#
-# NAME        = parser_test
-#
-# #######################
-# # Compiler & Flags    #
-# #######################
-# CC      = cc
-# CFLAGS  = -Wall -Wextra -Werror -g -fsanitize=address \
-#           -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(SRC_DIR) -fsanitize=address -g
-#
-# #######################
-# # Sources & Objects   #
-# #######################
-# PARSER_SRCS = \
-#     $(SRC_DIR)/main.c \
-#     $(SRC_DIR)/parsing/parse_args.c \
-#     $(SRC_DIR)/parsing/parse_file.c \
-#     $(SRC_DIR)/parsing/parse_light.c \
-#     $(SRC_DIR)/parsing/parse_plane.c \
-#     $(SRC_DIR)/parsing/parse_sphere.c \
-#     $(SRC_DIR)/parsing/parse_cylinder.c \
-#     $(SRC_DIR)/parsing/parse_ambient.c \
-#     $(SRC_DIR)/parsing/parse_camera.c \
-#     $(SRC_DIR)/errors/errors.c \
-#     $(GNL_DIR)/get_next_line.c \
-#     $(GNL_DIR)/get_next_line_utils.c \
-#     $(GC_DIR)/gc.c \
-#     src/utils/parse_elements_utils.c \
-#     src/utils/parse_debug.c \
-#     src/utils/print_utils.c
-#
-# PARSER_OBJS = $(PARSER_SRCS:.c=.o)
-#
-# #######################
-# # Rules               #
-# #######################
-# .PHONY: all clean fclean re
-#
-# all: $(NAME)
-#
-# # Link against your libft
-# $(NAME): $(PARSER_OBJS)
-# 	@$(MAKE) -C $(LIBFT_DIR)
-# 	@$(CC) $(CFLAGS) $(PARSER_OBJS) -o $(NAME) $(LIBFT_DIR)/libft.a
-#
-# # Compile each .c into .o
-# %.o: %.c
-# 	@$(CC) $(CFLAGS) -c $< -o $@
-#
-# clean:
-# 	@rm -f $(PARSER_OBJS)
-# 	@$(MAKE) -C $(LIBFT_DIR) clean
-#
-# fclean: clean
-# 	rm -f $(NAME)
-#
-# re: fclean all

@@ -23,32 +23,43 @@ void	init_scene(t_scene *scene)
 	scene->data = NULL;
 }
 
-void	render(t_data *data)
+static void put_pixel_color(mlx_image_t *img, int x, int y, t_color *color)
 {
-	t_color color;
-	int		ir;
-	int		ig;
-	int		ib;
-	int		pixel;
-	mlx_image_t *img = (mlx_image_t *)data->img;
+	int ir = (int)(fminf(fmaxf(color->r, 0.0f), 255.0f));
+	int ig = (int)(fminf(fmaxf(color->g, 0.0f), 255.0f));
+	int ib = (int)(fminf(fmaxf(color->b, 0.0f), 255.0f));
+	int pixel = (ir << 24) | (ig << 16) | (ib << 8) | 0xFF; // RGBA format with full alpha
+	mlx_put_pixel(img, x, y, pixel);
+}
 
+static void render_row(int y, t_data *data, mlx_image_t *img)
+{
+	int x = 0;
+	t_color color;
+	while (x < data->width)
+	{
+		mainImage((t_vec2){x, y}, data->width, data->height, &color, data->scene);
+		put_pixel_color(img, x, y, &color);
+		x++;
+	}
+}
+
+static void render_image(t_data *data, mlx_image_t *img)
+{
+	int y = 0;
+	while (y < data->height)
+	{
+		render_row(y, data, img);
+		y++;
+	}
+}
+
+void render(t_data *data)
+{
+	mlx_image_t *img = (mlx_image_t *)data->img;
 	if (!data || !data->img || !data->camera || !data->scene)
 		return;
-
-	for (int y = 0; y < data->height; y++)
-	{
-		for (int x = 0; x < data->width; x++)
-		{
-			mainImage((t_vec2){x, y}, data->width, data->height, &color, data->scene);
-			ir = (int)(fminf(fmaxf(color.r, 0.0f), 255.0f));
-			ig = (int)(fminf(fmaxf(color.g, 0.0f), 255.0f));
-			ib = (int)(fminf(fmaxf(color.b, 0.0f), 255.0f));
-			pixel = (ir << 24) | (ig << 16) | (ib << 8) | 0xFF;  // RGBA format with full alpha
-			mlx_put_pixel(img, x, y, pixel);
-		}
-	}
-
-	// Ensure the image is properly updated
+	render_image(data, img);
 	mlx_image_to_window(data->mlx, img, 0, 0);
 }
 

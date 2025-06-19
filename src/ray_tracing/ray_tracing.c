@@ -17,24 +17,37 @@
 #include "../../includes/light.h"
 #include "../../includes/intersect.h"
 
-static void get_hit_normal_and_color(const t_scene *scene, int hit_type, int hit_index, t_vec3 hit_point, t_vec3 *normal, t_color *base_color)
+typedef struct s_hit_info {
+    t_vec3 hit_point;
+    t_vec3 normal;
+    t_color base_color;
+    float closest_t;
+} t_hit_info;
+
+typedef struct s_hit_lookup {
+    int hit_type;
+    int hit_index;
+    t_vec3 hit_point;
+} t_hit_lookup;
+
+static void get_hit_normal_and_color(const t_scene *scene, t_hit_lookup *lookup, t_vec3 *normal, t_color *base_color)
 {
-    if (hit_type == 1)
+    if (lookup->hit_type == 1)
     {
-        t_sphere *sphere = get_sphere(&scene->objects, hit_index);
-        *normal = sphere_normal(*sphere, hit_point);
+        t_sphere *sphere = get_sphere(&scene->objects, lookup->hit_index);
+        *normal = sphere_normal(*sphere, lookup->hit_point);
         *base_color = sphere->color;
     }
-    else if (hit_type == 2)
+    else if (lookup->hit_type == 2)
     {
-        t_plane *plane = get_plane(&scene->objects, hit_index);
+        t_plane *plane = get_plane(&scene->objects, lookup->hit_index);
         *normal = plane->normal;
         *base_color = plane->color;
     }
-    else if (hit_type == 3)
+    else if (lookup->hit_type == 3)
     {
-        t_cylinder *cylinder = get_cylinder(&scene->objects, hit_index);
-        *normal = cylinder_normal(*cylinder, hit_point);
+        t_cylinder *cylinder = get_cylinder(&scene->objects, lookup->hit_index);
+        *normal = cylinder_normal(*cylinder, lookup->hit_point);
         *base_color = cylinder->color;
     }
     else
@@ -44,15 +57,15 @@ static void get_hit_normal_and_color(const t_scene *scene, int hit_type, int hit
     }
 }
 
-static void apply_shadow_and_diffuse(const t_scene *scene, t_vec3 hit_point, t_vec3 normal, t_color base_color, t_light *light, float closest_t, t_color *final_color)
+static void apply_shadow_and_diffuse(const t_scene *scene, t_hit_info *hit, t_light *light, t_color *final_color)
 {
-    bool in_shadow = isShadow(scene, hit_point, light, closest_t);
-    t_color diffuse = compute_diffuse(hit_point, normal, *light, base_color);
+    bool in_shadow = isShadow(scene, hit->hit_point, light, hit->closest_t);
+    t_color diffuse = compute_diffuse(hit->hit_point, hit->normal, *light, hit->base_color);
     float spot = spot_brightness();
     diffuse.r *= spot;
     diffuse.g *= spot;
     diffuse.b *= spot;
-    float light_dist = vec_length(vec_substract(light->position, hit_point));
+    float light_dist = vec_length(vec_substract(light->position, hit->hit_point));
     float shadow_factor = 1.0f;
     if (in_shadow)
     {
@@ -76,24 +89,28 @@ static void apply_ambient(const t_scene *scene, t_color base_color, t_color *fin
 t_color rayTracing(t_vec3 direction, t_scene *scene)
 {
     t_color final_color = {0, 0, 0};
-    float refl = 1.0f;
-    (void)refl;
-    int hit_type = 0;
-    int hit_index = -1;
-    float closest_t = INFINITY;
+    t_closest_result result = {
+        .closest_t = INFINITY,
+        .refl = 1.0f,
+        .hit_type = 0,
+        .hit_index = -1
+    };
     t_vec3 ray_origin = scene->camera->position;
+    t_ray ray = { .origin = ray_origin, .direction = direction };
 
-    find_closest_plane(scene, ray_origin, direction, &closest_t, &refl, &hit_type, &hit_index);
-    find_closest_sphere(scene, ray_origin, direction, &closest_t, &refl, &hit_type, &hit_index);
-    find_closest_cylinder(scene, ray_origin, direction, &closest_t, &refl, &hit_type, &hit_index);
+    find_closest_plane(scene, ray, &result);
+    find_closest_sphere(scene, ray, &result);
+    find_closest_cylinder(scene, ray, &result);
 
-    t_vec3 hit_point = vec_add(ray_origin, vec_scale(direction, closest_t));
+    t_vec3 hit_point = vec_add(ray_origin, vec_scale(direction, result.closest_t));
     t_vec3 normal;
     t_color base_color;
-    get_hit_normal_and_color(scene, hit_type, hit_index, hit_point, &normal, &base_color);
+    t_hit_lookup lookup = { result.hit_type, result.hit_index, hit_point };
+    get_hit_normal_and_color(scene, &lookup, &normal, &base_color);
 
     t_light *light = (t_light *)vector_at(&scene->lights_vec, 0);
-    apply_shadow_and_diffuse(scene, hit_point, normal, base_color, light, closest_t, &final_color);
+    t_hit_info hit = { hit_point, normal, base_color, result.closest_t };
+    apply_shadow_and_diffuse(scene, &hit, light, &final_color);
     apply_ambient(scene, base_color, &final_color);
     return final_color;
 }

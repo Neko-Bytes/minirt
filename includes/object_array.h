@@ -17,6 +17,28 @@ typedef struct s_params {
 	int height;   // Image height
 } t_params;
 
+typedef struct s_ray {
+    t_vec3 origin;
+    t_vec3 direction;
+} t_ray;
+
+typedef struct s_closest_result {
+    float closest_t;
+    float refl;
+    int hit_type;
+    int hit_index;
+} t_closest_result;
+
+typedef struct s_closest_args {
+    const t_scene *scene;
+    t_vec3 ray_origin;
+    t_vec3 direction;
+    float *closest_t;
+    float *refl;
+    int *hit_type;
+    int *hit_index;
+} t_closest_args;
+
 // Object vector specific functions
 void		init_object_vector(t_object_vector *vec, int initial_capacity);
 void		add_plane(t_object_vector *vec, t_plane plane);
@@ -40,15 +62,9 @@ t_vec3		rotate_x(t_vec3 v, float angle);
 void		handle_camera_rotation(int keycode, t_data *data, float angle);
 
 // closest_t.c
-void		find_closest_plane(const t_scene *scene, t_vec3 ray_origin,
-				t_vec3 direction, float *closest_t, float *refl, int *hit_type,
-				int *hit_index);
-void		find_closest_sphere(const t_scene *scene, t_vec3 ray_origin,
-				t_vec3 direction, float *closest_t, float *refl, int *hit_type,
-				int *hit_index);
-void		find_closest_cylinder(const t_scene *scene, t_vec3 ray_origin,
-				t_vec3 direction, float *closest_t, float *refl, int *hit_type,
-				int *hit_index);
+void		find_closest_plane(const t_scene *scene, t_ray ray, t_closest_result *result);
+void		find_closest_sphere(const t_scene *scene, t_ray ray, t_closest_result *result);
+void		find_closest_cylinder(const t_scene *scene, t_ray ray, t_closest_result *result);
 t_vec3		sphere_normal(t_sphere s, t_vec3 p);
 t_vec3		cylinder_normal(t_cylinder c, t_vec3 p);
 

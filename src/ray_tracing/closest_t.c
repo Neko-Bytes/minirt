@@ -38,14 +38,12 @@ t_vec3	cylinder_normal(t_cylinder c, t_vec3 p)
 	return (vec_normalize(normal));
 }
 
-void	find_closest_plane(const t_scene *scene, t_vec3 ray_origin,
-		t_vec3 direction, float *closest_t, float *refl, int *hit_type,
-		int *hit_index)
+void	find_closest_plane(const t_scene *scene, t_ray ray, t_closest_result *result)
 {
-	size_t	i;
-	size_t	count;
-	float	t;
-	float	local_refl;
+	size_t	 i;
+	size_t	 count;
+	float	 t;
+	float	 local_refl;
 	t_plane	*plane;
 
 	t = 0.0f;
@@ -55,29 +53,27 @@ void	find_closest_plane(const t_scene *scene, t_vec3 ray_origin,
 	{
 		t = 0.0f, local_refl = 1.0f;
 		plane = get_plane(&scene->objects, i);
-		if (intersectPlane(plane, ray_origin, direction, &t))
+		if (intersectPlane(plane, ray.origin, ray.direction, &t))
 		{
-			if (t < *closest_t)
+			if (t < result->closest_t)
 			{
-				*closest_t = t;
-				*refl = local_refl;
-				*hit_type = 2;
-				*hit_index = i;
+				result->closest_t = t;
+				result->refl = local_refl;
+				result->hit_type = 2;
+				result->hit_index = i;
 			}
 		}
 		i++;
 	}
 }
 
-void	find_closest_sphere(const t_scene *scene, t_vec3 ray_origin,
-		t_vec3 direction, float *closest_t, float *refl, int *hit_type,
-		int *hit_index)
+void	find_closest_sphere(const t_scene *scene, t_ray ray, t_closest_result *result)
 {
-	size_t		i;
-	size_t		count;
-	float		t;
-	float		local_refl;
-	t_sphere	*sphere;
+	size_t	 i;
+	size_t	 count;
+	float	 t;
+	float	 local_refl;
+	t_sphere *sphere;
 
 	t = 0.0f;
 	i = 0;
@@ -86,23 +82,21 @@ void	find_closest_sphere(const t_scene *scene, t_vec3 ray_origin,
 	{
 		t = 0.0f, local_refl = 1.0f;
 		sphere = get_sphere(&scene->objects, i);
-		if (intersectSphere(sphere, ray_origin, direction, &local_refl, &t))
+		if (intersectSphere(sphere, ray.origin, ray.direction, &local_refl, &t))
 		{
-			if (t < *closest_t)
+			if (t < result->closest_t)
 			{
-				*closest_t = t;
-				*refl = local_refl;
-				*hit_type = 1;
-				*hit_index = i;
+				result->closest_t = t;
+				result->refl = local_refl;
+				result->hit_type = 1;
+				result->hit_index = i;
 			}
 		}
 		i++;
 	}
 }
 
-void	find_closest_cylinder(const t_scene *scene, t_vec3 ray_origin,
-		t_vec3 direction, float *closest_t, float *refl, int *hit_type,
-		int *hit_index)
+void	find_closest_cylinder(const t_scene *scene, t_ray ray, t_closest_result *result)
 {
 	size_t i = 0;
 	size_t count = get_cylinder_count(&scene->objects);
@@ -110,14 +104,14 @@ void	find_closest_cylinder(const t_scene *scene, t_vec3 ray_origin,
 	{
 		float t = 0.0f, local_refl = 1.0f;
 		t_cylinder *cylinder = get_cylinder(&scene->objects, i);
-		if (intersectCylinder(cylinder, ray_origin, direction, &local_refl, &t))
+		if (intersectCylinder(cylinder, ray.origin, ray.direction, &local_refl, &t))
 		{
-			if (t < *closest_t)
+			if (t < result->closest_t)
 			{
-				*closest_t = t;
-				*refl = local_refl;
-				*hit_type = 3;
-				*hit_index = i;
+				result->closest_t = t;
+				result->refl = local_refl;
+				result->hit_type = 3;
+				result->hit_index = i;
 			}
 		}
 		i++;

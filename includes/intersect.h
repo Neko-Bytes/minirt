@@ -27,10 +27,19 @@ typedef struct s_abc
 	float	oc_dot_axis;
 } t_abc;
 
-bool intersectSphere(const t_sphere *sphere, t_vec3 ray_origin, t_vec3 direction, float *refl, float *t_out);
-bool intersect_plane(const t_plane *plane, t_vec3 ray_origin, t_vec3 direction, float *t_out);
+typedef struct s_intersect_result {
+	bool hit;
+	float t;
+	float refl;
+} t_intersect_result;
+
+// bool intersect_sphere(const t_sphere *sphere, t_vec3 ray_origin, t_vec3 direction, float *refl, float *t_out);
+// bool intersect_plane(const t_plane *plane, t_vec3 ray_origin, t_vec3 direction, float *t_out);
 t_color ray_tracing(t_vec3 direction, t_scene *scene);
-bool intersectCylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
-	t_vec3 direction, float *refl, float *t_out);
+// bool intersect_cylinder(const t_cylinder *cylinder, t_vec3 ray_origin,
+	// t_vec3 direction, float *refl, float *t_out);
+t_intersect_result intersect_sphere(const t_sphere *sphere, t_vec3 ray_origin, t_vec3 direction);
+t_intersect_result intersect_cylinder(const t_cylinder *cylinder, t_vec3 ray_origin, t_vec3 direction);
+t_intersect_result intersect_plane(const t_plane *plane, t_vec3 ray_origin, t_vec3 direction);
 
 #endif

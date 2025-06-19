@@ -41,18 +41,9 @@ void	init_scene(t_scene *scene)
 	init_object_vector(&scene->objects, 10);
 	scene->data = NULL;
 
-	// Debugging camera initialization
 	if (scene->camera)
 	{
-		printf("Camera Position: (%f, %f, %f)\n",
-			scene->camera->position.x, scene->camera->position.y, scene->camera->position.z);
-		printf("Camera Direction (Before Normalize): (%f, %f, %f)\n",
-			scene->camera->direction.x, scene->camera->direction.y, scene->camera->direction.z);
-
 		scene->camera->direction = vec_normalize(scene->camera->direction);
-
-		printf("Camera Direction (After Normalize): (%f, %f, %f)\n",
-			scene->camera->direction.x, scene->camera->direction.y, scene->camera->direction.z);
 	}
 }
 

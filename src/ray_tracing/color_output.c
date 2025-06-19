@@ -50,6 +50,11 @@ t_vec3	compute_ray_direction(t_params *params, float aspect_ratio, float scale,
 	return (ray_dir);
 }
 
+t_vec3	sphere_normal(t_sphere s, t_vec3 p)
+{
+	return (vec_normalize(vec_substract(p, s.position)));
+}
+
 void	main_image(t_params *params, t_color *output, t_scene *scene)
 {
 	float	aspect_ratio;

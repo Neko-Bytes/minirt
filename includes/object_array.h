@@ -102,10 +102,10 @@ void				find_closest_sphere(const t_scene *scene, t_ray ray,
 						t_closest_result *result);
 void				find_closest_cylinder(const t_scene *scene, t_ray ray,
 						t_closest_result *result);
-t_vec3				sphere_normal(t_sphere s, t_vec3 p);
 t_vec3				cylinder_normal(t_cylinder c, t_vec3 p);
 
 // color_output.c
+t_vec3				sphere_normal(t_sphere s, t_vec3 p);
 t_vec3				compute_ray_direction(t_params *params, float aspect_ratio,
 						float scale, t_way *way);
 void				compute_camera_basis(t_vec3 camera_dir, t_way *way);

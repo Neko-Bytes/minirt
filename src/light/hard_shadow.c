@@ -16,9 +16,9 @@ bool is_sphere_shadow(const t_scene *scene, t_vec3 point, t_light *light, float 
     float light_dist = vec_length(light_dir);
     light_dir = vec_normalize(light_dir);
     while (i < get_sphere_count(&scene->objects)) {
-        float t = 0.0f, local_refl = 1.0f;
-        t_sphere *sphere = get_sphere(&scene->objects, i);
-        if (intersectSphere(sphere, point, light_dir, &local_refl, &t)) {
+        t_intersect_result res = intersect_sphere(get_sphere(&scene->objects, i), point, light_dir);
+        if (res.hit) {
+            float t = res.t;
             if (t > BIAS && t < light_dist && t < closest_t) {
                 return true;
             }
@@ -34,9 +34,9 @@ bool is_plane_shadow(const t_scene *scene, t_vec3 point, t_light *light, float c
     float light_dist = vec_length(light_dir);
     light_dir = vec_normalize(light_dir);
     while (i < get_plane_count(&scene->objects)) {
-        float t = 0.0f;
-        t_plane *plane = get_plane(&scene->objects, i);
-        if (intersect_plane(plane, point, light_dir, &t)) {
+        t_intersect_result res = intersect_plane(get_plane(&scene->objects, i), point, light_dir);
+        if (res.hit) {
+            float t = res.t;
             if (t > BIAS && t < light_dist && t < closest_t) {
                 return true;
             }
@@ -52,9 +52,9 @@ bool is_cylinder_shadow(const t_scene *scene, t_vec3 point, t_light *light, floa
     float light_dist = vec_length(light_dir);
     light_dir = vec_normalize(light_dir);
     while (i < get_cylinder_count(&scene->objects)) {
-        float t = 0.0f, local_refl = 1.0f;
-        t_cylinder *cylinder = get_cylinder(&scene->objects, i);
-        if (intersectCylinder(cylinder, point, light_dir, &local_refl, &t)) {
+        t_intersect_result res = intersect_cylinder(get_cylinder(&scene->objects, i), point, light_dir);
+        if (res.hit) {
+            float t = res.t;
             if (t > BIAS && t < light_dist && t < closest_t) {
                 return true;
             }

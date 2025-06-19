@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:09:19 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/06 11:10:56 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:09:12 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-uint32_t rgb(int r, int g, int b, int a) {
-  return (r << 24 | g << 16 | b << 8 | a);
+uint32_t	rgb(int r, int g, int b, int a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
 }

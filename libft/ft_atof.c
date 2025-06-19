@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 18:58:17 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/10 19:06:18 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:25:08 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,3 @@ float	ft_atof(const char *text)
 		parse_fraction(&text, &result);
 	return (result * sign);
 }
-

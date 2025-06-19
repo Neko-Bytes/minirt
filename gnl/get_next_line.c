@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 19:26:19 by mknsteja          #+#    #+#             */
-/*   Updated: 2025/06/16 08:30:30 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:22:49 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	*get_next_line(int fd)
 	if (finder)
 		return (result(buffer_str, &rem, finder));
 	bytes_read = read(fd, buffer_str, BUFFER_SIZE);
-	// printf("buffer_str: %d\n%s\n",bytes_read, buffer_str);
 	while (bytes_read > 0)
 	{
 		assign_rem(&rem, buffer_str, bytes_read);
@@ -92,7 +91,6 @@ char	*result(char *buffer_str, char **rem, char *finder)
 	char	*temp_rem;
 	char	*result;
 
-	// printf("rem: %s\n", *rem);
 	result = gnl_substr(*rem, 0, finder - *rem + 1);
 	temp_rem = *rem;
 	*rem = gnl_strdup(finder + 1);
@@ -120,7 +118,6 @@ void	assign_rem(char **rem, char *buffer_str, int bytes_read)
 	buffer_str[bytes_read] = '\0';
 	temp = *rem;
 	*rem = gnl_strjoin(*rem, buffer_str);
-	// printf("temp: %s\nbuffer_str:%d\n%s\nrem: %s\n",temp,bytes_read,buffer_str, *rem);
 	if (!*rem)
 	{
 		if (temp)

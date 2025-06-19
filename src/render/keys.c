@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 14:07:45 by kruseva           #+#                #+#             */
-/*   Updated: 2025/06/16 15:35:50 by kruseva          ###   ########.fr       */
+/*   Created: 2025/06/19 17:25:18 by kruseva           #+#    #+#             */
+/*   Updated: 2025/06/19 17:25:25 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	handle_camera_movement(int keycode, t_data *data, float move_speed)
 				vec_scale(right, move_speed));
 	}
 }
-
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {

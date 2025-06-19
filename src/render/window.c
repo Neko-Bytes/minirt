@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 14:06:58 by kruseva           #+#                #+#             */
-/*   Updated: 2025/06/19 15:49:05 by kruseva          ###   ########.fr       */
+/*   Created: 2025/06/19 17:26:16 by kruseva           #+#    #+#             */
+/*   Updated: 2025/06/19 17:26:27 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/entries.h"
 #include "../../includes/minirt.h"
 #include "../../includes/object_array.h"
 #include "../../includes/vector_ops.h"
-#include "../../includes/entries.h"
 
 static void	put_pixel_color(mlx_image_t *img, int x, int y, t_color *color)
 {
@@ -38,7 +38,6 @@ static void	render_row(int y, t_data *data, mlx_image_t *img)
 	params.height = data->height;
 	params.coord.x = 0;
 	params.coord.y = y;
-
 	while (params.coord.x < data->width)
 	{
 		main_image(&params, &color, data->scene);
@@ -61,7 +60,9 @@ static void	render_image(t_data *data, mlx_image_t *img)
 
 void	render(t_data *data)
 {
-	mlx_image_t *img = (mlx_image_t *)data->img;
+	mlx_image_t	*img;
+
+	img = (mlx_image_t *)data->img;
 	if (!data || !data->img || !data->camera || !data->scene)
 		return ;
 	render_image(data, img);

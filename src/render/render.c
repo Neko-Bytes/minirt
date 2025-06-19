@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:00:59 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 15:56:44 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/19 17:25:59 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	init_scene(t_scene *scene)
 	vector_init(&scene->lights_vec, sizeof(t_light), 10);
 	init_object_vector(&scene->objects, 10);
 	scene->data = NULL;
-
 	if (scene->camera)
 	{
 		scene->camera->direction = vec_normalize(scene->camera->direction);
@@ -68,10 +67,11 @@ t_vec3	rotate_x(t_vec3 v, float angle)
 	return ((t_vec3){v.x, v.y * cos_a - v.z * sin_a, v.y * sin_a + v.z
 		* cos_a});
 }
+
 void	handle_camera_rotation(int keycode, t_data *data, float angle)
 {
-	t_vec3 center;
-	t_vec3 dir;
+	t_vec3	center;
+	t_vec3	dir;
 
 	if (keycode == KEY_A || keycode == KEY_D)
 	{

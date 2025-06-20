@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 08:56:08 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 17:27:09 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/20 13:12:49 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	validate_light(t_scene *scene, t_light *L)
 		print_error("Light: blue component must be between 0 and 255\n",
 			scene->data);
 }
-
 
 static void	fill_light_position(t_light *light, char **xyz, t_scene *scene)
 {

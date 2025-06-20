@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 22:37:14 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 17:33:35 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/20 13:12:26 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,28 @@ static void	assign_camera_orientation(t_scene *scene, char **vec_xyz)
 	scene->camera->direction.x = scene->camera->orientation.x;
 	scene->camera->direction.y = scene->camera->orientation.y;
 	scene->camera->direction.z = scene->camera->orientation.z;
+}
+
+void	validate_cylinder(t_scene *scene, t_cylinder *cy)
+{
+	float	orientation_length;
+
+	orientation_length = sqrt(cy->orientation.x * cy->orientation.x
+			+ cy->orientation.y * cy->orientation.y + cy->orientation.z
+			* cy->orientation.z);
+	if (orientation_length < 0.0001f)
+		print_error("Cylinder: orientation vector cannot be zero\n",
+			scene->data);
+	cy->orientation.x /= orientation_length;
+	cy->orientation.y /= orientation_length;
+	cy->orientation.z /= orientation_length;
+	if (cy->color.r < 0 || cy->color.r > 255)
+		print_error("Cylinder: red component must be between 0 and 255\n",
+			scene->data);
+	if (cy->color.g < 0 || cy->color.g > 255)
+		print_error("Cylinder: green component must be between 0 and 255\n",
+			scene->data);
+	if (cy->color.b < 0 || cy->color.b > 255)
+		print_error("Cylinder: blue component must be between 0 and 255\n",
+			scene->data);
 }

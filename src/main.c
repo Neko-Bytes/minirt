@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:00 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/20 10:43:53 by Home             ###   ########.fr       */
+/*   Updated: 2025/06/20 13:15:35 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static void	run_event_loop_and_render(t_scene *scene)
 
 int	main(int argc, char **argv)
 {
-	// setup_memory_leak_checker();
 	t_scene	*scene;
 
 	(void)argc;

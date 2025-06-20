@@ -22,9 +22,6 @@ MAC_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit \
 # Executable name
 NAME = miniRT
 
-# Default rule
-all: $(NAME)
-
 # Source files
 SRC = $(SRC_DIR)/main.c \
       $(SRC_DIR)/ray_tracing/ray_tracing.c \
@@ -63,10 +60,20 @@ SRC = $(SRC_DIR)/main.c \
 # Object files
 OBJ = $(SRC:.c=.o)
 
+# Default rule
+all: $(NAME)
+
 # Build rule for object files in any directory
 %.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+# Build rule for the executable
+$(NAME): $(OBJ)
+	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) mlx42
+	@echo "Compiling $(NAME)..."
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT_DIR)/libft.a -L$(BUILD_DIR) -lmlx42 $(MAC_FLAGS)
 
 # Rule to build MLX42 if needed
 mlx42:
@@ -75,23 +82,16 @@ mlx42:
 		mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && cmake .. && make; \
 	fi
 
-# Build rule for the executable
-$(NAME): mlx42 $(OBJ)
-	@echo "Compiling $(NAME)..."
-	@make -C $(LIBFT_DIR)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT_DIR)/libft.a -L$(BUILD_DIR) -lmlx42 $(MAC_FLAGS)
-
-
 # Clean rule
 clean:
 	rm -f $(OBJ)
-	@make -C $(LIBFT_DIR) clean
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
 # Full clean
 fclean: clean
 	rm -f $(NAME)
 
-# Rebuild
+# Rebuild everything
 re: fclean all
 
 .PHONY: all clean fclean re mlx42

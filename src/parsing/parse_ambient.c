@@ -33,6 +33,7 @@ bool	parse_ambience(t_scene **scene, char **tokens)
 	rgb = ft_split(tokens[2], ',');
 	fill_ambient_color((*scene)->ambient, rgb, *scene);
 	ambience_checker((*scene));
+	free_tokens(rgb);
 	return (true);
 }
 

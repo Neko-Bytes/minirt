@@ -13,7 +13,6 @@
 #include "../../includes/minirt.h"
 #include <errno.h>
 
-static void	free_tokens(char **tok);
 static char	*safe_gnl(int fd, t_scene *scene);
 static bool	handle_element_type(char **tokens, t_scene **scene);
 
@@ -70,7 +69,10 @@ bool	parse_elements(char *trim, t_scene **scene)
 			print_error("Too many lights in .rt file\n", (*scene)->data);
 	}
 	if (handle_element_type(tokens, scene))
+	{
+		free_tokens(tokens);
 		return (true);
+	}
 	free_tokens(tokens);
 	return (false);
 }
@@ -94,15 +96,15 @@ static bool	handle_element_type(char **tokens, t_scene **scene)
 	return (false);
 }
 
-static void	free_tokens(char **tok)
+void	free_tokens(char **tok)
 {
 	int	i;
 
 	i = 0;
 	while (tok[i])
 	{
-		gc_free(tok[i]);
+		free(tok[i]);
 		i++;
 	}
-	gc_free(tok);
+	free(tok);
 }

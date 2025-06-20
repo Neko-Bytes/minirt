@@ -8,7 +8,7 @@ INCLUDE_DIR = includes
 
 # Compiler & Flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address \
+CFLAGS = -Wall -Wextra -Werror \
 		 -I$(MLX_DIR)/include \
 		 -I$(LIBFT_DIR) \
 		 -I$(SRC_DIR) \

@@ -41,5 +41,6 @@ void	print_error(char *msg, t_data *data);
 bool	validate_element_counts(char **tokens, t_scene **scene, int *a_count,
 			int *c_count);
 void	check_params(t_scene *scene, t_camera *cam);
+void	free_tokens(char **tok);
 
 #endif

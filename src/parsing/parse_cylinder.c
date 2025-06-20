@@ -20,28 +20,43 @@ static void	fill_cylinder_orientation(t_cylinder *cylinder, char **orientation,
 static void	fill_cylinder_color(t_cylinder *cylinder, char **rgb,
 				t_scene *scene);
 
+static void	parse_cylinder_tokens(t_cylinder *cylinder, t_scene *scene, char **tokens)
+{
+	char	**coords;
+	char	**orientation;
+	char	**rgb;
+
+	if (tokens_counter(tokens) != 6)
+		print_error("Cylinder: wrong number of params\n", scene->data);
+
+	coords = ft_split(tokens[1], ',');
+	fill_cylinder_position(cylinder, coords, scene);
+	free_tokens(coords);
+
+	orientation = ft_split(tokens[2], ',');
+	fill_cylinder_orientation(cylinder, orientation, scene);
+	free_tokens(orientation);
+
+	cylinder->diameter = ft_atof(tokens[3]);
+	if (cylinder->diameter <= 0.0f)
+		print_error("Cylinder: invalid diameter\n", scene->data);
+
+	cylinder->height = ft_atof(tokens[4]);
+	if (cylinder->height <= 0.0f)
+		print_error("Cylinder: invalid height\n", scene->data);
+
+	rgb = ft_split(tokens[5], ',');
+	fill_cylinder_color(cylinder, rgb, scene);
+	free_tokens(rgb);
+
+	validate_cylinder(scene, cylinder);
+}
+
 bool	parse_cylinder(t_scene **scene, char **tokens)
 {
 	t_cylinder	cylinder;
-	char		**coords;
-	char		**orientation;
-	char		**rgb;
 
-	if (tokens_counter(tokens) != 6)
-		print_error("Cylinder: wrong number of params\n", (*scene)->data);
-	coords = ft_split(tokens[1], ',');
-	fill_cylinder_position(&cylinder, coords, *scene);
-	orientation = ft_split(tokens[2], ',');
-	fill_cylinder_orientation(&cylinder, orientation, *scene);
-	cylinder.diameter = ft_atof(tokens[3]);
-	if (cylinder.diameter <= 0.0f)
-		print_error("Cylinder: invalid diameter\n", (*scene)->data);
-	cylinder.height = ft_atof(tokens[4]);
-	if (cylinder.height <= 0.0f)
-		print_error("Cylinder: invalid height\n", (*scene)->data);
-	rgb = ft_split(tokens[5], ',');
-	fill_cylinder_color(&cylinder, rgb, *scene);
-	validate_cylinder(*scene, &cylinder);
+	parse_cylinder_tokens(&cylinder, *scene, tokens);
 	add_cylinder(&(*scene)->objects, cylinder);
 	return (true);
 }

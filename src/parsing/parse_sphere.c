@@ -34,6 +34,8 @@ bool	parse_sphere(t_scene **scene, char **tokens)
 	fill_sphere_color(&sphere, rgb, *scene);
 	validate_sphere(*scene, &sphere);
 	add_sphere(&(*scene)->objects, sphere);
+	free_tokens(coords);
+	free_tokens(rgb);
 	return (true);
 }
 

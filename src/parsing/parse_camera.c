@@ -13,7 +13,6 @@
 #include "../../includes/minirt.h"
 
 static void	assign_params(t_scene **scene, char **tokens);
-static void	free_tokens(char **tokens);
 static void	assign_camera_position(t_scene *scene, char **xyz);
 static void	assign_camera_orientation(t_scene *scene, char **vec_xyz);
 
@@ -74,17 +73,4 @@ static void	assign_camera_orientation(t_scene *scene, char **vec_xyz)
 	scene->camera->direction.x = scene->camera->orientation.x;
 	scene->camera->direction.y = scene->camera->orientation.y;
 	scene->camera->direction.z = scene->camera->orientation.z;
-}
-
-static void	free_tokens(char **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
 }

@@ -12,6 +12,7 @@
 
 #include "../../includes/entries.h"
 #include "../../includes/utils.h"
+#include "../../includes/object_array.h"
 #include "../../libft/libft.h"
 #include <unistd.h>
 
@@ -20,6 +21,11 @@ void	error_exit(t_data *data)
 	if (data && data->mlx)
 	{
 		mlx_terminate(data->mlx);
+	}
+	if (data && data->scene)
+	{
+		free_object_vector(&data->scene->objects);
+		vector_free(&data->scene->lights_vec);
 	}
 	gc_free_all();
 	ft_putstr_fd(RED "Exited :(\n" RESET, STDOUT_FILENO);

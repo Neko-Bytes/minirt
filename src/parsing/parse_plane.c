@@ -34,6 +34,9 @@ bool	parse_plane(t_scene **scene, char **tokens)
 	fill_plane_color(&plane, rgb, *scene);
 	validate_plane(*scene, &plane);
 	add_plane(&(*scene)->objects, plane);
+	free_tokens(coords);
+	free_tokens(normal);
+	free_tokens(rgb);
 	return (true);
 }
 

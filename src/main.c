@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:00 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 15:07:56 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/20 10:43:53 by Home             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static void	run_event_loop_and_render(t_scene *scene)
 
 int	main(int argc, char **argv)
 {
+	// setup_memory_leak_checker();
 	t_scene	*scene;
 
 	(void)argc;
@@ -71,6 +72,8 @@ int	main(int argc, char **argv)
 	run_event_loop_and_render(scene);
 	mlx_terminate(scene->data->mlx);
 	colorprint(MSG, "Exiting program and cleaning up resources ...\n");
+	free_object_vector(&scene->objects);
+	vector_free(&scene->lights_vec);
 	gc_free_all();
 	return (0);
 }

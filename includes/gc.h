@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   gc.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:39:45 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 19:18:27 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/20 10:26:32 by Home             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GC_H
 # define GC_H
 
-# include "../includes/exits.h"
+// # include "../includes/exits.h"
 # include "../libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>

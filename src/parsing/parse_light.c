@@ -14,7 +14,6 @@
 #include "../../includes/minirt.h"
 
 static void	validate_light(t_scene *scene, t_light *L);
-static void	free_tokens(char **tokens);
 static void	fill_light_position(t_light *light, char **xyz, t_scene *scene);
 static void	fill_light_color(t_light *light, char **rgb, t_scene *scene);
 
@@ -58,20 +57,6 @@ static void	validate_light(t_scene *scene, t_light *L)
 			scene->data);
 }
 
-static void	free_tokens(char **tokens)
-{
-	int	i;
-
-	if (!tokens)
-		return ;
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
 
 static void	fill_light_position(t_light *light, char **xyz, t_scene *scene)
 {

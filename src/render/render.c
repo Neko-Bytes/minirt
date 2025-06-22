@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:00:59 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 17:25:59 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/22 12:45:09 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,22 @@ void	init_window_and_image(t_data *data)
 {
 	data->mlx = mlx_init(data->width, data->height, "miniRT", true);
 	if (!data->mlx)
+	{
+		gc_free_all();
 		exit(1);
+	}
 	data->img = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->img)
 	{
 		mlx_terminate(data->mlx);
+		gc_free_all();
 		exit(1);
 	}
 	if (mlx_image_to_window(data->mlx, data->img, 0, 0) < 0)
 	{
 		mlx_delete_image(data->mlx, data->img);
 		mlx_terminate(data->mlx);
+		gc_free_all();
 		exit(1);
 	}
 }

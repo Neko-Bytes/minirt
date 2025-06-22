@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 18:52:39 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/22 11:50:41 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/22 12:53:41 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ void	*vector_at(const t_vector *vec, size_t index)
 	if (!vec)
 	{
 		printf("Error: NULL vector in vector_at\n");
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
 	if (index >= vec->size)
 	{
 		printf("Error: Vector index %zu out of bounds (size: %zu)\n", index,
 			vec->size);
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
 	return ((char *)vec->data + (index * vec->element_size));
@@ -43,7 +45,7 @@ size_t	vector_capacity(const t_vector *vec)
 
 void	vector_free(t_vector *vec)
 {
-	free(vec->data);
+	gc_free(vec->data);
 	vec->data = NULL;
 	vec->size = 0;
 	vec->capacity = 0;

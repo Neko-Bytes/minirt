@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 20:58:01 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 18:43:05 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/22 12:55:23 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	gc_free(void *ptr)
 	cur = *head;
 	while (cur)
 	{
-		if (cur->ptr == ptr)
+		if (cur->ptr && cur->ptr == ptr)
 		{
 			gc_remove_node(head, prev, cur);
 			return ;

@@ -6,10 +6,11 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:20:23 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/22 11:51:24 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/22 12:40:40 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/gc.h"
 #include "../../includes/object_array.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,16 +28,18 @@ void	vector_init(t_vector *vec, size_t element_size, size_t initial_capacity)
 	if (!vec || element_size == 0 || initial_capacity == 0)
 	{
 		printf("Error: Invalid parameters for vector initialization\n");
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
 	vec->data = NULL;
 	vec->size = 0;
 	vec->capacity = initial_capacity;
 	vec->element_size = element_size;
-	vec->data = malloc(element_size * initial_capacity);
+	vec->data = gc_malloc(element_size * initial_capacity);
 	if (!vec->data)
 	{
 		printf("Error: Failed to allocate memory for vector\n");
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
 }
@@ -46,6 +49,7 @@ void	init_object_vector(t_object_vector *vec, int initial_capacity)
 	if (!vec || initial_capacity <= 0)
 	{
 		printf("Error: Invalid parameters for object vector initialization\n");
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
 	vector_init(&vec->planes_vec, sizeof(t_plane), initial_capacity);
@@ -60,18 +64,20 @@ void	vector_resize(t_vector *vec, size_t new_capacity)
 	if (!vec || new_capacity == 0)
 	{
 		printf("Error: Invalid parameters for vector_resize\n");
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
-	new_data = malloc(vec->element_size * new_capacity);
+	new_data = gc_malloc(vec->element_size * new_capacity);
 	if (!new_data)
 	{
 		printf("Error: Failed to allocate memory for vector\n");
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
 	if (vec->data)
 	{
 		ft_memcpy(new_data, vec->data, vec->element_size * vec->size);
-		free(vec->data);
+		gc_free(vec->data);
 	}
 	vec->data = new_data;
 	vec->capacity = new_capacity;
@@ -84,6 +90,7 @@ void	vector_push_back(t_vector *vec, const void *element)
 	if (!vec || !element)
 	{
 		printf("Error: Invalid parameters for vector_push_back\n");
+		gc_free_all();
 		exit(EXIT_FAILURE);
 	}
 	if (vec->size >= vec->capacity)

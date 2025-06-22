@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 15:09:27 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 16:50:33 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/22 11:50:49 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	validate_camera_and_scene(t_scene *scene)
 {
 	if (!scene->camera || !scene)
 	{
-		fprintf(stderr, "Error: Invalid input to main_image.\n");
+		printf("Error: Invalid input to main_image.\n");
 		exit(1);
 	}
 }
@@ -65,7 +65,7 @@ void	main_image(t_params *params, t_color *output, t_scene *scene)
 
 	if (!params || !scene || !scene->camera)
 	{
-		fprintf(stderr, "Error: Invalid input to main_image.\n");
+		printf("Error: Invalid input to main_image.\n");
 		exit(1);
 	}
 	aspect_ratio = (float)params->width / (float)params->height;

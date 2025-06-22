@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 18:25:33 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 18:42:46 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/22 13:04:04 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,13 @@ void	gc_remove_node(t_gc_node **head, t_gc_node *prev, t_gc_node *cur)
 	else
 		*head = cur->next;
 	if (cur && cur->ptr)
+	{
 		free(cur->ptr);
+		cur->ptr = NULL;
+	}
 	if (cur)
+	{
 		free(cur);
+		cur = NULL;
+	}
 }

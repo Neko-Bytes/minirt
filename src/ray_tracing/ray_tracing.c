@@ -68,7 +68,7 @@ t_color	ray_tracing(t_vec3 direction, t_scene *scene)
 	vars.hit_point = vec_add(scene->camera->position, vec_scale(direction,
 				vars.result.closest_t));
 	vars.lookup = initialize_hit_lookup(vars.result, vars.hit_point);
-	get_hit_normal(scene, &vars.lookup, &vars.normal);
+	get_hit_normal(scene, &vars.lookup, &vars.normal, direction);
 	get_hit_color(scene, &vars.lookup, &vars.base_color);
 	vars.light = (t_light *)vector_at(&scene->lights_vec, 0);
 	vars.hit = initialize_hit_info(vars.hit_point, vars.normal, vars.base_color,

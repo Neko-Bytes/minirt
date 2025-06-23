@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_array.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 19:19:26 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 19:21:55 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/23 18:50:27 by Home             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ void					main_image(t_params *params, t_color *output,
 							t_scene *scene);
 
 void					get_hit_normal(const t_scene *scene,
-							t_hit_lookup *lookup, t_vec3 *normal);
+							t_hit_lookup *lookup, t_vec3 *normal,
+							t_vec3 ray_dir);
 void					get_hit_color(const t_scene *scene,
 							t_hit_lookup *lookup, t_color *base_color);
 void					apply_shadow_and_diffuse(const t_scene *scene,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shadow_a_color.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Home <Home@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:36:19 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 19:06:47 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/23 18:45:55 by Home             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <math.h>
 
 void	get_hit_normal(const t_scene *scene, t_hit_lookup *lookup,
-		t_vec3 *normal)
+		t_vec3 *normal, t_vec3 ray_dir)
 {
 	t_sphere	*sphere;
 	t_plane		*plane;
@@ -32,7 +32,10 @@ void	get_hit_normal(const t_scene *scene, t_hit_lookup *lookup,
 	else if (lookup->hit_type == 2)
 	{
 		plane = get_plane(&scene->objects, lookup->hit_index);
-		*normal = plane->normal;
+		if (dot_product(plane->normal, ray_dir) > 0)
+			*normal = vec_scale(plane->normal, -1.0f);
+		else
+			*normal = plane->normal;
 	}
 	else if (lookup->hit_type == 3)
 	{
@@ -40,9 +43,7 @@ void	get_hit_normal(const t_scene *scene, t_hit_lookup *lookup,
 		*normal = cylinder_normal(*cylinder, lookup->hit_point);
 	}
 	else
-	{
 		*normal = (t_vec3){0.0f, 1.0f, 0.0f};
-	}
 }
 
 void	get_hit_color(const t_scene *scene, t_hit_lookup *lookup,

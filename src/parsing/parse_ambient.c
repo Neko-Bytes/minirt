@@ -62,26 +62,6 @@ void	ambience_checker(t_scene *scene)
 	return ;
 }
 
-bool	validate_element_counts(char **tokens, t_scene **scene, int *a_count,
-		int *c_count)
-{
-	if (!ft_strncmp(tokens[0], "A", 1))
-	{
-		(*a_count)++;
-		if (*a_count > 1)
-			print_error("Double occurrence of 'A' found in .rt file\n",
-				(*scene)->data);
-	}
-	if (!ft_strncmp(tokens[0], "C", 1))
-	{
-		(*c_count)++;
-		if (*c_count > 1)
-			print_error("Double occurrence of 'C' found in .rt file\n",
-				(*scene)->data);
-	}
-	return (true);
-}
-
 void	check_params(t_scene *scene, t_camera *cam)
 {
 	float	orientation_length;

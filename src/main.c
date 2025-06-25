@@ -66,6 +66,7 @@ int	main(int argc, char **argv)
 
 	(void)argc;
 	init_scene_structs(&scene);
+	parse_args(argc, argv, scene);
 	open_and_parse_file(argv[1], scene);
 	setup_camera_and_scene(scene);
 	run_event_loop_and_render(scene);

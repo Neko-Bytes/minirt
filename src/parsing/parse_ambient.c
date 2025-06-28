@@ -20,7 +20,7 @@ bool	parse_ambience(t_scene **scene, char **tokens)
 	char	**rgb;
 
 	if (tokens_counter(tokens) != 3)
-		print_error("Ambience: Invalid number of arguments.", (*scene)->data);
+		print_error("Ambience: Invalid number of arguments.\n", (*scene)->data);
 	if (!(*scene)->ambient)
 	{
 		(*scene)->ambient = gc_malloc(sizeof(t_ambient));

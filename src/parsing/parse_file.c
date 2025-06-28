@@ -13,7 +13,7 @@
 #include "../../includes/minirt.h"
 
 static bool	handle_element_type(char **tokens, t_scene **scene);
-static bool empty_checker(int line_count, t_scene *scene);
+static void empty_checker(int line_count, t_scene **scene);
 
 bool	parse_file(int fd, t_scene *scene)
 {
@@ -38,7 +38,7 @@ bool	parse_file(int fd, t_scene *scene)
 		gc_free(line);
 		line_count++;
 	}
-	return (empty_checker(line_count ,scene));
+	return (empty_checker(line_count ,&scene), true);
 }
 
 bool	parse_elements(char *trim, t_scene **scene)
@@ -49,12 +49,13 @@ bool	parse_elements(char *trim, t_scene **scene)
 	if (!tokens || !tokens[0])
 		print_error("Issue with tokens\n", (*scene)->data);
 	tokens_counter(tokens);
-	validate_element_counts(tokens, scene);
 	if (handle_element_type(tokens, scene))
 	{
+		validate_element_counts(tokens, scene);
 		free_tokens(tokens);
 		return (true);
 	}
+	validate_element_counts(tokens, scene);
 	free_tokens(tokens);
 	return (false);
 }
@@ -78,15 +79,31 @@ static bool	handle_element_type(char **tokens, t_scene **scene)
 	return (false);
 }
 
-static bool empty_checker(int line_count, t_scene *scene)
+static void empty_checker(int line_count, t_scene **scene)
 {
+	bool status;
+
+	status = true;
 	if(!line_count)
-		print_error("Empty file!\n", scene->data);
-	if(scene->ambient->count <= 0)
-		print_error("No Ambience provided\n", scene->data);
-	if(scene->camera->count <= 0)
-		print_error("No Camera provided\n", scene->data);
-	if(scene->lights->count <= 0)
-		print_error("No Lights provided\n", scene->data);
-	return (true);
+	{
+		status = false;
+		colorprint(FAILURE, "Empty file!\n");
+	}
+	if(!(*scene)->ambient ||  (*scene)->ambient->count <= 0)
+	{
+		status = false;
+		colorprint(FAILURE, "No Ambience provided\n");
+	}
+	if(!(*scene)->camera || (*scene)->camera->count <= 0)
+	{
+		status = false;
+		colorprint(FAILURE, "No Camera provided\n");
+	}
+	if(!(*scene)->lights_vec.data || (*scene)->lights_vec.size <= 0)
+	{
+		status = false;
+		colorprint(FAILURE, "No Lights provided\n");
+	}
+	if(!status)
+		print_error("Please provide valid scene arguments\n", (*scene)->data);
 }

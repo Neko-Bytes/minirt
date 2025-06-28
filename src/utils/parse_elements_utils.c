@@ -66,21 +66,21 @@ void	free_tokens(char **tok)
 
 bool	validate_element_counts(char **tokens, t_scene **scene)
 {
-	if (!ft_strncmp(tokens[0], "A", 1))
+	if (!ft_strncmp(tokens[0], "A", 1) && (*scene)->ambient)
 	{
 		((*scene)->ambient->count)++;
 		if ((*scene)->ambient->count > 1)
 			print_error("Double occurrence of 'A' found in .rt file\n",
 				(*scene)->data);
 	}
-	if (!ft_strncmp(tokens[0], "C", 1))
+	if (!ft_strncmp(tokens[0], "C", 1) && (*scene)->camera)
 	{
 		((*scene)->camera->count)++;
 		if ((*scene)->camera->count > 1)
 			print_error("Double occurrence of 'C' found in .rt file\n",
 				(*scene)->data);
 	}
-	if (!ft_strncmp(tokens[0], "L", 1))
+	if (!ft_strncmp(tokens[0], "L", 1) && (*scene)->lights)
 	{
 		((*scene)->lights->count)++;
 		if ((*scene)->lights->count > 10)

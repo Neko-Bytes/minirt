@@ -36,11 +36,11 @@ void	print_error(char *msg, t_data *data)
 {
 	if (!msg)
 	{
-		ft_putstr_fd(RED "[ERROR]: Unknown error\n" RESET, STDERR_FILENO);
+		ft_putstr_fd(RED "\n[ERROR]: Unknown error\n" RESET, STDERR_FILENO);
 	}
 	else
 	{
-		ft_putstr_fd(RED "[ERROR]: " RESET, STDERR_FILENO);
+		ft_putstr_fd(RED "\n[ERROR]: " RESET, STDERR_FILENO);
 		ft_putstr_fd(msg, STDERR_FILENO);
 	}
 	ft_putstr_fd(RED "\nClosing miniRT ...\n" RESET, STDOUT_FILENO);

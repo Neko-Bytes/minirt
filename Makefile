@@ -8,7 +8,7 @@ INCLUDE_DIR = includes
 
 # Compiler & Flags
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror \
+CFLAGS  = -Wall -Wextra -Werror\
           -I$(MLX_DIR)/include \
           -I$(LIBFT_DIR) \
           -I$(SRC_DIR) \
@@ -18,6 +18,9 @@ CFLAGS  = -Wall -Wextra -Werror \
 # macOS specific flags
 MAC_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit \
 			-L$(HOME)/.brew/opt/glfw/lib -lglfw
+
+# Linux specific flags
+LINUX_FLAGS = -L$(BUILD_DIR) -lmlx42 -L/usr/X11/lib -lX11 -lXext -lglfw -lm
 
 # Executable name
 NAME = miniRT

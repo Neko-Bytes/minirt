@@ -11,23 +11,24 @@
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-#include <errno.h>
 
-static char	*safe_gnl(int fd, t_scene *scene);
 static bool	handle_element_type(char **tokens, t_scene **scene);
+static void empty_checker(int line_count, t_scene **scene);
 
 bool	parse_file(int fd, t_scene *scene)
 {
 	char	*line;
 	char	*trim;
+	int line_count;
 
+	line_count = 0;
 	init_object_vector(&scene->objects, 10);
 	vector_init(&scene->lights_vec, sizeof(t_light), 5);
 	while (1)
 	{
 		line = safe_gnl(fd, scene);
 		if (!line)
-			break ;
+			break;
 		trim = ft_strtrim(line, " \t\n");
 		if (!trim)
 			print_error("Memory allocation failed\n", scene->data);
@@ -35,44 +36,26 @@ bool	parse_file(int fd, t_scene *scene)
 			parse_elements(trim, &scene);
 		gc_free(trim);
 		gc_free(line);
+		line_count++;
 	}
-	return (true);
-}
-
-static char	*safe_gnl(int fd, t_scene *scene)
-{
-	char	*line;
-
-	errno = 0;
-	line = get_next_line(fd);
-	if (!line && errno != 0)
-		print_error("Issue with reading line\n", scene->data);
-	return (line);
+	return (empty_checker(line_count ,&scene), true);
 }
 
 bool	parse_elements(char *trim, t_scene **scene)
 {
-	static int	a_count = 0;
-	static int	c_count = 0;
-	static int	l_count = 0;
 	char		**tokens;
 
 	tokens = ft_split(trim, ' ');
 	if (!tokens || !tokens[0])
 		print_error("Issue with tokens\n", (*scene)->data);
 	tokens_counter(tokens);
-	validate_element_counts(tokens, scene, &a_count, &c_count);
-	if (!ft_strncmp(tokens[0], "L", 1))
-	{
-		l_count++;
-		if (l_count > 10)
-			print_error("Too many lights in .rt file\n", (*scene)->data);
-	}
 	if (handle_element_type(tokens, scene))
 	{
+		validate_element_counts(tokens, scene);
 		free_tokens(tokens);
 		return (true);
 	}
+	validate_element_counts(tokens, scene);
 	free_tokens(tokens);
 	return (false);
 }
@@ -96,15 +79,31 @@ static bool	handle_element_type(char **tokens, t_scene **scene)
 	return (false);
 }
 
-void	free_tokens(char **tok)
+static void empty_checker(int line_count, t_scene **scene)
 {
-	int	i;
+	bool status;
 
-	i = 0;
-	while (tok[i])
+	status = true;
+	if(!line_count)
 	{
-		free(tok[i]);
-		i++;
+		status = false;
+		colorprint(FAILURE, "Empty file!\n");
 	}
-	free(tok);
+	if(!(*scene)->ambient ||  (*scene)->ambient->count <= 0)
+	{
+		status = false;
+		colorprint(FAILURE, "No Ambience provided\n");
+	}
+	if(!(*scene)->camera || (*scene)->camera->count <= 0)
+	{
+		status = false;
+		colorprint(FAILURE, "No Camera provided\n");
+	}
+	if(!(*scene)->lights_vec.data || (*scene)->lights_vec.size <= 0)
+	{
+		status = false;
+		colorprint(FAILURE, "No Lights provided\n");
+	}
+	if(!status)
+		print_error("Please provide valid scene arguments\n", (*scene)->data);
 }

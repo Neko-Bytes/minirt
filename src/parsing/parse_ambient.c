@@ -20,7 +20,7 @@ bool	parse_ambience(t_scene **scene, char **tokens)
 	char	**rgb;
 
 	if (tokens_counter(tokens) != 3)
-		print_error("Ambience: Invalid number of arguments.", (*scene)->data);
+		print_error("Ambience: Invalid number of arguments.\n", (*scene)->data);
 	if (!(*scene)->ambient)
 	{
 		(*scene)->ambient = gc_malloc(sizeof(t_ambient));
@@ -60,26 +60,6 @@ void	ambience_checker(t_scene *scene)
 	if (copy->color.b < 0 || copy->color.b > 255)
 		print_error("Invalid input for color blue", scene->data);
 	return ;
-}
-
-bool	validate_element_counts(char **tokens, t_scene **scene, int *a_count,
-		int *c_count)
-{
-	if (!ft_strncmp(tokens[0], "A", 1))
-	{
-		(*a_count)++;
-		if (*a_count > 1)
-			print_error("Double occurrence of 'A' found in .rt file\n",
-				(*scene)->data);
-	}
-	if (!ft_strncmp(tokens[0], "C", 1))
-	{
-		(*c_count)++;
-		if (*c_count > 1)
-			print_error("Double occurrence of 'C' found in .rt file\n",
-				(*scene)->data);
-	}
-	return (true);
 }
 
 void	check_params(t_scene *scene, t_camera *cam)

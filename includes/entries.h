@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 19:16:51 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/29 20:16:03 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:42:03 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,15 @@ typedef struct s_object_vector
 	t_vector			cylinders_vec;
 }						t_object_vector;
 
-typedef struct s_scene {
-  int fd;
-  t_ambient *ambient;
-  t_camera *camera;
-  t_light *lights;
-  t_vector lights_vec;
-  t_object_vector objects;
-  t_data *data;
-} t_scene;
+typedef struct s_scene
+{
+	int					fd;
+	t_ambient			*ambient;
+	t_camera			*camera;
+	t_light				*lights;
+	t_vector			lights_vec;
+	t_object_vector		objects;
+	t_data				*data;
+}						t_scene;
 
 #endif

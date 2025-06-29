@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 12:06:37 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 20:15:29 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:40:55 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,24 @@ void	tokens_checker(const char *asset, char **tokens, t_scene **scene)
 	while (tokens[i])
 	{
 		i++;
-		if (int_checker(tokens[i-1]))
-			continue;
-		else if (float_checker(tokens[i-1]))
-			continue;
+		if (int_checker(tokens[i - 1]))
+			continue ;
+		else if (float_checker(tokens[i - 1]))
+			continue ;
 		else
-			print_error(ft_strjoin(asset, "Invalid float or int provided\n"), (*scene)->data);
+			print_error(ft_strjoin(asset, "Invalid float or int provided\n"),
+				(*scene)->data);
 	}
-	return;
+	return ;
 }
 
-void one_token_checker(const char *asset, char **token, t_scene **scene)
+void	one_token_checker(const char *asset, char **token, t_scene **scene)
 {
-	if(int_checker(*token))
-		return;
-	else if(float_checker(*token))
-			return;
+	if (int_checker(*token))
+		return ;
+	else if (float_checker(*token))
+		return ;
 	else
-			print_error(ft_strjoin(asset, "Invalid float or int provided\n"), (*scene)->data);
+		print_error(ft_strjoin(asset, "Invalid float or int provided\n"),
+			(*scene)->data);
 }

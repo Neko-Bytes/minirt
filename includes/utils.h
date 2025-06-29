@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 16:59:35 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 20:16:22 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:42:16 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ typedef enum s_log
 	FAILURE
 }		t_log;
 
-int tokens_counter(char **tokens);
-void colorprint(t_log log, char *msg);
-void free_tokens(char **tok);
-bool validate_element_counts(char **tokens, t_scene **scene);
-char *safe_gnl(int fd, t_scene *scene);
-void tokens_checker(const char *asset, char **tokens, t_scene **scene);
-void one_token_checker(const char *asset, char **token, t_scene **scene);
-void tokens_printer(char **tokens);
+int		tokens_counter(char **tokens);
+void	colorprint(t_log log, char *msg);
+void	free_tokens(char **tok);
+bool	validate_element_counts(char **tokens, t_scene **scene);
+char	*safe_gnl(int fd, t_scene *scene);
+void	tokens_checker(const char *asset, char **tokens, t_scene **scene);
+void	one_token_checker(const char *asset, char **token, t_scene **scene);
+void	tokens_printer(char **tokens);
 
 #endif

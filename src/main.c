@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:06:00 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/22 12:07:28 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:49:54 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	main(int argc, char **argv)
 	open_and_parse_file(argv[1], scene);
 	setup_camera_and_scene(scene);
 	run_event_loop_and_render(scene);
-	mlx_terminate(scene->data->mlx);
+	free_mlx(scene->data);
 	colorprint(MSG, "Exiting program and cleaning up resources ...\n");
 	free_object_vector(&scene->objects);
 	vector_free(&scene->lights_vec);

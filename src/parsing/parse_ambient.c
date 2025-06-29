@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:12:08 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 17:33:39 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:23:17 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ bool	parse_ambience(t_scene **scene, char **tokens)
 {
 	char	**rgb;
 
+	tokens_checker("Ambience(ratio): ", ft_split(tokens[1], ' '), scene);
 	if (tokens_counter(tokens) != 3)
 		print_error("Ambience: Invalid number of arguments.\n", (*scene)->data);
 	if (!(*scene)->ambient)
@@ -31,6 +32,7 @@ bool	parse_ambience(t_scene **scene, char **tokens)
 		colorprint(MSG, "Ambient struct already exists, replacing ...\n");
 	(*scene)->ambient->intensity = ft_atof(tokens[1]);
 	rgb = ft_split(tokens[2], ',');
+	tokens_checker("Ambience(rgb): ", rgb, scene);
 	fill_ambient_color((*scene)->ambient, rgb, *scene);
 	ambience_checker((*scene));
 	free_tokens(rgb);

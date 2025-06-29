@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:13:49 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 17:27:15 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:11:48 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,13 @@ bool	parse_plane(t_scene **scene, char **tokens)
 	if (tokens_counter(tokens) != 4)
 		print_error("Plane: wrong number of params\n", (*scene)->data);
 	coords = ft_split(tokens[1], ',');
+	tokens_checker("Plane(coords): ", coords, scene);
 	fill_plane_position(&plane, coords, *scene);
 	normal = ft_split(tokens[2], ',');
+	tokens_checker("Plane(normal): ", normal, scene);
 	fill_plane_normal(&plane, normal, *scene);
 	rgb = ft_split(tokens[3], ',');
+	tokens_checker("Plane(rgb): ", rgb, scene);
 	fill_plane_color(&plane, rgb, *scene);
 	validate_plane(*scene, &plane);
 	add_plane(&(*scene)->objects, plane);

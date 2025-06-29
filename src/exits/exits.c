@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 01:12:55 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 18:24:53 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:48:39 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@
 
 void	error_exit(t_data *data)
 {
-	if (data && data->mlx)
-	{
-		mlx_terminate(data->mlx);
-	}
+	free_mlx(data);
 	if (data && data->scene)
 	{
 		free_object_vector(&data->scene->objects);
@@ -45,4 +42,15 @@ void	print_error(char *msg, t_data *data)
 	}
 	ft_putstr_fd(RED "\nClosing miniRT ...\n" RESET, STDOUT_FILENO);
 	error_exit(data);
+}
+
+void free_mlx(t_data *data)
+{
+	if(data && data->mlx)
+	{
+		if(data->img)
+			mlx_delete_image(data->mlx, data->img);
+		mlx_terminate(data->mlx);
+	}
+	return;
 }

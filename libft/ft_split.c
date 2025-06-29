@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 17:57:41 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/16 08:31:10 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:16:10 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*allocate_substring(const char *start, int length)
 {
 	char	*substr;
 
-	substr = (char *)malloc((length + 1) * sizeof(char));
+	substr = (char *)gc_malloc((length + 1) * sizeof(char));
 	if (!substr)
 		return (NULL);
 	ft_strlcpy(substr, start, length + 1);
@@ -83,7 +83,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	substring_count = count_substrings(s, c);
-	result = (char **)malloc((substring_count + 1) * sizeof(char *));
+	result = (char **)gc_malloc((substring_count + 1) * sizeof(char *));
 	if (!result)
 		return (NULL);
 	i = 0;

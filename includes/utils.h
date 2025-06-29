@@ -6,13 +6,14 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 16:59:35 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 19:19:52 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 12:59:06 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "../includes/minirt.h"
 #include "entries.h"
 #include <errno.h>
 
@@ -46,5 +47,7 @@ void colorprint(t_log log, char *msg);
 void free_tokens(char **tok);
 bool validate_element_counts(char **tokens, t_scene **scene);
 char *safe_gnl(int fd, t_scene *scene);
+void tokens_checker(const char *asset, char **tokens, t_scene **scene);
+void tokens_printer(char **tokens);
 
 #endif

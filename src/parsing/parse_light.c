@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 08:56:08 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/20 13:12:49 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:12:51 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@ bool	parse_light(t_scene **scene, char **tokens)
 
 	if (!scene || !*scene || !tokens)
 		print_error("Light: invalid scene or tokens\n", (*scene)->data);
+	tokens_checker("Light(ratio): ", ft_split(tokens[2], ' '), scene);
 	if (tokens_counter(tokens) != 4)
 		print_error("Light: wrong number of parameters\n", (*scene)->data);
 	xyz = ft_split(tokens[1], ',');
+	tokens_checker("Light(xyz): ", xyz, scene);
 	rgb = ft_split(tokens[3], ',');
+	tokens_checker("Light(rgb): ", rgb, scene);
 	light = gc_malloc(sizeof(t_light));
 	if (!light)
 		print_error("Light: allocation failed\n", (*scene)->data);

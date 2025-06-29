@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:11:26 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 20:15:46 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:40:41 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	parse_file(int fd, t_scene *scene)
 		gc_free(line);
 		line_count++;
 	}
-	empty_checker(line_count ,&scene);
+	empty_checker(line_count, &scene);
 	return (true);
 }
 

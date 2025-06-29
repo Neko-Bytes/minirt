@@ -6,14 +6,14 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 18:58:17 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 19:25:08 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 14:36:29 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdbool.h>
 
-bool	float_checker(const char *s);
+bool		float_checker(const char *s);
 
 void	skip_whitespace(const char **cursor)
 {
@@ -40,7 +40,7 @@ float	ft_atof(const char *text)
 	float	result;
 	float	sign;
 
-	if(!float_checker(text))
+	if (!float_checker(text))
 	{
 		return (0.0);
 	}

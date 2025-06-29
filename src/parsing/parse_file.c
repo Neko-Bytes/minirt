@@ -6,20 +6,20 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:11:26 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 17:30:51 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:15:46 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
 static bool	handle_element_type(char **tokens, t_scene **scene);
-static void empty_checker(int line_count, t_scene **scene);
+static void	empty_checker(int line_count, t_scene **scene);
 
 bool	parse_file(int fd, t_scene *scene)
 {
 	char	*line;
 	char	*trim;
-	int line_count;
+	int		line_count;
 
 	line_count = 0;
 	init_object_vector(&scene->objects, 10);
@@ -28,7 +28,7 @@ bool	parse_file(int fd, t_scene *scene)
 	{
 		line = safe_gnl(fd, scene);
 		if (!line)
-			break;
+			break ;
 		trim = ft_strtrim(line, " \t\n");
 		if (!trim)
 			print_error("Memory allocation failed\n", scene->data);
@@ -44,7 +44,7 @@ bool	parse_file(int fd, t_scene *scene)
 
 bool	parse_elements(char *trim, t_scene **scene)
 {
-	char		**tokens;
+	char	**tokens;
 
 	tokens = ft_split(trim, ' ');
 	if (!tokens || !tokens[0])
@@ -80,31 +80,31 @@ static bool	handle_element_type(char **tokens, t_scene **scene)
 	return (false);
 }
 
-static void empty_checker(int line_count, t_scene **scene)
+static void	empty_checker(int line_count, t_scene **scene)
 {
-	bool status;
+	bool	status;
 
 	status = true;
-	if(!line_count)
+	if (!line_count)
 	{
 		status = false;
 		colorprint(FAILURE, "Empty file!\n");
 	}
-	if(!(*scene)->ambient ||  (*scene)->ambient->count <= 0)
+	if (!(*scene)->ambient || (*scene)->ambient->count <= 0)
 	{
 		status = false;
 		colorprint(FAILURE, "No Ambience provided\n");
 	}
-	if(!(*scene)->camera || (*scene)->camera->count <= 0)
+	if (!(*scene)->camera || (*scene)->camera->count <= 0)
 	{
 		status = false;
 		colorprint(FAILURE, "No Camera provided\n");
 	}
-	if(!(*scene)->lights_vec.data || (*scene)->lights_vec.size <= 0)
+	if (!(*scene)->lights_vec.data || (*scene)->lights_vec.size <= 0)
 	{
 		status = false;
 		colorprint(FAILURE, "No Lights provided\n");
 	}
-	if(!status)
+	if (!status)
 		print_error("Please provide valid scene arguments\n", (*scene)->data);
 }

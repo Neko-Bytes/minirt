@@ -6,13 +6,11 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 16:57:48 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 13:22:50 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:34:38 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
-// void	tokens_printer(char **tokens);
 
 int	tokens_counter(char **tokens)
 {

@@ -6,13 +6,13 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 01:12:55 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 13:48:39 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:32:53 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/entries.h"
-#include "../../includes/utils.h"
 #include "../../includes/object_array.h"
+#include "../../includes/utils.h"
 #include "../../libft/libft.h"
 #include <unistd.h>
 
@@ -45,13 +45,13 @@ void	print_error(char *msg, t_data *data)
 	error_exit(data);
 }
 
-void free_mlx(t_data *data)
+void	free_mlx(t_data *data)
 {
-	if(data && data->mlx)
+	if (data && data->mlx)
 	{
-		if(data->img)
+		if (data->img)
 			mlx_delete_image(data->mlx, data->img);
 		mlx_terminate(data->mlx);
 	}
-	return;
+	return ;
 }

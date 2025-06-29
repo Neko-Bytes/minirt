@@ -53,10 +53,11 @@ SRC = $(SRC_DIR)/main.c \
       $(SRC_DIR)/parsing/parse_cylinder.c \
       $(SRC_DIR)/parsing/parse_ambient.c \
       $(SRC_DIR)/parsing/parse_camera.c \
-      $(SRC_DIR)/errors/errors.c \
+      $(SRC_DIR)/exits/exits.c \
       $(SRC_DIR)/math/intersect.c \
       $(SRC_DIR)/math/intersect_shapes.c \
       $(SRC_DIR)/utils/parse_elements_utils.c \
+      $(SRC_DIR)/utils/parse_tokens_checker.c \
       $(GNL_DIR)/get_next_line.c \
       $(GNL_DIR)/get_next_line_utils.c
 

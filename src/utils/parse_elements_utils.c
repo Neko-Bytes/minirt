@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 16:57:48 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 15:08:07 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:22:50 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ char	*safe_gnl(int fd, t_scene *scene)
 	return (line);
 }
 
-// void	tokens_printer(char **tokens)
-// {
-// 	int	i;
-//
-// 	i = 0;
-// 	while (tokens[i])
-// 	{
-// 		printf("%d: %s\n", i, tokens[i]);
-// 		i++;
-// 	}
-// }
+void	tokens_printer(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		printf("%d: %s\n", i, tokens[i]);
+		i++;
+	}
+}
 
 void	free_tokens(char **tok)
 {
@@ -58,10 +58,10 @@ void	free_tokens(char **tok)
 	i = 0;
 	while (tok[i])
 	{
-		free(tok[i]);
+		gc_free(tok[i]);
 		i++;
 	}
-	free(tok);
+	gc_free(tok);
 }
 
 bool	validate_element_counts(char **tokens, t_scene **scene)

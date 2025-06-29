@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:13:49 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/19 17:27:19 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:24:44 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@ bool	parse_sphere(t_scene **scene, char **tokens)
 
 	if (tokens_counter(tokens) != 4)
 		print_error("Sphere: wrong number of params\n", (*scene)->data);
+	tokens_checker("Sphere(diameter): ", ft_split(tokens[2], ' '), scene);
 	coords = ft_split(tokens[1], ',');
+	tokens_checker("Sphere(coords): ", coords, scene);
 	fill_sphere_position(&sphere, coords, *scene);
 	sphere.radius = ft_atof(tokens[2]);
 	if (sphere.radius <= 0.0f)
 		print_error("Sphere: invalid radius\n", (*scene)->data);
 	rgb = ft_split(tokens[3], ',');
+	tokens_checker("Sphere(rgb): ", rgb, scene);
 	fill_sphere_color(&sphere, rgb, *scene);
 	validate_sphere(*scene, &sphere);
 	add_sphere(&(*scene)->objects, sphere);

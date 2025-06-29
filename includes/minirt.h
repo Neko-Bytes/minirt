@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 00:30:05 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/20 13:11:59 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:48:21 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 #define MAX_SPHERES 5
 
 void error_exit(t_data *data);
+void free_mlx(t_data *data);
 void print_error(char *msg, t_data *data);
 void check_params(t_scene *scene, t_camera *cam);
 void free_tokens(char **tok);

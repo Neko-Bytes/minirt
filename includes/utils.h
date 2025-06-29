@@ -48,6 +48,7 @@ void free_tokens(char **tok);
 bool validate_element_counts(char **tokens, t_scene **scene);
 char *safe_gnl(int fd, t_scene *scene);
 void tokens_checker(const char *asset, char **tokens, t_scene **scene);
+void one_token_checker(const char *asset, char **token, t_scene **scene);
 void tokens_printer(char **tokens);
 
 #endif

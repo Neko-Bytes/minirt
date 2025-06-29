@@ -18,6 +18,7 @@
 
 void	error_exit(t_data *data)
 {
+	close(data->scene->fd);
 	free_mlx(data);
 	if (data && data->scene)
 	{

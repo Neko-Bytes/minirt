@@ -12,6 +12,7 @@
 
 #include "../../includes/utils.h"
 #include <stdbool.h>
+#include <unistd.h>
 
 static bool	int_checker(const char *s)
 {
@@ -83,24 +84,42 @@ static bool	float_checker(const char *s)
 void	tokens_checker(const char *asset, char **tokens, t_scene **scene)
 {
 	int	i;
+	char *msg;
 
 	i = 0;
+	msg = NULL;
 	while (tokens[i])
 	{
-		if (int_checker(tokens[i]))
-		{
-			i++;
-			continue;
-		}
-		else if (float_checker(tokens[i]))
-		{
-			i++;
-			continue;
-		}
-		else
-			print_error(ft_strjoin(asset, "Invalid float or int provided\n"), (*scene)->data);
 		i++;
+		if (int_checker(tokens[i-1]))
+			continue;
+		else if (float_checker(tokens[i-1]))
+			continue;
+		else
+		{
+			print_error(asset, "Invalid float or int provided\n", (*scene)->data);
+			ft_putstr_fd(msg, STDERR_FILENO);
+			gc_free(msg);
+			error_exit((*scene)->data);
+		}
 	}
-
 	return;
+}
+
+void one_token_checker(const char *asset, char **token, t_scene **scene)
+{
+	char *msg;
+
+	msg = NULL;
+	if(int_checker(*token))
+		return;
+	else if(float_checker(*token))
+			return;
+	else
+	{
+			msg = ft_strjoin(asset, "Invalid int or float provided\n");
+			ft_putstr_fd(msg, STDERR_FILENO);
+			gc_free(msg);
+			error_exit((*scene)->data);
+	}
 }

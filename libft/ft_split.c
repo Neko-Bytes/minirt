@@ -67,8 +67,8 @@ static int	process_substring(char **result, int *j, const char *s, char c)
 static char	**free_result(char **result, int j)
 {
 	while (j > 0)
-		free(result[--j]);
-	free(result);
+		gc_free(result[--j]);
+	gc_free(result);
 	return (NULL);
 }
 

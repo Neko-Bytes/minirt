@@ -111,6 +111,7 @@ typedef struct s_object_vector {
 } t_object_vector;
 
 typedef struct s_scene {
+  int fd;
   t_ambient *ambient;
   t_camera *camera;
   t_light *lights;

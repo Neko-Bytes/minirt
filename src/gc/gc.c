@@ -17,6 +17,7 @@
 ** can update the list.  Non-static so it's used and won't trigger
 ** -Wunused-function.
 */
+
 t_gc_node	**gc_head_ptr(void)
 {
 	static t_gc_node	*g_gc_head = NULL;

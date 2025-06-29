@@ -38,7 +38,8 @@ bool	parse_file(int fd, t_scene *scene)
 		gc_free(line);
 		line_count++;
 	}
-	return (empty_checker(line_count ,&scene), true);
+	empty_checker(line_count ,&scene);
+	return (true);
 }
 
 bool	parse_elements(char *trim, t_scene **scene)

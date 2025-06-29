@@ -25,7 +25,7 @@ bool	parse_sphere(t_scene **scene, char **tokens)
 
 	if (tokens_counter(tokens) != 4)
 		print_error("Sphere: wrong number of params\n", (*scene)->data);
-	tokens_checker("Sphere(diameter): ", ft_split(tokens[2], ' '), scene);
+	one_token_checker("Sphere(diameter): ", &tokens[2], scene);
 	coords = ft_split(tokens[1], ',');
 	tokens_checker("Sphere(coords): ", coords, scene);
 	fill_sphere_position(&sphere, coords, *scene);

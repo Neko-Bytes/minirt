@@ -88,20 +88,23 @@ void	tokens_checker(const char *asset, char **tokens, t_scene **scene)
 	i = 0;
 	while (tokens[i])
 	{
-		if (int_checker(tokens[i]))
-		{
-			i++;
-			continue ;
-		}
-		else if (float_checker(tokens[i]))
-		{
-			i++;
-			continue ;
-		}
-		else
-			print_error(ft_strjoin(asset, "Invalid float or int provided\n"),
-				(*scene)->data);
 		i++;
+		if (int_checker(tokens[i-1]))
+			continue;
+		else if (float_checker(tokens[i-1]))
+			continue;
+		else
+			print_error(ft_strjoin(asset, "Invalid float or int provided\n"), (*scene)->data);
 	}
-	return ;
+	return;
+}
+
+void one_token_checker(const char *asset, char **token, t_scene **scene)
+{
+	if(int_checker(*token))
+		return;
+	else if(float_checker(*token))
+			return;
+	else
+			print_error(ft_strjoin(asset, "Invalid float or int provided\n"), (*scene)->data);
 }

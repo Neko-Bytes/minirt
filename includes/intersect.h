@@ -6,14 +6,14 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 19:18:40 by kruseva           #+#    #+#             */
-/*   Updated: 2025/06/19 19:21:33 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 14:35:19 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INTERSECT_H
 # define INTERSECT_H
 
-# include "entries.h" // Include entries.h for type definitions
+# include "entries.h"
 # include "vector_ops.h"
 # include <stdbool.h>
 

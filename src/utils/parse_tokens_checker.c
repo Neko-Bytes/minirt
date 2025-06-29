@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens_checker.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
+/*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 12:06:37 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 13:29:34 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:34:49 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,17 @@ void	tokens_checker(const char *asset, char **tokens, t_scene **scene)
 		if (int_checker(tokens[i]))
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		else if (float_checker(tokens[i]))
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		else
-			print_error(ft_strjoin(asset, "Invalid float or int provided\n"), (*scene)->data);
+			print_error(ft_strjoin(asset, "Invalid float or int provided\n"),
+				(*scene)->data);
 		i++;
 	}
-
-	return;
+	return ;
 }

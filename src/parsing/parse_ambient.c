@@ -19,7 +19,7 @@ bool	parse_ambience(t_scene **scene, char **tokens)
 {
 	char	**rgb;
 
-	tokens_checker("Ambience(ratio): ", ft_split(tokens[1], ' '), scene);
+	one_token_checker("Ambience(ratio): ", &tokens[1], scene);
 	if (tokens_counter(tokens) != 3)
 		print_error("Ambience: Invalid number of arguments.\n", (*scene)->data);
 	if (!(*scene)->ambient)

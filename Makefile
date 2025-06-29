@@ -8,12 +8,12 @@ INCLUDE_DIR = includes
 
 # Compiler & Flags
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror\
+CFLAGS  = -Wall -Wextra -Werror -g -Ofast -ffast-math -flto -march=native\
           -I$(MLX_DIR)/include \
           -I$(LIBFT_DIR) \
           -I$(SRC_DIR) \
           -I$(INCLUDE_DIR) \
-          -D MACOS
+	  -D LINUX
 
 # macOS specific flags
 MAC_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit \
@@ -77,7 +77,7 @@ $(NAME): $(OBJ)
 	@$(MAKE) -C $(LIBFT_DIR)
 	@$(MAKE) mlx42
 	@echo "Compiling $(NAME)..."
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT_DIR)/libft.a -L$(BUILD_DIR) -lmlx42 $(MAC_FLAGS)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT_DIR)/libft.a -L$(BUILD_DIR) -lmlx42 $(LINUX_FLAGS)
 
 # Rule to build MLX42 if needed
 mlx42:

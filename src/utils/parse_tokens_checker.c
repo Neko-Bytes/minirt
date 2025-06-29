@@ -6,12 +6,13 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 12:06:37 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 14:34:49 by kruseva          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:15:29 by kruseva          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 #include <stdbool.h>
+#include <unistd.h>
 
 static bool	int_checker(const char *s)
 {

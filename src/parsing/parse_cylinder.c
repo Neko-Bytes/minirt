@@ -34,11 +34,11 @@ static void	parse_cylinder_tokens(t_cylinder *cylinder, t_scene *scene,
 	orientation = ft_split(tokens[2], ',');
 	fill_cylinder_orientation(cylinder, orientation, scene);
 	free_tokens(orientation);
-	tokens_checker("Cylinder(diameter): ", ft_split(tokens[3], ' '), &scene);
+	one_token_checker("Cylinder(diameter): ", &tokens[3], &scene);
 	cylinder->diameter = ft_atof(tokens[3]);
 	if (cylinder->diameter <= 0.0f)
 		print_error("Cylinder: invalid diameter\n", scene->data);
-	tokens_checker("Cylinder(height): ", ft_split(tokens[4], ' '), &scene);
+	one_token_checker("Cylinder(height): ", &tokens[4], &scene);
 	cylinder->height = ft_atof(tokens[4]);
 	if (cylinder->height <= 0.0f)
 		print_error("Cylinder(height): invalid height\n", scene->data);

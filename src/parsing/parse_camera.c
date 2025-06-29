@@ -18,7 +18,7 @@ static void	assign_camera_orientation(t_scene *scene, char **vec_xyz);
 
 bool	parse_camera(t_scene **scene, char **tokens)
 {
-	tokens_checker("Camera(FOV): ", ft_split(tokens[3], ' '), scene);
+	one_token_checker("Camera(FOV): ", &tokens[3], scene);
 	if (tokens_counter(tokens) != 4)
 		print_error("Invalid number of inputs for camera\n", (*scene)->data);
 	if (!(*scene)->camera)

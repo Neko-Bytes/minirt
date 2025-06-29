@@ -31,6 +31,7 @@ static void	init_scene_structs(t_scene **scene_ptr)
 	(*scene_ptr)->data->input->key_right = false;
 	(*scene_ptr)->data->input->key_a = false;
 	(*scene_ptr)->data->input->key_d = false;
+	(*scene_ptr)->data->scene = *scene_ptr;
 }
 
 static void	open_and_parse_file(const char *filename, t_scene *scene)
@@ -38,6 +39,7 @@ static void	open_and_parse_file(const char *filename, t_scene *scene)
 	int	fd;
 
 	fd = open(filename, O_RDONLY);
+	scene->fd = fd;
 	if (fd < 0)
 		print_error("Error: cannot open file\n", scene->data);
 	parse_file(fd, scene);
@@ -47,7 +49,6 @@ static void	open_and_parse_file(const char *filename, t_scene *scene)
 static void	setup_camera_and_scene(t_scene *scene)
 {
 	scene->data->camera = scene->camera;
-	scene->data->scene = scene;
 	scene->camera->orientation = vec_normalize(scene->camera->direction);
 }
 
@@ -74,6 +75,9 @@ int	main(int argc, char **argv)
 	colorprint(MSG, "Exiting program and cleaning up resources ...\n");
 	free_object_vector(&scene->objects);
 	vector_free(&scene->lights_vec);
+	gc_free(scene->ambient);
+	gc_free(scene->camera);
+	gc_free(scene->lights);
 	gc_free_all();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kruseva <kruseva@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 08:56:08 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/06/29 13:12:51 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:12:41 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	parse_light(t_scene **scene, char **tokens)
 
 	if (!scene || !*scene || !tokens)
 		print_error("Light: invalid scene or tokens\n", (*scene)->data);
-	tokens_checker("Light(ratio): ", ft_split(tokens[2], ' '), scene);
+	one_token_checker("Light(ratio): ", &tokens[2], scene);
 	if (tokens_counter(tokens) != 4)
 		print_error("Light: wrong number of parameters\n", (*scene)->data);
 	xyz = ft_split(tokens[1], ',');

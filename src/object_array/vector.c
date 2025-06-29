@@ -34,6 +34,7 @@ void	vector_push_back(t_vector *vec, const void *element)
 	ft_memcpy((char *)vec->data + (vec->size * vec->element_size), element,
 		vec->element_size);
 	vec->size++;
+	gc_free((void *)element);
 }
 
 size_t	vector_size(const t_vector *vec)

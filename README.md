@@ -142,7 +142,7 @@ cy 50,0,20 0,1,0 14.2 21.4 10,0,255
 
 ---
 
-## 🧠 How it works (high level)
+## 🧠 How it works
 
 For each pixel:
 

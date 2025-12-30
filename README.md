@@ -1,167 +1,185 @@
-<div align="center">
+````md
+# miniRT — Minimal Ray Tracer (C + MLX42)
 
-MiniRT
+> A compact **ray tracing** engine written in **C** (42-school miniRT project).  
+> Renders simple 3D scenes from `.rt` files by casting rays, computing intersections, and shading with diffuse lighting + hard shadows.
 
-A Hardware-Accelerated Raytracing Engine in C
+---
 
-<p align="center">
-<em>A physically-based rendering engine built from scratch. It simulates light physics, geometric intersections, and shadows using vector mathematics.</em>
-</p>
+## ✨ Features
 
-</div>
+- **Primitives**: Sphere (`sp`), Plane (`pl`), Cylinder (`cy`)
+- **Lighting**: Lambertian diffuse shading + **hard shadows**
+- **Camera**: Movable camera with orientation vectors + FOV
+- **Scene Parsing**: Strict `.rt` parser + validation
+- **Memory Safety**: Custom GC-style allocator (`gc_malloc`, `gc_free_all`) to prevent leaks
+- **Real-time Loop**: Keyboard hooks for smooth interactions
 
-📖 About The Project
+---
 
-MiniRT is a minimalist Raytracer written in C. Unlike rasterization engines (like standard video games), MiniRT renders scenes by simulating light rays—tracing their path from a virtual camera, calculating intersections with 3D objects, and determining pixel color based on surface normals, light sources, and shadows.
+## 📦 Repository layout
 
-This project was built with a focus on memory safety (using a custom Garbage Collector) and clean architecture.
+```text
+.
+├── gnl/         # get_next_line
+├── includes/    # headers
+├── libft/       # libft
+├── minilibx/    # MLX42 (vendored)
+├── scenes/      # example .rt scenes
+├── src/         # renderer, parser, math, hooks, etc.
+├── Makefile
+└── README.md
+````
 
-✨ Core Features
+---
 
-Primitives: Renders Spheres, Planes, and Cylinders.
+## 🧰 Prerequisites
 
-Lighting: Implements diffuse lighting and hard shadows.
+This project uses **MLX42**, which relies on **GLFW** and **CMake**.
 
-Camera System: Fully movable camera with orientation vectors.
+### macOS (Homebrew)
 
-Scene Parsing: Custom .rt file parser with strict validation.
-
-Memory Management: Custom GC implementation to prevent leaks (gc_malloc, gc_free_all).
-
-Event Handling: Smooth keyboard interactions via hooks.
-
-🛠️ Getting Started
-
-Prerequisites
-
-The project uses MLX42, which requires GLFW and CMake.
-
-macOS (Homebrew):
-
+```bash
 brew install glfw cmake
+```
 
+### Linux (Debian/Ubuntu)
 
-Linux (Debian/Ubuntu):
-
+```bash
 sudo apt-get update
 sudo apt-get install build-essential libglfw3-dev libglfw3 cmake xorg-dev
+```
 
+> If you’re on another distro, install the equivalents of **GLFW**, **CMake**, and X11 development packages.
 
-Installation
+---
 
-Clone the repository:
+## 🛠️ Build
 
-git clone [https://github.com/Neko-Bytes/minirt.git](https://github.com/Neko-Bytes/minirt.git)
+```bash
+git clone https://github.com/Neko-Bytes/minirt.git
 cd minirt
-
-
-Build the project:
-This uses a standard Makefile that handles the MLX42 build automatically.
-
 make
+```
 
+Common targets (if present in your Makefile):
 
-🎮 Usage
+```bash
+make clean
+make fclean
+make re
+```
 
-Run the executable with a scene file (.rt) as an argument:
+---
 
+## ▶️ Run
+
+```bash
 ./miniRT scenes/example.rt
+```
 
+> You can pass any valid `.rt` file path.
 
-⌨️ Controls
+---
 
-The engine features a real-time event loop for camera manipulation:
+## ⌨️ Controls
 
-Key Action
+| Key   | Action                  |
+| ----- | ----------------------- |
+| ↑ / ↓ | Move forward / backward |
+| ← / → | Strafe left / right     |
+| A / D | Rotate camera (yaw)     |
+| ESC   | Exit                    |
 
-Input
+---
 
-Move Forward
+## 🧾 Scene format (`.rt`)
 
-↑ (Arrow Up)
+A scene is a plain text file with one element per line.
 
-Move Backward
+### 1) Ambient light (`A`)
 
-↓ (Arrow Down)
+```txt
+A 0.2 255,255,255
+# Ratio   Color(R,G,B)
+```
 
-Strafe Left
+### 2) Camera (`C`)
 
-← (Arrow Left)
+```txt
+C 0,0,0 0,0,1 70
+# Position(x,y,z)   Orientation(x,y,z)   FOV
+```
 
-Strafe Right
+### 3) Light (`L`)
 
-→ (Arrow Right)
+```txt
+L -10,10,20 0.6 255,255,255
+# Position(x,y,z)   Brightness   Color(R,G,B)
+```
 
-Rotate Camera (Yaw)
+### 4) Objects
 
-A / D
+**Sphere**
 
-Exit Program
+```txt
+sp 0,0,20 10 255,0,0
+# Position   Diameter   Color
+```
 
-ESC
+**Plane**
 
-📝 Scene Description Format (.rt)
+```txt
+pl 0,0,0 0,1,0 0,0,255
+# Position   Normal     Color
+```
 
-The scene is defined in a simple configuration file.
+**Cylinder**
 
-1. Ambience (A)
+```txt
+cy 50,0,20 0,1,0 14.2 21.4 10,0,255
+# Position   Axis       Diameter   Height   Color
+```
 
-Controls the background light of the scene.
+---
 
-A   0.2   255,255,255
-#   Ratio  Color(R,G,B)
+## 🧠 How it works (high level)
 
+For each pixel:
 
-2. Camera (C)
+1. **Generate a ray** from the camera through the view plane
+2. **Test intersections** against all objects
+3. Pick the **closest valid hit** (smallest positive `t`)
+4. Compute **diffuse lighting** using `dot(normal, light_dir)`
+5. Cast a **shadow ray** toward the light:
 
-Defines the viewpoint.
+   * if blocked → the point is in shadow
+   * else → apply lighting normally
 
-C   0,0,0    0,0,1      70
-#   Pos(xyz) Orient(xyz) FOV
+---
 
+## 🧮 Math toolkit
 
-3. Light (L)
+The renderer relies heavily on linear algebra (see `src/`):
 
-A point light source.
+* Vector ops: add/sub, dot, cross, normalize
+* Camera basis vectors + transformations
 
-L   -10,10,20   0.6    255,255,255
-#   Pos(xyz)    Bright Color
+---
 
+## 🧯 Troubleshooting
 
-4. Objects (sp, pl, cy)
+* **GLFW / CMake missing** → install prerequisites (see above)
+* **Linux build errors about X11** → ensure `xorg-dev` (or equivalent) is installed
+* **Black screen** → validate your `.rt` file (camera orientation, light ratio, colors)
 
-Sphere: sp  0,0,20  10  255,0,0 (Pos, Diameter, Color)
+---
 
-Plane: pl  0,0,0   0,1,0  0,0,255 (Pos, Normal, Color)
+## 👥 Authors
 
-Cylinder: cy  50,0,20  0,1,0  14.2  21.4  10,0,255 (Pos, Axis, Diameter, Height, Color)
+* **Neko-Bytes** and **unicorn453**
 
-🧠 Technical Implementation
+---
 
-The Ray Casting Algorithm
-
-For every pixel on the screen:
-
-Ray Generation: A vector is calculated from the camera's origin through the specific pixel on the view plane.
-
-Intersection Test: The ray is tested against every object in the scene using geometric formulas (e.g., Quadratic formula for spheres/cylinders).
-
-Closest Hit: We find the intersection point closest to the camera (smallest valid $t$).
-
-Lighting Calculation: We calculate the angle between the light source and the surface normal (Dot Product) to determine brightness.
-
-Shadow Ray: A secondary ray is cast from the hit point to the light. If it hits another object, the point is in shadow.
-
-Mathematical Toolkit
-
-The engine relies heavily on linear algebra, implemented in src/math/:
-
-Vector Operations: Dot product, Cross product, Normalization.
-
-Matrix Transformations: Used for camera orientation and projection.
-
-<div align="center">
-
-View User Profile
-
-</div>
+```
+```

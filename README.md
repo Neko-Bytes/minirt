@@ -1,4 +1,3 @@
-````md
 # miniRT — Minimal Ray Tracer (C + MLX42)
 
 > A compact **ray tracing** engine written in **C** (42-school miniRT project).  
@@ -181,5 +180,3 @@ The renderer relies heavily on linear algebra (see `src/`):
 
 ---
 
-```
-```
